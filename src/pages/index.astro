@@ -519,8 +519,12 @@ const navItems = [
 
         const buildChars = (text) => {
           return text.split('').map((char, i) => {
+            if (char === ' ') {
+              const br = document.createElement('br');
+              return br;
+            }
             const span = document.createElement('span');
-            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.textContent = char;
             span.className = prefersReduced ? 'char-animate revealed' : 'char-animate';
             span.style.transitionDelay = `${i * 50}ms`;
             return span;
@@ -536,8 +540,8 @@ const navItems = [
         if (!prefersReduced) {
           requestAnimationFrame(() => {
             setTimeout(() => {
-              solidChars.forEach(c => c.classList.add('revealed'));
-              outlineChars.forEach(c => c.classList.add('revealed'));
+              solidChars.forEach(c => c.classList && c.classList.add('revealed'));
+              outlineChars.forEach(c => c.classList && c.classList.add('revealed'));
             }, 300);
           });
         }
