@@ -1,0 +1,518 @@
+---
+import '../styles/global.css';
+
+const projects = [
+  {
+    id: 'hartley',
+    title: 'Hartley & Co',
+    description: 'Emergency-focused trade website with 24/7 lead capture, click-to-call, and service area mapping that converts urgent searches into booked jobs.',
+    bg: '#1E3A5F',
+    textMode: 'light',
+    url: 'https://demo-hartley-plumbing.vercel.app',
+    image: '/thumbnails/hartley.webp',
+    accent: '#F97316',
+  },
+  {
+    id: 'kin',
+    title: 'Kin & Grain',
+    description: 'Warm editorial hospitality site with interactive digital menu, event listings, email capture, and catering enquiries — a community hub that drives repeat visits.',
+    bg: '#C4704B',
+    textMode: 'light',
+    url: 'https://demo-kin-grain-cafe.vercel.app',
+    image: '/thumbnails/cafe.webp',
+    accent: '#F5EDE3',
+  },
+  {
+    id: 'apex',
+    title: 'Apex Performance',
+    description: 'Conversion-optimised fitness site built as a sales funnel — multi-step lead capture, membership pricing, and urgency-driven CTAs that turn visitors into trial members.',
+    bg: '#0D0D0D',
+    textMode: 'light',
+    url: 'https://demo-apex-fitness.vercel.app',
+    image: '/thumbnails/fitness.webp',
+    accent: '#FF6B2C',
+  },
+  {
+    id: 'whitfield',
+    title: 'Whitfield & Associates',
+    description: 'Authority-driven professional services site with insights blog, consultation booking, animated credibility metrics, and content marketing architecture.',
+    bg: '#1B2B4B',
+    textMode: 'light',
+    url: 'https://demo-whitfield-accounting.vercel.app',
+    image: '/thumbnails/accounting.webp',
+    accent: '#B8924A',
+  },
+  {
+    id: 'luma',
+    title: 'LUMA',
+    description: 'Luxury appointment-based site with a full booking flow, expandable service menu, transformation gallery, and team showcase — replacing phone bookings with digital elegance.',
+    bg: '#C4828A',
+    textMode: 'light',
+    url: 'https://demo-luma-hair-beauty.vercel.app',
+    image: '/thumbnails/hair.webp',
+    accent: '#D4A853',
+  },
+];
+
+const bgColors = ['#0A0A0A', ...projects.map(p => p.bg), '#0A0A0A'];
+const textModes = ['light', ...projects.map(p => p.textMode), 'light'];
+
+const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Associates' ? 'Whitfield' : p.title, slideIndex: i + 1 }));
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Alister Maddrell — Web Designer & Developer based in Sydney. Custom-built, high-performance websites for local businesses." />
+    <meta property="og:title" content="Alister Maddrell — Web Designer & Developer" />
+    <meta property="og:description" content="Custom-built, high-performance websites for Sydney businesses." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/thumbnails/hartley.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://portfolio-alt-alister-maddrell.vercel.app/" />
+    <title>Alister Maddrell — Web Designer & Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="app" class="relative w-full h-screen overflow-hidden">
+      <!-- ═══════════════════════════════════════ -->
+      <!-- BACKGROUND LAYER                       -->
+      <!-- ═══════════════════════════════════════ -->
+      <div id="bg-layer" class="absolute inset-0" style="background-color: #0A0A0A;"></div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- FIXED HEADER — always visible          -->
+      <!-- ═══════════════════════════════════════ -->
+      <header id="app-header" class="absolute top-0 left-0 w-full h-[90px] px-[6.25%] flex items-center justify-between z-30 text-white">
+        <a href="#" class="ui-text ui-text-sm" data-slide="0">Alister Maddrell</a>
+        <a href="#" class="ui-text ui-text-sm hover:text-white/70 transition-colors duration-200" data-slide="6">About</a>
+      </header>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- SLIDE 0: HERO                          -->
+      <!-- ═══════════════════════════════════════ -->
+      <section id="slide-0" class="slide mounted active">
+        <div class="flex flex-col h-full pt-[90px]">
+          <div class="flex-1 flex items-center px-[6.25%] relative pb-[180px]">
+            <div class="w-full max-w-[700px]">
+              <div class="relative mb-[0.91vw] slide-title">
+                <h1 id="hero-title-solid" class="title-display title-solid"></h1>
+                <div id="hero-title-outline" class="title-display title-outline absolute inset-0" aria-hidden="true"></div>
+              </div>
+              <p class="ui-text ui-text-md text-white mt-2 slide-desc" style="letter-spacing: 1px;">Web Designer & Developer</p>
+              <div class="flex gap-6 mt-8 slide-cta">
+                <a href="#" class="cta-link ui-text ui-text-md text-white" data-slide="1">
+                  <span>View My Work</span>
+                  <span class="cta-arrow">&rarr;</span>
+                </a>
+                <a href="#" class="cta-link ui-text ui-text-md text-white" data-slide="6">
+                  <span>Get in Touch</span>
+                  <span class="cta-arrow">&rarr;</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute bottom-[80px] left-[6.25%] z-10 slide-bubble">
+            <button class="speech-bubble cursor-pointer border-none" type="button" data-slide="1">
+              Building high-performance websites for Sydney businesses — one pixel at a time.
+            </button>
+          </div>
+
+          <button class="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator text-white slide-bubble cursor-pointer bg-transparent border-none p-2 rounded-full transition-all duration-200 hover:bg-white/10 hover:scale-110 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1)]" data-slide="1" aria-label="Scroll to projects">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- SLIDES 1-5: PROJECTS                   -->
+      <!-- ═══════════════════════════════════════ -->
+      {projects.map((project, i) => {
+        const slideIndex = i + 1;
+        const textColor = project.textMode === 'light' ? '#ffffff' : '#0d0d0d';
+        return (
+          <section id={`slide-${slideIndex}`} class="slide" data-slide-index={slideIndex}>
+            <div class="flex flex-col lg:flex-row items-center h-full pt-[90px] px-[6.25%]" style={`color: ${textColor};`}>
+              <!-- Left: Text (40%) -->
+              <div class="w-full lg:w-[40%] flex flex-col justify-center py-6 lg:py-0 order-2 lg:order-1 overflow-visible">
+                <h2 class="title-display slide-title" style={`color: ${textColor};`}>
+                  {project.title}
+                </h2>
+                <p class="desc-text mt-6 slide-desc">
+                  {project.description}
+                </p>
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="cta-link ui-text ui-text-md mt-[34px] slide-cta"
+                >
+                  <span>View Live Site</span>
+                  <span class="cta-arrow">&rarr;</span>
+                </a>
+              </div>
+
+              <!-- Right: Browser mockup (60%) -->
+              <div class="w-full lg:w-[60%] flex items-center justify-center relative order-1 lg:order-2 py-4 lg:py-0 overflow-visible">
+                <div class="card-work relative w-full max-w-[calc(68vh-3.125vw)] slide-image" style={`--card-color: ${project.accent};`}>
+                  <div class="card-work-topbar">
+                    <div class="card-work-urlbar">
+                      <svg class="card-work-globe" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 1C7.25065 2.36917 7.9614 4.14602 8 6C7.9614 7.854 7.25065 9.6308 6 11M6 1C4.74936 2.36917 4.03862 4.14602 4 6C4.03862 7.854 4.74936 9.6308 6 11M6 1C3.23857 1 1 3.23857 1 6C1 8.7614 3.23857 11 6 11M6 1C8.7614 1 11 3.23857 11 6C11 8.7614 8.7614 11 6 11M1.25001 4.5H10.75M1.25 7.5H10.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      <span class="card-work-url"><span class="card-work-url-proto">https://</span>{new URL(project.url).hostname}</span>
+                    </div>
+                    <span class="card-work-title">{project.title}</span>
+                    <a href={project.url} target="_blank" rel="noopener noreferrer" class="card-work-capsule" aria-label={`Visit ${project.title}`}>
+                      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                  </div>
+                  <div class="card-work-window">
+                    <div class="card-work-window-inner">
+                      <span class="card-work-dots" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </span>
+                      <div class="card-work-img">
+                        <img
+                          src={project.image}
+                          alt={`${project.title} website screenshot`}
+                          width="1440"
+                          height="900"
+                          loading={i === 0 ? "eager" : "lazy"}
+                          decoding="async"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section>
+        );
+      })}
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- SLIDE 6: ABOUT / CONTACT               -->
+      <!-- ═══════════════════════════════════════ -->
+      <section id="slide-6" class="slide" data-slide-index="6">
+        <div class="flex flex-col lg:flex-row h-full pt-[90px] relative">
+          <!-- Left: Decorative monogram -->
+          <div class="hidden lg:flex w-1/2 items-center justify-center overflow-hidden relative am-monogram" aria-hidden="true"></div>
+
+          <!-- Right: Content -->
+          <div class="w-full lg:w-1/2 flex flex-col justify-center px-[6.25%] lg:pr-[6.25%] lg:pl-0 py-8" style="background: #0A0A0A;">
+            <h2 class="title-display slide-title text-white" style="font-size: clamp(32px, 5vw, 90px);">
+              Let's Work Together
+            </h2>
+            <p class="desc-text text-white mt-6 slide-desc">
+              I design and build fast, modern websites for local businesses across Sydney. Every site is custom-built, SEO-optimised, and designed to turn visitors into customers.
+            </p>
+
+            <div class="mt-8 slide-cta">
+              <a href="mailto:alistermaddrell@gmail.com" class="cta-link ui-text ui-text-md text-white">
+                <span>alistermaddrell@gmail.com</span>
+                <span class="cta-arrow">&rarr;</span>
+              </a>
+              <p class="text-white text-sm mt-2">Sydney, Australia</p>
+            </div>
+
+            <!-- Contact form -->
+            <form action="https://formspree.io/f/placeholder" method="POST" class="mt-10 space-y-5 max-w-[480px] slide-meta" style="background: #0A0A0A;">
+              <div>
+                <label for="name" class="ui-text text-xs text-white block mb-1" style="letter-spacing: 1px;">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  class="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white text-base font-body focus:outline-none focus:border-white/30 transition-colors"
+                />
+              </div>
+              <div>
+                <label for="email" class="ui-text text-xs text-white block mb-1" style="letter-spacing: 1px;">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  class="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white text-base font-body focus:outline-none focus:border-white/30 transition-colors"
+                />
+              </div>
+              <div>
+                <label for="message" class="ui-text text-xs text-white block mb-1" style="letter-spacing: 1px;">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  required
+                  class="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white text-base font-body focus:outline-none focus:border-white/30 transition-colors resize-none"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="ui-text ui-text-md bg-white text-black px-8 py-3 rounded hover:bg-white/80 hover:scale-[1.02] transition-all duration-200 cursor-pointer"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- FIXED RIGHT-SIDE NAV (Desktop)         -->
+      <!-- ═══════════════════════════════════════ -->
+      <nav id="project-nav" class="absolute right-[6.25%] top-1/2 -translate-y-1/2 z-40 flex-col items-end transition-opacity duration-500" style="display: none;">
+        <div class="relative flex flex-col gap-[10px]">
+          <div id="nav-dot" class="nav-dot absolute right-0 top-0 text-white" style="transform: translateX(calc(100% + 12px));"></div>
+          {navItems.map((item, i) => (
+            <button
+              class="nav-item block text-right whitespace-nowrap text-white cursor-pointer border-none opacity-60"
+              data-slide={item.slideIndex}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <!-- MOBILE DOT NAV -->
+      <nav id="mobile-nav" class="absolute top-[88px] left-0 w-full z-40 items-center justify-center gap-[10px] transition-opacity duration-500 text-white" style="display: none;">
+        {navItems.map((item, i) => (
+          <button class="mobile-dot" data-slide={item.slideIndex} aria-label={`Go to ${item.label}`}></button>
+        ))}
+      </nav>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- CLIENT-SIDE JS                         -->
+    <!-- ═══════════════════════════════════════ -->
+    <script define:vars={{ bgColors, textModes }}>
+      // ─── State ───
+      let currentSlide = 0;
+      const totalSlides = 7;
+      let isTransitioning = false;
+      const TRANSITION_LOCK_MS = 1200;
+
+      // ─── DOM refs ───
+      const bgLayer = document.getElementById('bg-layer');
+      const appHeader = document.getElementById('app-header');
+      const projectNav = document.getElementById('project-nav');
+      const mobileNav = document.getElementById('mobile-nav');
+      const navDot = document.getElementById('nav-dot');
+      const navButtons = document.querySelectorAll('#project-nav [data-slide]');
+      const mobileDots = document.querySelectorAll('#mobile-nav [data-slide]');
+
+      // ─── Go to slide ───
+      function goToSlide(index) {
+        if (isTransitioning || index === currentSlide || index < 0 || index >= totalSlides) return;
+        isTransitioning = true;
+
+        const prevSlide = document.getElementById(`slide-${currentSlide}`);
+        const nextSlide = document.getElementById(`slide-${index}`);
+        const prevIndex = currentSlide;
+
+        // Mount new slide (display: block), then after a frame fade it in
+        if (nextSlide) {
+          nextSlide.classList.add('mounted');
+          requestAnimationFrame(() => {
+            nextSlide.classList.add('active');
+          });
+        }
+
+        // Fade out current slide, then unmount after transition
+        if (prevSlide) {
+          prevSlide.classList.remove('active');
+          setTimeout(() => {
+            prevSlide.classList.remove('mounted');
+          }, 800);
+        }
+
+        // Crossfade background colour
+        if (bgLayer) bgLayer.style.backgroundColor = bgColors[index];
+
+        // Update header text colour
+        const headerColor = textModes[index] === 'light' ? '#ffffff' : '#0d0d0d';
+        if (appHeader) appHeader.style.color = headerColor;
+
+        // Show/hide project nav (visible on slides 1-5)
+        const showNav = index >= 1 && index <= 5;
+        if (projectNav) {
+          if (showNav) {
+            projectNav.style.display = 'flex';
+            requestAnimationFrame(() => {
+              projectNav.style.opacity = '1';
+              projectNav.style.pointerEvents = 'auto';
+            });
+          } else {
+            projectNav.style.opacity = '0';
+            projectNav.style.pointerEvents = 'none';
+            setTimeout(() => { if (!showNav) projectNav.style.display = 'none'; }, 500);
+          }
+        }
+        if (mobileNav) {
+          if (showNav) {
+            mobileNav.style.display = 'flex';
+            requestAnimationFrame(() => {
+              mobileNav.style.opacity = '1';
+              mobileNav.style.pointerEvents = 'auto';
+            });
+          } else {
+            mobileNav.style.opacity = '0';
+            mobileNav.style.pointerEvents = 'none';
+            setTimeout(() => { if (!showNav) mobileNav.style.display = 'none'; }, 500);
+          }
+        }
+
+        // Update active nav item (slides 1-5 map to nav indices 0-4)
+        if (index >= 1 && index <= 5) {
+          const navIndex = index - 1;
+          navButtons.forEach((btn, i) => {
+            if (i === navIndex) {
+              btn.classList.remove('opacity-60');
+              btn.classList.add('opacity-100');
+            } else {
+              btn.classList.add('opacity-60');
+              btn.classList.remove('opacity-100');
+            }
+          });
+
+          // Move nav dot
+          if (navDot && navButtons[navIndex]) {
+            const linkTop = navButtons[navIndex].offsetTop;
+            navDot.style.top = `${linkTop + 4}px`;
+          }
+
+          // Update mobile dots
+          mobileDots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === navIndex);
+          });
+        }
+
+        // Fade in next slide
+        if (nextSlide) {
+          nextSlide.classList.add('active');
+        }
+
+        currentSlide = index;
+        setTimeout(() => { isTransitioning = false; }, TRANSITION_LOCK_MS);
+      }
+
+      // ─── Wheel navigation ───
+      let wheelAccum = 0;
+      const WHEEL_THRESHOLD = 50;
+      let wheelTimeout;
+
+      window.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        if (isTransitioning) return;
+
+        wheelAccum += e.deltaY;
+
+        clearTimeout(wheelTimeout);
+        wheelTimeout = setTimeout(() => { wheelAccum = 0; }, 200);
+
+        if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
+          if (wheelAccum > 0) goToSlide(currentSlide + 1);
+          else goToSlide(currentSlide - 1);
+          wheelAccum = 0;
+        }
+      }, { passive: false });
+
+      // ─── Arrow key navigation ───
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          goToSlide(currentSlide + 1);
+        }
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          goToSlide(currentSlide - 1);
+        }
+      });
+
+      // ─── Click navigation (nav items, header links) ───
+      document.querySelectorAll('[data-slide]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          goToSlide(parseInt(el.dataset.slide));
+        });
+      });
+
+      // ─── Touch swipe (mobile) ───
+      let touchStartY = 0;
+      let touchStartX = 0;
+      const SWIPE_THRESHOLD = 50;
+
+      document.addEventListener('touchstart', (e) => {
+        touchStartY = e.changedTouches[0].screenY;
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      document.addEventListener('touchend', (e) => {
+        const deltaY = touchStartY - e.changedTouches[0].screenY;
+        const deltaX = touchStartX - e.changedTouches[0].screenX;
+
+        // Only trigger if vertical swipe is dominant
+        if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > SWIPE_THRESHOLD) {
+          if (deltaY > 0) goToSlide(currentSlide + 1);
+          else goToSlide(currentSlide - 1);
+        }
+      }, { passive: true });
+
+      // ─── Per-character hero animation ───
+      function initHeroAnimation() {
+        const name = 'Alister Maddrell';
+        const solidEl = document.getElementById('hero-title-solid');
+        const outlineEl = document.getElementById('hero-title-outline');
+        if (!solidEl || !outlineEl) return;
+
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const buildChars = (text) => {
+          return text.split('').map((char, i) => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.className = prefersReduced ? 'char-animate revealed' : 'char-animate';
+            span.style.transitionDelay = `${i * 50}ms`;
+            return span;
+          });
+        };
+
+        const solidChars = buildChars(name);
+        const outlineChars = buildChars(name);
+
+        solidChars.forEach(c => solidEl.appendChild(c));
+        outlineChars.forEach(c => outlineEl.appendChild(c));
+
+        if (!prefersReduced) {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              solidChars.forEach(c => c.classList.add('revealed'));
+              outlineChars.forEach(c => c.classList.add('revealed'));
+            }, 300);
+          });
+        }
+      }
+
+      // ─── Init ───
+      document.addEventListener('DOMContentLoaded', () => {
+        initHeroAnimation();
+
+        // Set initial nav dot position
+        if (navDot && navButtons[0]) {
+          navDot.style.top = `${navButtons[0].offsetTop + 4}px`;
+        }
+      });
+    </script>
+  </body>
+</html>
