@@ -261,7 +261,7 @@ const navItems = [
                   class="live-preview-iframe"
                   data-base-url={project.url}
                   data-pages={JSON.stringify(project.pages)}
-                  src={project.url}
+                  src={`${project.url}?preview`}
                   title={`${project.title} live preview`}
                   loading="lazy"
                   sandbox="allow-scripts allow-same-origin"
@@ -586,7 +586,9 @@ const navItems = [
 
             // Update live preview iframe
             if (iframe && pages[activeIndex]) {
-              iframe.src = baseUrl + pages[activeIndex];
+              const p = pages[activeIndex];
+              const hash = p.includes('#') ? p.substring(p.indexOf('#')) : '';
+              iframe.src = baseUrl + '?preview' + hash;
             }
 
             setTimeout(() => { isLocked = false; }, LOCK_MS);

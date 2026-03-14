@@ -480,11 +480,22 @@ a.ui-text:hover {
 
 .live-preview-iframe {
   width: 1440px;
-  height: 900px;
+  height: 5000px;
   border: none;
   transform: scale(0.125);
   transform-origin: top left;
   pointer-events: none;
+  animation: preview-scroll 20s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+.slide.active .live-preview-iframe {
+  animation-play-state: running;
+}
+
+@keyframes preview-scroll {
+  0% { transform: scale(0.125) translateY(0); }
+  100% { transform: scale(0.125) translateY(-4100px); }
 }
 
 /* ═══════════════════════════════════════ */
