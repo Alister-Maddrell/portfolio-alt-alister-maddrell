@@ -410,7 +410,7 @@ a.ui-text:hover {
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  max-width: calc(68vh - 3.125vw);
+  max-width: calc(85vh - 3.125vw);
   transform: rotateY(-10deg) rotateX(5deg) rotate(5deg);
   transition: transform 0.5s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
