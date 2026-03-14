@@ -787,64 +787,31 @@ a.ui-text:hover {
   margin: 0;
 }
 
-/* Cascading project cards */
-.hero-cascade {
-  position: relative;
+/* Project preview grid */
+.hero-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
   width: 100%;
-  max-width: calc(50vh);
-  aspect-ratio: 4 / 3;
-  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg);
-}
-
-.hero-cascade-card {
-  position: absolute;
-  width: 72%;
-  display: flex;
-  flex-direction: column;
-  background-color: color-mix(in srgb, var(--card-color) 12%, rgba(255, 255, 255, 0.04));
-  border-radius: 0.75rem;
-  padding: 0 6px 6px;
-  border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  top: calc(var(--cascade-i) * 14%);
-  left: calc(var(--cascade-i) * 7%);
-  z-index: calc(5 - var(--cascade-i));
-  transition: transform 0.4s cubic-bezier(0.22, 1.4, 0.36, 1),
-              box-shadow 0.4s ease,
-              border-color 0.4s ease,
-              z-index 0s;
-}
-
-.hero-cascade-card:hover {
-  transform: translateY(-10px) translateX(5px) scale(1.03);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
-              0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
-  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
-  z-index: 10;
-}
-
-.hero-cascade-card:hover .card-work-capsule {
-  background: rgba(255, 255, 255, 0.9);
-  color: #0d0d0d;
-  border-color: rgba(255, 255, 255, 0.9);
-}
-
-.hero-cascade-card:hover .card-work-capsule svg {
-  transform: translateX(2px);
+  max-width: 560px;
 }
 
 @media (max-width: 1023px) {
-  .hero-cascade {
+  .hero-preview-grid {
+    grid-template-columns: repeat(5, 1fr);
     max-width: 100%;
-    aspect-ratio: 3 / 2;
   }
+}
 
-  .hero-cascade-card {
-    width: 55%;
-    top: calc(var(--cascade-i) * 12%);
-    left: calc(var(--cascade-i) * 10%);
-  }
+.hero-card {
+  cursor: pointer;
+  padding: 0 4px 4px;
+  transition: transform 0.3s cubic-bezier(0.22, 1.4, 0.36, 1), box-shadow 0.3s ease;
+}
+
+.hero-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* Primary CTA — filled button */
