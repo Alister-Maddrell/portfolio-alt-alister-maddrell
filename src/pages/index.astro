@@ -577,6 +577,13 @@ const navItems = [
             });
           });
 
+          // Hover to select (mouseenter on non-active card)
+          frames.forEach((frame, i) => {
+            frame.addEventListener('mouseenter', () => {
+              if (i !== activeIndex) setActive(i);
+            }, { passive: true });
+          });
+
           // Wheel to cycle within stack (stops page scroll propagation)
           let stackWheelAccum = 0;
           const STACK_WHEEL_THRESHOLD = 40;
@@ -597,6 +604,20 @@ const navItems = [
               stackWheelAccum = 0;
             }
           }, { passive: false });
+
+          // Touch swipe on stack (mobile)
+          let stackTouchStartY = 0;
+          stack.addEventListener('touchstart', (e) => {
+            stackTouchStartY = e.changedTouches[0].screenY;
+          }, { passive: true });
+
+          stack.addEventListener('touchend', (e) => {
+            const deltaY = stackTouchStartY - e.changedTouches[0].screenY;
+            if (Math.abs(deltaY) > 30) {
+              if (deltaY > 0) setActive(activeIndex + 1);
+              else setActive(activeIndex - 1);
+            }
+          }, { passive: true });
         });
       }
 
