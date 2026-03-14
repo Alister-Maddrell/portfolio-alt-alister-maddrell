@@ -415,13 +415,12 @@ a.ui-text:hover {
   transition: transform 0.5s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
-/* Carousel: hover top card → stack shifts down */
-.showcase-stack:has(.showcase-frame:first-child:hover) {
+/* Carousel positions — JS adds these classes */
+.showcase-stack.stack-pos-0 {
   transform: rotateY(-10deg) rotateX(5deg) rotate(5deg) translateY(calc(100% / 3 + 10px));
 }
 
-/* Carousel: hover bottom card → stack shifts up */
-.showcase-stack:has(.showcase-frame:last-child:hover) {
+.showcase-stack.stack-pos-2 {
   transform: rotateY(-10deg) rotateX(5deg) rotate(5deg) translateY(calc(-100% / 3 - 10px));
 }
 
@@ -440,22 +439,8 @@ a.ui-text:hover {
   cursor: pointer;
 }
 
-/* Center card: always active */
-.showcase-frame:nth-child(2) {
-  opacity: 1;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
-              0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
-  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
-  z-index: 2;
-}
-
-/* ─── Hover: hovered card highlights, others recede ─── */
-
-.showcase-stack:hover .showcase-frame:not(:hover) {
-  opacity: 0.25;
-}
-
-.showcase-stack:hover .showcase-frame:hover {
+/* Active card styling — JS toggles .frame-active */
+.showcase-frame.frame-active {
   opacity: 1;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
               0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);

@@ -536,10 +536,75 @@ const navItems = [
         });
       }
 
+      // ─── Showcase carousel (scroll/click to cycle cards) ───
+      function initShowcaseCarousel() {
+        document.querySelectorAll('.showcase-stack').forEach(stack => {
+          const frames = stack.querySelectorAll('.showcase-frame');
+          if (frames.length < 2) return;
+
+          let activeIndex = 1; // Start on center card
+          let isLocked = false;
+          const LOCK_MS = 600;
+
+          function setActive(index) {
+            if (isLocked || index === activeIndex || index < 0 || index >= frames.length) return;
+            isLocked = true;
+
+            activeIndex = index;
+
+            // Update card styling
+            frames.forEach(f => f.classList.remove('frame-active'));
+            frames[activeIndex].classList.add('frame-active');
+
+            // Update stack position
+            stack.classList.remove('stack-pos-0', 'stack-pos-1', 'stack-pos-2');
+            stack.classList.add(`stack-pos-${activeIndex}`);
+
+            setTimeout(() => { isLocked = false; }, LOCK_MS);
+          }
+
+          // Init: center card active
+          frames[1].classList.add('frame-active');
+
+          // Click to select
+          frames.forEach((frame, i) => {
+            frame.addEventListener('click', (e) => {
+              if (i !== activeIndex) {
+                e.preventDefault();
+                e.stopPropagation();
+                setActive(i);
+              }
+            });
+          });
+
+          // Wheel to cycle within stack (stops page scroll propagation)
+          let stackWheelAccum = 0;
+          const STACK_WHEEL_THRESHOLD = 40;
+          let stackWheelTimeout;
+
+          stack.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (isLocked) return;
+
+            stackWheelAccum += e.deltaY;
+            clearTimeout(stackWheelTimeout);
+            stackWheelTimeout = setTimeout(() => { stackWheelAccum = 0; }, 150);
+
+            if (Math.abs(stackWheelAccum) >= STACK_WHEEL_THRESHOLD) {
+              if (stackWheelAccum > 0) setActive(activeIndex + 1);
+              else setActive(activeIndex - 1);
+              stackWheelAccum = 0;
+            }
+          }, { passive: false });
+        });
+      }
+
       // ─── Init ───
       document.addEventListener('DOMContentLoaded', () => {
         initHeroAnimation();
         initCardTilt();
+        initShowcaseCarousel();
       });
     </script>
   </body>
