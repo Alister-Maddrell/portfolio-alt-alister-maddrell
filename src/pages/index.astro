@@ -178,9 +178,9 @@ const navItems = [
             <!-- Accent bar -->
             <div class="accent-bar" style={`background-color: ${project.accent};`}></div>
 
-            <div class="flex flex-col lg:flex-row items-center h-full pt-[90px] px-[6.25%] pl-[calc(6.25%+16px)]" style={`color: ${project.text};`}>
-              <!-- Left: Text (40%) -->
-              <div class="w-full lg:w-[40%] flex flex-col justify-center py-6 lg:py-0 order-2 lg:order-1 overflow-visible">
+            <div class="h-full pt-[90px] px-[6.25%] pl-[calc(6.25%+16px)] relative" style={`color: ${project.text};`}>
+              <!-- Left: Text -->
+              <div class="absolute left-[6.25%] top-[50%] -translate-y-1/2 w-[38%] z-10 pl-4 hidden lg:flex flex-col justify-center">
                 <h2 class="title-display title-project slide-title" style={`color: ${project.accent};`}>
                   {project.title}
                 </h2>
@@ -199,55 +199,36 @@ const navItems = [
                 </a>
               </div>
 
-              <!-- Right: Stacked screenshots (60%) -->
-              <div class="w-full lg:w-[60%] flex items-center justify-center relative order-1 lg:order-2 py-4 lg:py-0">
-                <div class="slide-image showcase-stack" style={`--card-color: ${project.accent};`}>
-                  <!-- Page 2 (top slot) -->
-                  <div class="showcase-frame">
-                    <div class="card-work-topbar card-work-topbar--mini">
-                      <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
-                        <span></span><span></span><span></span>
-                      </span>
-                      <div class="card-work-urlbar card-work-urlbar--mini">
-                        <span class="card-work-url">{project.title}</span>
-                      </div>
-                    </div>
-                    <div class="card-work-img">
-                      <img src={project.image2} alt={`${project.title} page 2`} width="1440" height="900" loading="lazy" decoding="async" />
-                    </div>
-                  </div>
-                  <!-- Landing page (center slot, flush) -->
-                  <div class="showcase-frame">
-                    <div class="card-work-topbar card-work-topbar--mini">
-                      <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
-                        <span></span><span></span><span></span>
-                      </span>
-                      <div class="card-work-urlbar card-work-urlbar--mini">
-                        <span class="card-work-url">{project.title}</span>
-                      </div>
-                      <a href={project.url} target="_blank" rel="noopener noreferrer" class="card-work-capsule card-work-capsule--mini" aria-label={`Visit ${project.title}`}>
-                        <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                      </a>
-                    </div>
-                    <div class="card-work-img">
-                      <img src={project.image} alt={`${project.title} homepage`} width="1440" height="900" loading={i === 0 ? "eager" : "lazy"} decoding="async" />
-                    </div>
-                  </div>
-                  <!-- Page 3 (bottom slot) -->
-                  <div class="showcase-frame">
-                    <div class="card-work-topbar card-work-topbar--mini">
-                      <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
-                        <span></span><span></span><span></span>
-                      </span>
-                      <div class="card-work-urlbar card-work-urlbar--mini">
-                        <span class="card-work-url">{project.title}</span>
-                      </div>
-                    </div>
-                    <div class="card-work-img">
-                      <img src={project.image3} alt={`${project.title} page 3`} width="1440" height="900" loading="lazy" decoding="async" />
-                    </div>
-                  </div>
+              <!-- Right: Image stack (Robin Noguier style) -->
+              <div class="image-stack slide-image" style={`--wash-color: ${project.bg};`}>
+                <!-- Top image (behind, bleeds off top) -->
+                <div class="image-card image-top">
+                  <img src={project.image2} alt={`${project.title} page 2`} width="1440" height="900" loading="lazy" decoding="async" />
+                  <div class="image-wash-overlay"></div>
                 </div>
+                <!-- Center image (hero, full colour) -->
+                <div class="image-card image-center">
+                  <img src={project.image} alt={`${project.title} homepage`} width="1440" height="900" loading={i === 0 ? "eager" : "lazy"} decoding="async" />
+                </div>
+                <!-- Bottom image (behind, bleeds off bottom) -->
+                <div class="image-card image-bottom">
+                  <img src={project.image3} alt={`${project.title} page 3`} width="1440" height="900" loading="lazy" decoding="async" />
+                  <div class="image-wash-overlay"></div>
+                </div>
+              </div>
+
+              <!-- Mobile: text below images -->
+              <div class="flex flex-col justify-center py-6 lg:hidden">
+                <h2 class="title-display title-project slide-title" style={`color: ${project.accent};`}>
+                  {project.title}
+                </h2>
+                <p class="desc-text mt-4 slide-desc">
+                  {project.description}
+                </p>
+                <a href={project.url} target="_blank" rel="noopener noreferrer" class="cta-link ui-text ui-text-md mt-6 slide-cta" style={`color: ${project.accent};`}>
+                  <span>View Live Site</span>
+                  <span class="cta-arrow">&rarr;</span>
+                </a>
               </div>
             </div>
 
