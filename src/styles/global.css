@@ -411,7 +411,7 @@ a.ui-text:hover {
   gap: 10px;
   width: 100%;
   max-width: calc(68vh - 3.125vw);
-  transform: rotateY(-35deg);
+  transform: rotateY(-35deg) rotate(-15deg);
 }
 
 .showcase-frame {
