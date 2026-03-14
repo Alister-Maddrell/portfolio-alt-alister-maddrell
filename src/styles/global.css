@@ -213,6 +213,7 @@ a.ui-text:hover {
   cursor: pointer;
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
   padding: 6px 0;
+  margin-left: 0;
 }
 
 .cta-link:hover {
