@@ -103,10 +103,10 @@ const navItems = [
           <!-- Role label -->
           <p class="ui-text ui-text-sm text-white slide-desc" style="letter-spacing: 3px; opacity: 0.7;">Web Designer &amp; Developer · Sydney</p>
 
-          <!-- Name — massive, center statement -->
+          <!-- Name — massive, center statement, accent colour -->
           <div class="relative mt-4 slide-title">
-            <h1 id="hero-title-solid" class="hero-name title-solid"></h1>
-            <div id="hero-title-outline" class="hero-name title-outline absolute inset-0" aria-hidden="true"></div>
+            <h1 id="hero-title-solid" class="hero-name title-solid" style={`color: ${heroAccent};`}></h1>
+            <div id="hero-title-outline" class="hero-name title-outline absolute inset-0" style={`-webkit-text-stroke-color: ${heroAccent};`} aria-hidden="true"></div>
           </div>
 
           <!-- Project preview strip -->
@@ -237,7 +237,7 @@ const navItems = [
 
           <!-- Right: Content -->
           <div class="w-full lg:w-1/2 flex flex-col justify-center px-[6.25%] lg:pr-[6.25%] lg:pl-0 py-8">
-            <h2 class="title-display slide-title text-white" style="font-size: clamp(32px, 5vw, 90px);">
+            <h2 class="title-display slide-title" style={`font-size: clamp(32px, 5vw, 90px); color: ${contactAccent};`}>
               Let's Work Together
             </h2>
             <p class="desc-text text-white mt-6 slide-desc">

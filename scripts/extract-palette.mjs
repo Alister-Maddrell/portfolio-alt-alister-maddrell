@@ -134,7 +134,9 @@ function selectBase(dominants) {
     // Pick highest saturation among candidates
     candidates.sort((a, b) => b.hsl.s - a.hsl.s);
     const pick = candidates[0];
-    return { hsl: { ...pick.hsl }, rgb: pick.rgb, nudged: false };
+    // Ensure minimum vibrancy — boost low saturation picks
+    const hsl = { ...pick.hsl, s: Math.max(pick.hsl.s, 55) };
+    return { hsl, rgb: pick.rgb, nudged: false };
   }
 
   // No characterful colour — find most chromatic mid-tone and nudge
@@ -143,7 +145,7 @@ function selectBase(dominants) {
     if (c.hsl.l > 15 && c.hsl.l < 85 && c.hsl.s > best.hsl.s) best = c;
   }
   return {
-    hsl: { h: best.hsl.h, s: 35, l: 45 },
+    hsl: { h: best.hsl.h, s: 55, l: 40 },
     rgb: best.rgb,
     nudged: true,
   };
@@ -155,9 +157,9 @@ function generateAccent(bgHsl) {
   // Rotate hue 140-170° (near-complement zone, NOT exactly 180°)
   const accentHue = (bgHsl.h + 155) % 360;
 
-  // MATCH saturation: accent saturation within 15% of background's
-  // Slight boost for warmth but kept in the same register
-  const accentSat = Math.min(bgHsl.s + 10, bgHsl.s * 1.15);
+  // MATCH saturation: accent stays in same tonal register as bg
+  // but slightly boosted so it reads clearly as a chromatic voice
+  const accentSat = Math.max(45, Math.min(bgHsl.s + 10, bgHsl.s * 1.15));
 
   // Accent lightness = bg lightness + 25-35, clamped to 75-92%
   const rawL = bgHsl.l + 30;
