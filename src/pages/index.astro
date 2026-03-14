@@ -524,9 +524,42 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
         }
       }
 
+      // ─── Card tilt effect (mouse-tracking) ───
+      function initCardTilt() {
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const hasFineCursor = window.matchMedia('(pointer: fine)').matches;
+        if (prefersReduced || !hasFineCursor) return;
+
+        document.querySelectorAll('.card-work:not(.hero-card)').forEach((card) => {
+          const el = card as HTMLElement;
+          let bounds: DOMRect;
+          let rafId: number;
+
+          el.addEventListener('mouseenter', () => {
+            bounds = el.getBoundingClientRect();
+          }, { passive: true });
+
+          el.addEventListener('mousemove', (e: MouseEvent) => {
+            if (!bounds) bounds = el.getBoundingClientRect();
+            const x = (e.clientX - bounds.left) / bounds.width - 0.5;
+            const y = (e.clientY - bounds.top) / bounds.height - 0.5;
+            cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(() => {
+              el.style.transform = `perspective(800px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-3px)`;
+            });
+          }, { passive: true });
+
+          el.addEventListener('mouseleave', () => {
+            cancelAnimationFrame(rafId);
+            el.style.transform = '';
+          }, { passive: true });
+        });
+      }
+
       // ─── Init ───
       document.addEventListener('DOMContentLoaded', () => {
         initHeroAnimation();
+        initCardTilt();
 
         // Set initial nav dot position
         if (navDot && navButtons[0]) {
