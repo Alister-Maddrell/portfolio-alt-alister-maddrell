@@ -72,7 +72,7 @@ const accentColors = [heroAccent, ...projects.map(p => p.accent), contactAccent]
 const navItems = [
   { label: 'Home', slideIndex: 0 },
   ...projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 })),
-  { label: 'Contact', slideIndex: 6 },
+  { label: 'Contact', slideIndex: projects.length + 1 },
 ];
 ---
 
@@ -85,7 +85,7 @@ const navItems = [
     <meta property="og:title" content="Alister Maddrell — Web Designer & Developer" />
     <meta property="og:description" content="Custom-built, high-performance websites for Sydney businesses." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/thumbnails/hartley.webp" />
+    <meta property="og:image" content="https://portfolio-alt-alister-maddrell.vercel.app/thumbnails/hartley.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://portfolio-alt-alister-maddrell.vercel.app/" />
     <title>Alister Maddrell — Web Designer & Developer</title>
@@ -398,7 +398,7 @@ const navItems = [
       <nav id="slide-nav" class="slide-nav z-40 transition-opacity duration-500" style={`color: ${heroAccent};`}>
         <div class="slide-nav-inner">
           {navItems.map((item, i) => (
-            <button class={`slide-nav-item ${i === 0 ? 'active' : ''}`} data-slide={item.slideIndex}>
+            <button class={`slide-nav-item ${i === 0 ? 'active' : ''}`} data-slide={item.slideIndex} aria-label={`Go to ${item.label}`}>
               <span class="slide-nav-label">{item.label}</span>
               <span class="slide-nav-dot"></span>
             </button>
@@ -472,13 +472,10 @@ const navItems = [
         // Crossfade background colour
         if (bgLayer) bgLayer.style.backgroundColor = bgColors[index];
 
-        // Update accent colour on nav + header
+        // Update accent colour on nav, header, scroll indicator
         const accentColor = accentColors[index];
         if (slideNav) slideNav.style.color = accentColor;
         if (appHeader) appHeader.style.color = accentColor;
-
-        // Update nav + scroll indicator color
-        if (slideNav) slideNav.style.color = accentColor;
         if (scrollIndicator) scrollIndicator.style.color = accentColor;
 
         // Update active nav item
@@ -499,6 +496,10 @@ const navItems = [
       let wheelTimeout;
 
       window.addEventListener('wheel', (e) => {
+        // Don't hijack scroll inside form fields
+        const tag = e.target.tagName;
+        if (tag === 'TEXTAREA' || tag === 'SELECT') return;
+
         e.preventDefault();
         if (isTransitioning) return;
 
@@ -516,6 +517,10 @@ const navItems = [
 
       // ─── Arrow key navigation ───
       window.addEventListener('keydown', (e) => {
+        // Don't intercept arrows inside form fields
+        const tag = document.activeElement?.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
         if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
           e.preventDefault();
           goToSlide(currentSlide + 1);
@@ -651,25 +656,27 @@ const navItems = [
             items.forEach(it => it.classList.remove('active'));
             item.classList.add('active');
 
-            // Slide image transition
+            // Slide image transition (directional)
             const goingDown = i > prevIndex;
             const prevImg = images[prevIndex];
             const nextImg = images[i];
+            const exitClass = goingDown ? 'exit-up' : 'exit-down';
+            const enterClass = goingDown ? 'enter-from-below' : 'enter-from-above';
 
             // Exit old image
             if (prevImg) {
-              prevImg.classList.remove('active', 'enter-from-below');
-              prevImg.classList.add('exit-up');
-              setTimeout(() => prevImg.classList.remove('exit-up'), 600);
+              prevImg.classList.remove('active', 'enter-from-below', 'enter-from-above');
+              prevImg.classList.add(exitClass);
+              setTimeout(() => prevImg.classList.remove('exit-up', 'exit-down'), 600);
             }
 
             // Enter new image
             if (nextImg) {
-              nextImg.classList.remove('active', 'exit-up');
-              nextImg.classList.add('enter-from-below');
+              nextImg.classList.remove('active', 'exit-up', 'exit-down');
+              nextImg.classList.add(enterClass);
               requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                  nextImg.classList.remove('enter-from-below');
+                  nextImg.classList.remove('enter-from-below', 'enter-from-above');
                   nextImg.classList.add('active');
                 });
               });
