@@ -114,62 +114,58 @@ const navItems = [
       <!-- ═══════════════════════════════════════ -->
       <section id="slide-0" class="slide mounted active" style={`--slide-accent: ${heroAccent};`}>
         <div class="accent-bar" style={`background-color: ${heroAccent};`}></div>
-        <div class="flex flex-col items-center justify-center h-full pt-[90px] px-[6.25%] text-center relative">
-          <!-- Role label -->
-          <p class="ui-text ui-text-sm text-white slide-desc" style="letter-spacing: 3px; opacity: 0.7;">Web Designer &amp; Developer · Sydney</p>
-
-          <!-- Name — massive, center statement, accent colour -->
-          <div class="relative mt-4 slide-title">
-            <h1 id="hero-title-solid" class="hero-name title-solid" style={`color: ${heroAccent};`}></h1>
-            <div id="hero-title-outline" class="hero-name title-outline absolute inset-0" style={`-webkit-text-stroke-color: ${heroAccent};`} aria-hidden="true"></div>
+        <div class="hero-layout">
+          <!-- Left: name + role + CTAs -->
+          <div class="hero-left">
+            <div class="hero-content">
+              <p class="ui-text ui-text-sm slide-desc" style={`color: ${heroAccent}; letter-spacing: 3px; opacity: 0.8;`}>Web Designer &amp; Developer · Sydney</p>
+              <div class="relative mt-4 slide-title">
+                <h1 id="hero-title-solid" class="hero-name title-solid" style={`color: ${heroAccent};`}></h1>
+                <div id="hero-title-outline" class="hero-name title-outline absolute inset-0" style={`-webkit-text-stroke-color: ${heroAccent};`} aria-hidden="true"></div>
+              </div>
+              <p class="desc-text mt-6 slide-desc" style="opacity: 0.7;">I design and build conversion-focused websites for small businesses — clean, fast, and built to turn visitors into customers.</p>
+              <div class="flex gap-4 mt-8 slide-cta">
+                <a href="#" class="hero-cta-primary ui-text ui-text-md" data-slide="1" style={`background: ${heroAccent}; color: #1a1a1a;`}>
+                  <span>View My Work</span>
+                  <span class="cta-arrow">&rarr;</span>
+                </a>
+                <a href="#" class="cta-link ui-text ui-text-md text-white" data-slide="6">
+                  <span>Get in Touch</span>
+                  <span class="cta-arrow">&rarr;</span>
+                </a>
+              </div>
+            </div>
           </div>
 
-          <!-- Project preview strip -->
-          <div class="hero-preview-strip slide-image mt-8 lg:mt-10">
-            {projects.map((project, i) => (
-              <button class="hero-card card-work" data-slide={i + 1} style={`--card-color: ${heroAccent};`}>
-                <div class="card-work-topbar card-work-topbar--mini">
-                  <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </span>
-                  <div class="card-work-urlbar card-work-urlbar--mini">
-                    <span class="card-work-url">{project.title}</span>
+          <!-- Right: project preview cards -->
+          <div class="hero-right slide-image">
+            <div class="hero-preview-grid">
+              {projects.map((project, i) => (
+                <button class="hero-card card-work" data-slide={i + 1} style={`--card-color: ${heroAccent};`}>
+                  <div class="card-work-topbar card-work-topbar--mini">
+                    <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </span>
+                    <div class="card-work-urlbar card-work-urlbar--mini">
+                      <span class="card-work-url">{project.title}</span>
+                    </div>
                   </div>
-                </div>
-                <div class="card-work-img">
-                  <img
-                    src={project.image}
-                    alt={`${project.title} preview`}
-                    width="400"
-                    height="248"
-                    loading="eager"
-                    decoding="async"
-                  />
-                </div>
-              </button>
-            ))}
+                  <div class="card-work-img">
+                    <img
+                      src={project.image}
+                      alt={`${project.title} preview`}
+                      width="400"
+                      height="248"
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
-
-          <!-- CTAs -->
-          <div class="flex gap-8 mt-8 slide-cta">
-            <a href="#" class="hero-cta-primary ui-text ui-text-md" data-slide="1" style={`background: ${heroAccent}; color: #1a1a1a;`}>
-              <span>View My Work</span>
-              <span class="cta-arrow">&rarr;</span>
-            </a>
-            <a href="#" class="cta-link ui-text ui-text-md text-white" data-slide="6">
-              <span>Get in Touch</span>
-              <span class="cta-arrow">&rarr;</span>
-            </a>
-          </div>
-
-          <!-- Scroll indicator -->
-          <button class="absolute bottom-6 left-1/2 -translate-x-1/2 scroll-indicator text-white slide-bubble cursor-pointer bg-transparent border-none p-2 rounded-full transition-all duration-200 hover:bg-white/10 hover:scale-110 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1)]" data-slide="1" aria-label="Scroll to projects">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 5v14M5 12l7 7 7-7" />
-            </svg>
-          </button>
         </div>
       </section>
 
