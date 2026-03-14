@@ -411,17 +411,17 @@ a.ui-text:hover {
   gap: 10px;
   width: 100%;
   max-width: calc(85vh - 3.125vw);
-  transform: rotateY(-15deg) rotateX(5deg);
+  transform: rotateY(-10deg) rotateX(2.5deg) skewX(-2.5deg) skewY(2.5deg);
   transition: transform 0.5s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
 /* Carousel positions — JS adds these classes */
 .showcase-stack.stack-pos-0 {
-  transform: rotateY(-15deg) rotateX(5deg) translateY(calc(100% / 3 + 10px));
+  transform: rotateY(-10deg) rotateX(2.5deg) skewX(-2.5deg) skewY(2.5deg) translateY(calc(100% / 3 + 10px));
 }
 
 .showcase-stack.stack-pos-2 {
-  transform: rotateY(-15deg) rotateX(5deg) translateY(calc(-100% / 3 - 10px));
+  transform: rotateY(-10deg) rotateX(2.5deg) skewX(-2.5deg) skewY(2.5deg) translateY(calc(-100% / 3 - 10px));
 }
 
 .showcase-frame {
@@ -480,22 +480,11 @@ a.ui-text:hover {
 
 .live-preview-iframe {
   width: 1440px;
-  height: 5000px;
+  height: 900px;
   border: none;
   transform: scale(0.125);
   transform-origin: top left;
   pointer-events: none;
-  animation: preview-scroll 20s ease-in-out infinite alternate;
-  animation-play-state: paused;
-}
-
-.slide.active .live-preview-iframe {
-  animation-play-state: running;
-}
-
-@keyframes preview-scroll {
-  0% { transform: scale(0.125) translateY(0); }
-  100% { transform: scale(0.125) translateY(-4100px); }
 }
 
 /* ═══════════════════════════════════════ */
