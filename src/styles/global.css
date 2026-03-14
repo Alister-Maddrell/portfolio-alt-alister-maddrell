@@ -75,12 +75,14 @@ a {
 .slide.slide-exit-up {
   transform: translateY(-100%);
   visibility: visible;
+  overflow: hidden;
   transition: transform 0.6s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
 .slide.slide-exit-down {
   transform: translateY(100%);
   visibility: visible;
+  overflow: hidden;
   transition: transform 0.6s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
@@ -118,7 +120,7 @@ a {
 /* ═══════════════════════════════════════ */
 
 #bg-layer {
-  transition: background-color 1s ease;
+  transition: background-color 0.6s ease;
 }
 
 /* ═══════════════════════════════════════ */
