@@ -96,35 +96,22 @@ a {
   transform: translateY(-100%);
 }
 
-/* Slide content entrance animations */
+/* Slide content entrance animations — subtle fade-up within the sliding page */
 .slide .slide-title,
 .slide .slide-desc,
 .slide .slide-cta,
-.slide .slide-meta {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
+.slide .slide-meta,
 .slide .slide-image {
   opacity: 0;
-  transform: scale(0.95);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(15px);
+  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
-.slide.active .slide-title  { opacity: 1; transform: none; transition-delay: 0.1s; }
+.slide.active .slide-title  { opacity: 1; transform: none; transition-delay: 0.25s; }
 .slide.active .slide-desc   { opacity: 1; transform: none; transition-delay: 0.3s; }
-.slide.active .slide-cta    { opacity: 1; transform: none; transition-delay: 0.5s; }
-.slide.active .slide-meta   { opacity: 1; transform: none; transition-delay: 0.4s; }
-.slide.active .slide-image  { opacity: 1; transform: none; transition-delay: 0.2s; }
-
-/* Hero-specific: speech bubble and scroll indicator animate in */
-.slide .slide-bubble {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.slide.active .slide-bubble { opacity: 1; transform: none; transition-delay: 0.6s; }
+.slide.active .slide-image  { opacity: 1; transform: none; transition-delay: 0.3s; }
+.slide.active .slide-cta    { opacity: 1; transform: none; transition-delay: 0.35s; }
+.slide.active .slide-meta   { opacity: 1; transform: none; transition-delay: 0.35s; }
 
 /* ═══════════════════════════════════════ */
 /* BACKGROUND LAYER                       */
@@ -567,6 +554,8 @@ a.ui-text:hover {
   overflow: hidden;
   border-radius: 8px;
   position: relative;
+  isolation: isolate;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .live-preview-iframe {
