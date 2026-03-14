@@ -8,6 +8,7 @@ const projects = [
     title: 'Hartley',
     description: 'Emergency-focused trade website with 24/7 lead capture, click-to-call, and service area mapping that converts urgent searches into booked jobs.',
     url: 'https://demo-hartley-plumbing.vercel.app',
+    pages: ['/#services', '/', '/#contact'],
     image: '/thumbnails/hartley.webp',
     image2: '/thumbnails/hartley-2.webp',
     image3: '/thumbnails/hartley-3.webp',
@@ -17,6 +18,7 @@ const projects = [
     title: 'Kin',
     description: 'Warm editorial hospitality site with interactive digital menu, event listings, email capture, and catering enquiries — a community hub that drives repeat visits.',
     url: 'https://demo-kin-grain-cafe.vercel.app',
+    pages: ['/#menu', '/', '/#contact'],
     image: '/thumbnails/cafe.webp',
     image2: '/thumbnails/cafe-2.webp',
     image3: '/thumbnails/cafe-3.webp',
@@ -26,6 +28,7 @@ const projects = [
     title: 'Apex',
     description: 'Conversion-optimised fitness site built as a sales funnel — multi-step lead capture, membership pricing, and urgency-driven CTAs that turn visitors into trial members.',
     url: 'https://demo-apex-fitness.vercel.app',
+    pages: ['/#classes', '/', '/#contact'],
     image: '/thumbnails/fitness.webp',
     image2: '/thumbnails/fitness-2.webp',
     image3: '/thumbnails/fitness-3.webp',
@@ -35,6 +38,7 @@ const projects = [
     title: 'Whitfield',
     description: 'Authority-driven professional services site with insights blog, consultation booking, animated credibility metrics, and content marketing architecture.',
     url: 'https://demo-whitfield-accounting.vercel.app',
+    pages: ['/#insights', '/', '/#contact'],
     image: '/thumbnails/accounting.webp',
     image2: '/thumbnails/accounting-2.webp',
     image3: '/thumbnails/accounting-3.webp',
@@ -44,6 +48,7 @@ const projects = [
     title: 'LUMA',
     description: 'Luxury appointment-based site with a full booking flow, expandable service menu, transformation gallery, and team showcase — replacing phone bookings with digital elegance.',
     url: 'https://demo-luma-hair-beauty.vercel.app',
+    pages: ['/#services', '/', '/#book'],
     image: '/thumbnails/hair.webp',
     image2: '/thumbnails/hair-2.webp',
     image3: '/thumbnails/hair-3.webp',
@@ -248,6 +253,19 @@ const navItems = [
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <!-- Bottom-left: live preview -->
+              <div class="live-preview hidden lg:block slide-meta" style={`border-color: ${project.accent};`}>
+                <iframe
+                  class="live-preview-iframe"
+                  data-base-url={project.url}
+                  data-pages={JSON.stringify(project.pages)}
+                  src={project.url}
+                  title={`${project.title} live preview`}
+                  loading="lazy"
+                  sandbox="allow-scripts allow-same-origin"
+                ></iframe>
               </div>
             </div>
 
@@ -536,11 +554,17 @@ const navItems = [
         });
       }
 
-      // ─── Showcase carousel (scroll/click to cycle cards) ───
+      // ─── Showcase carousel (scroll/click/hover/swipe to cycle cards) ───
       function initShowcaseCarousel() {
         document.querySelectorAll('.showcase-stack').forEach(stack => {
           const frames = stack.querySelectorAll('.showcase-frame');
           if (frames.length < 2) return;
+
+          // Find the live preview iframe in the same slide
+          const slide = stack.closest('.slide');
+          const iframe = slide ? slide.querySelector('.live-preview-iframe') : null;
+          const baseUrl = iframe ? iframe.dataset.baseUrl : '';
+          const pages = iframe ? JSON.parse(iframe.dataset.pages || '[]') : [];
 
           let activeIndex = 1; // Start on center card
           let isLocked = false;
@@ -559,6 +583,11 @@ const navItems = [
             // Update stack position
             stack.classList.remove('stack-pos-0', 'stack-pos-1', 'stack-pos-2');
             stack.classList.add(`stack-pos-${activeIndex}`);
+
+            // Update live preview iframe
+            if (iframe && pages[activeIndex]) {
+              iframe.src = baseUrl + pages[activeIndex];
+            }
 
             setTimeout(() => { isLocked = false; }, LOCK_MS);
           }

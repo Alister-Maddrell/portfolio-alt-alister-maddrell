@@ -463,6 +463,31 @@ a.ui-text:hover {
 }
 
 /* ═══════════════════════════════════════ */
+/* LIVE PREVIEW — bottom-left iframe      */
+/* ═══════════════════════════════════════ */
+
+.live-preview {
+  position: absolute;
+  left: 6.25%;
+  bottom: 2rem;
+  width: 180px;
+  height: 120px;
+  border: 3px solid currentColor;
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.live-preview-iframe {
+  width: 1440px;
+  height: 900px;
+  border: none;
+  transform: scale(0.125);
+  transform-origin: top left;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════ */
 /* NAVIGATION — unified expandable        */
 /* ═══════════════════════════════════════ */
 
