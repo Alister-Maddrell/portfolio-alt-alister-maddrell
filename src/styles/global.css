@@ -412,6 +412,7 @@ a.ui-text:hover {
   width: 100%;
   max-width: calc(68vh - 3.125vw);
   transform: rotateY(-25deg) rotateX(10deg);
+  transform-style: preserve-3d;
 }
 
 .showcase-frame {
@@ -429,9 +430,10 @@ a.ui-text:hover {
   cursor: pointer;
 }
 
-/* Center card: always active */
+/* Center card: always active, flush 2D — counter-rotate to cancel parent */
 .showcase-frame:nth-child(2) {
   opacity: 1;
+  transform: rotateX(-10deg) rotateY(25deg);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
               0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
   border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
