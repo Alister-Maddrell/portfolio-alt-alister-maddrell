@@ -402,19 +402,21 @@ a.ui-text:hover {
 }
 
 /* ═══════════════════════════════════════ */
-/* SHOWCASE STACK — 3D perspective stack  */
+/* SHOWCASE CAROUSEL — 3D perspective     */
 /* ═══════════════════════════════════════ */
 
 .showcase-stack {
   perspective: 1200px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  display: grid;
+  place-items: center;
   width: 100%;
   max-width: calc(68vh - 3.125vw);
+  height: calc(100vh - 140px);
 }
 
 .showcase-frame {
+  grid-area: 1 / 1;
+  width: 90%;
   display: flex;
   flex-direction: column;
   background-color: color-mix(in srgb, var(--card-color) 12%, rgba(255, 255, 255, 0.04));
@@ -423,90 +425,83 @@ a.ui-text:hover {
   border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   transform-origin: right center;
-  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.9);
-  opacity: 0.5;
-  transition: transform 0.55s cubic-bezier(0.22, 1.4, 0.36, 1),
-              opacity 0.3s ease,
+  transition: transform 0.6s cubic-bezier(0.22, 1.4, 0.36, 1),
+              opacity 0.35s ease,
               box-shadow 0.4s ease,
               border-color 0.4s ease;
   will-change: transform;
 }
 
-/* Middle frame (landing page) is focused by default */
-.showcase-frame--focused {
-  transform: rotateY(-6deg) rotateX(1.5deg) scale(1);
+/* ─── Slot positions ─── */
+
+/* Top: offset right, tilted, receded */
+.showcase-frame[data-slot="top"] {
+  transform: translateY(-100%) translateX(35px) rotateY(-8deg) rotateX(2deg) scale(0.85);
+  opacity: 0.45;
+  z-index: 1;
+}
+
+/* Center: flush with viewer, full size */
+.showcase-frame[data-slot="center"] {
+  transform: translateY(0) translateX(0) rotateY(0) rotateX(0) scale(1);
   opacity: 1;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4),
-              0 0 20px color-mix(in srgb, var(--card-color) 15%, transparent);
+  z-index: 3;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4),
+              0 0 24px color-mix(in srgb, var(--card-color) 18%, transparent);
   border-color: color-mix(in srgb, var(--card-color) 40%, transparent);
 }
 
-/* ─── Hover: focus switching with bounce ─── */
-
-.showcase-stack:hover .showcase-frame {
-  opacity: 0.4;
-  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.88);
+/* Bottom: offset left, tilted, receded */
+.showcase-frame[data-slot="bottom"] {
+  transform: translateY(100%) translateX(-35px) rotateY(-8deg) rotateX(2deg) scale(0.85);
+  opacity: 0.45;
+  z-index: 1;
 }
 
-.showcase-stack:hover .showcase-frame:hover {
-  opacity: 1;
-  transform: rotateY(-6deg) rotateX(1.5deg) scale(1);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5),
-              0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
-  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
-  z-index: 2;
+/* Hover hint on non-center cards */
+.showcase-frame[data-slot="top"],
+.showcase-frame[data-slot="bottom"] {
+  cursor: pointer;
 }
 
-/* Push cards away when top card hovered */
-.showcase-stack:has(.showcase-frame:nth-child(1):hover) .showcase-frame:nth-child(2) {
-  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.88) translateY(14px);
-}
-.showcase-stack:has(.showcase-frame:nth-child(1):hover) .showcase-frame:nth-child(3) {
-  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.88) translateY(22px);
-}
-
-/* Push cards away when bottom card hovered */
-.showcase-stack:has(.showcase-frame:nth-child(3):hover) .showcase-frame:nth-child(1) {
-  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.88) translateY(-22px);
-}
-.showcase-stack:has(.showcase-frame:nth-child(3):hover) .showcase-frame:nth-child(2) {
-  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.88) translateY(-14px);
+.showcase-frame[data-slot="top"]:hover,
+.showcase-frame[data-slot="bottom"]:hover {
+  opacity: 0.7;
 }
 
 /* ─── Mobile: horizontal row ─── */
 @media (max-width: 1023px) {
   .showcase-stack {
+    display: flex;
     flex-direction: row;
     gap: 6px;
+    height: auto;
     max-width: 100%;
     perspective: none;
   }
 
   .showcase-frame {
-    transform-origin: center center;
-    transform: scale(0.92);
+    position: static;
+    width: auto;
     flex: 1;
     min-width: 0;
+    transform-origin: center center;
   }
 
-  .showcase-frame--focused {
+  .showcase-frame[data-slot="top"],
+  .showcase-frame[data-slot="bottom"] {
+    transform: scale(0.95);
+    opacity: 0.6;
+  }
+
+  .showcase-frame[data-slot="center"] {
     transform: scale(1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   }
 
-  .showcase-stack:hover .showcase-frame {
-    transform: scale(0.9);
-  }
-
-  .showcase-stack:hover .showcase-frame:hover {
-    transform: scale(1);
-  }
-
-  /* Reset push effects for horizontal layout */
-  .showcase-stack:has(.showcase-frame:nth-child(1):hover) .showcase-frame:nth-child(2),
-  .showcase-stack:has(.showcase-frame:nth-child(1):hover) .showcase-frame:nth-child(3),
-  .showcase-stack:has(.showcase-frame:nth-child(3):hover) .showcase-frame:nth-child(1),
-  .showcase-stack:has(.showcase-frame:nth-child(3):hover) .showcase-frame:nth-child(2) {
-    transform: scale(0.9);
+  .showcase-frame[data-slot="top"]:hover,
+  .showcase-frame[data-slot="bottom"]:hover {
+    opacity: 0.8;
   }
 }
 

@@ -202,8 +202,8 @@ const navItems = [
               <!-- Right: Stacked screenshots (60%) -->
               <div class="w-full lg:w-[60%] flex items-center justify-center relative order-1 lg:order-2 py-4 lg:py-0">
                 <div class="slide-image showcase-stack" style={`--card-color: ${project.accent};`}>
-                  <!-- Page 2 (top, offset right) -->
-                  <div class="showcase-frame">
+                  <!-- Page 2 (top slot) -->
+                  <div class="showcase-frame" data-slot="top">
                     <div class="card-work-topbar card-work-topbar--mini">
                       <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
                         <span></span><span></span><span></span>
@@ -216,8 +216,8 @@ const navItems = [
                       <img src={project.image2} alt={`${project.title} page 2`} width="1440" height="900" loading="lazy" decoding="async" />
                     </div>
                   </div>
-                  <!-- Landing page (middle, focused by default) -->
-                  <div class="showcase-frame showcase-frame--focused">
+                  <!-- Landing page (center slot, flush) -->
+                  <div class="showcase-frame" data-slot="center">
                     <div class="card-work-topbar card-work-topbar--mini">
                       <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
                         <span></span><span></span><span></span>
@@ -233,8 +233,8 @@ const navItems = [
                       <img src={project.image} alt={`${project.title} homepage`} width="1440" height="900" loading={i === 0 ? "eager" : "lazy"} decoding="async" />
                     </div>
                   </div>
-                  <!-- Page 3 (bottom, offset left) -->
-                  <div class="showcase-frame">
+                  <!-- Page 3 (bottom slot) -->
+                  <div class="showcase-frame" data-slot="bottom">
                     <div class="card-work-topbar card-work-topbar--mini">
                       <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
                         <span></span><span></span><span></span>
@@ -536,10 +536,41 @@ const navItems = [
         });
       }
 
+      // ─── Showcase carousel (slot swapping on hover) ───
+      function initShowcaseCarousel() {
+        document.querySelectorAll('.showcase-stack').forEach(stack => {
+          const frames = [...stack.querySelectorAll('.showcase-frame')];
+          if (frames.length !== 3) return;
+
+          const defaultSlots = ['top', 'center', 'bottom'];
+          let slots = [...defaultSlots];
+
+          function applySlots() {
+            frames.forEach((f, i) => { f.dataset.slot = slots[i]; });
+          }
+
+          frames.forEach((frame, i) => {
+            frame.addEventListener('mouseenter', () => {
+              if (slots[i] === 'center') return;
+              const centerIdx = slots.indexOf('center');
+              slots[centerIdx] = slots[i];
+              slots[i] = 'center';
+              applySlots();
+            });
+          });
+
+          stack.addEventListener('mouseleave', () => {
+            slots = [...defaultSlots];
+            applySlots();
+          });
+        });
+      }
+
       // ─── Init ───
       document.addEventListener('DOMContentLoaded', () => {
         initHeroAnimation();
         initCardTilt();
+        initShowcaseCarousel();
       });
     </script>
   </body>
