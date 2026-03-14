@@ -811,6 +811,28 @@ a.ui-text:hover {
   border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
 }
 
+/* Stacked images — only active visible */
+.hero-card-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  object-position: top;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.4s ease;
+}
+
+.hero-card-image:first-child {
+  position: relative;
+}
+
+.hero-card-image.active {
+  opacity: 1;
+}
+
 /* Project name strip below card */
 .hero-project-strip {
   display: flex;
@@ -835,6 +857,19 @@ a.ui-text:hover {
 .hero-strip-item:hover {
   background: rgba(255, 255, 255, 0.08);
   transform: translateY(-1px);
+}
+
+.hero-strip-item.active {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero-strip-item.active .hero-strip-dot {
+  opacity: 1;
+}
+
+.hero-strip-item.active .hero-strip-label {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .hero-strip-dot {

@@ -140,34 +140,38 @@ const navItems = [
           <!-- Right: featured project card -->
           <div class="hero-right slide-image" style="perspective: 800px;">
             <div class="hero-featured">
-              <button class="hero-featured-card card-work" data-slide="1" style={`--card-color: ${heroAccent};`}>
+              <div id="hero-card" class="hero-featured-card card-work" style={`--card-color: ${heroAccent};`}>
                 <div class="card-work-topbar">
                   <span class="card-work-dots" aria-hidden="true">
                     <span></span><span></span><span></span>
                   </span>
                   <div class="card-work-urlbar">
                     <svg class="card-work-globe" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M1 8h14M8 1c-2.5 3-2.5 9 0 14M8 1c2.5 3 2.5 9 0 14" stroke="currentColor" stroke-width="1.2"/></svg>
-                    <span class="card-work-url"><span class="card-work-url-proto">https://</span> {projects[0].title.toLowerCase()}.com.au</span>
+                    <span id="hero-card-url" class="card-work-url"><span class="card-work-url-proto">https://</span> {projects[0].title.toLowerCase()}.com.au</span>
                   </div>
                   <span class="card-work-capsule" aria-hidden="true">
                     <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </span>
                 </div>
-                <div class="card-work-img">
-                  <img
-                    src={projects[0].image}
-                    alt={`${projects[0].title} preview`}
-                    width="1440"
-                    height="900"
-                    loading="eager"
-                    decoding="async"
-                  />
+                <div class="card-work-img" style="position: relative;">
+                  {projects.map((project, i) => (
+                    <img
+                      class={`hero-card-image ${i === 0 ? 'active' : ''}`}
+                      data-hero-img={i}
+                      src={project.image}
+                      alt={`${project.title} preview`}
+                      width="1440"
+                      height="900"
+                      loading="eager"
+                      decoding="async"
+                    />
+                  ))}
                 </div>
-              </button>
+              </div>
               <!-- Project count strip -->
-              <div class="hero-project-strip">
+              <div class="hero-project-strip" id="hero-strip">
                 {projects.map((project, i) => (
-                  <button class="hero-strip-item" data-slide={i + 1} style={`--strip-color: ${project.accent};`}>
+                  <button class={`hero-strip-item ${i === 0 ? 'active' : ''}`} data-slide={i + 1} data-hero-index={i} style={`--strip-color: ${project.accent};`}>
                     <span class="hero-strip-dot"></span>
                     <span class="hero-strip-label">{project.title}</span>
                   </button>
@@ -550,7 +554,7 @@ const navItems = [
 
       // ─── Per-character hero animation ───
       function initHeroAnimation() {
-        const name = 'Alister Maddrell';
+        const name = 'My Work';
         const solidEl = document.getElementById('hero-title-solid');
         const outlineEl = document.getElementById('hero-title-outline');
         if (!solidEl || !outlineEl) return;
@@ -587,7 +591,27 @@ const navItems = [
         }
       }
 
-      // (card tilt removed — featured card uses CSS hover)
+      // ─── Hero strip — hover to change featured card ───
+      function initHeroStrip() {
+        const strip = document.getElementById('hero-strip');
+        const card = document.getElementById('hero-card');
+        const urlEl = document.getElementById('hero-card-url');
+        if (!strip || !card) return;
+
+        const items = strip.querySelectorAll('.hero-strip-item');
+        const images = card.querySelectorAll('.hero-card-image');
+        const titles = [].map.call(items, el => el.querySelector('.hero-strip-label')?.textContent?.toLowerCase() || '');
+
+        items.forEach((item, i) => {
+          item.addEventListener('mouseenter', () => {
+            items.forEach(it => it.classList.remove('active'));
+            item.classList.add('active');
+            images.forEach(img => img.classList.remove('active'));
+            if (images[i]) images[i].classList.add('active');
+            if (urlEl) urlEl.innerHTML = '<span class="card-work-url-proto">https://</span> ' + titles[i] + '.com.au';
+          }, { passive: true });
+        });
+      }
 
       // ─── Showcase carousel (scroll/click/hover/swipe to cycle cards) ───
       let hoverEnabled = true;
@@ -731,6 +755,7 @@ const navItems = [
       // ─── Init ───
       document.addEventListener('DOMContentLoaded', () => {
         initHeroAnimation();
+        initHeroStrip();
         initShowcaseCarousel();
       });
     </script>
