@@ -406,7 +406,7 @@ a.ui-text:hover {
 /* ═══════════════════════════════════════ */
 
 .showcase-stack {
-  perspective: 700px;
+  perspective: 900px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -423,7 +423,7 @@ a.ui-text:hover {
   border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   transform-origin: center center;
-  transform: rotateY(-16deg) rotateX(6deg) rotate(-4deg);
+  transform: rotateY(-10deg) rotateX(3deg) rotate(-8deg);
   opacity: 0.6;
   transition: transform 0.55s cubic-bezier(0.22, 1.4, 0.36, 1),
               opacity 0.3s ease,
@@ -434,8 +434,8 @@ a.ui-text:hover {
 }
 
 /* Diagonal stagger: top offset right, bottom offset left */
-.showcase-frame:nth-child(1) { transform: rotateY(-16deg) rotateX(6deg) rotate(-4deg) translateX(40px); }
-.showcase-frame:nth-child(3) { transform: rotateY(-16deg) rotateX(6deg) rotate(-4deg) translateX(-40px); }
+.showcase-frame:nth-child(1) { transform: rotateY(-10deg) rotateX(3deg) rotate(-8deg) translateX(40px); }
+.showcase-frame:nth-child(3) { transform: rotateY(-10deg) rotateX(3deg) rotate(-8deg) translateX(-40px); }
 
 /* ─── Hover: active card flattens, others recede ─── */
 
@@ -444,7 +444,7 @@ a.ui-text:hover {
 }
 
 .showcase-stack:hover .showcase-frame:hover {
-  transform: rotateY(-3deg) rotateX(1deg) rotate(-1deg) scale(1.03);
+  transform: rotateY(-2deg) rotateX(0.5deg) rotate(-2deg) scale(1.03);
   opacity: 1;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
               0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
@@ -464,16 +464,16 @@ a.ui-text:hover {
   .showcase-frame {
     flex: 1;
     min-width: 0;
-    transform: rotateY(-10deg) rotateX(4deg) rotate(-3deg);
+    transform: rotateY(-6deg) rotateX(2deg) rotate(-5deg);
   }
 
   .showcase-frame:nth-child(1),
   .showcase-frame:nth-child(3) {
-    transform: rotateY(-10deg) rotateX(4deg) rotate(-3deg);
+    transform: rotateY(-6deg) rotateX(2deg) rotate(-5deg);
   }
 
   .showcase-stack:hover .showcase-frame:hover {
-    transform: rotateY(-2deg) rotateX(1deg) rotate(-1deg) scale(1.03);
+    transform: rotateY(-1deg) rotateX(0.5deg) rotate(-1deg) scale(1.03);
   }
 }
 
