@@ -168,7 +168,7 @@ function generateAccent(bgHsl) {
 
   // MATCH saturation: accent stays in same tonal register as bg
   // but slightly boosted so it reads clearly as a chromatic voice
-  const accentSat = Math.max(45, Math.min(bgHsl.s + 10, bgHsl.s * 1.15));
+  const accentSat = Math.min(100, Math.max(45, Math.min(bgHsl.s + 10, bgHsl.s * 1.15)));
 
   // Accent lightness = bg lightness + 25-35, clamped to 75-92%
   const rawL = bgHsl.l + 30;
