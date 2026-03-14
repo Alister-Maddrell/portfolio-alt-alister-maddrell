@@ -402,110 +402,66 @@ a.ui-text:hover {
 }
 
 /* ═══════════════════════════════════════ */
-/* IMAGE STACK — Robin Noguier film-strip */
+/* SHOWCASE STACK — diagonal perspective  */
 /* ═══════════════════════════════════════ */
 
-.image-stack {
-  position: absolute;
-  right: 4%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 35vw;
-  aspect-ratio: 3 / 5;
-}
-
-.image-card {
-  position: absolute;
+.showcase-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
-  border-radius: 6px;
-  overflow: hidden;
-  /* Clockwise tilt + subtle top-back foreshortening */
-  transform: rotate(6deg) rotateX(2deg);
-  transition: opacity 0.6s ease;
+  max-width: calc(68vh - 3.125vw);
 }
 
-.image-card img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Center image — full colour, always active */
-.image-center {
-  z-index: 2;
-  top: 50%;
-  transform: translateY(-50%) rotate(6deg) rotateX(2deg);
-  opacity: 1;
-}
-
-/* Top image — bleeds off top-right, desaturated */
-.image-top {
-  z-index: 1;
-  top: -25%;
-  right: -8%;
-  opacity: 0.4;
-  filter: saturate(0.15) brightness(0.7);
-}
-
-/* Bottom image — bleeds off bottom-left, desaturated */
-.image-bottom {
-  z-index: 1;
-  bottom: -25%;
-  left: -8%;
-  opacity: 0.4;
-  filter: saturate(0.15) brightness(0.7);
-}
-
-/* Colour wash overlay on behind-images */
-.image-wash-overlay {
-  position: absolute;
-  inset: 0;
-  background: var(--wash-color);
-  opacity: 0.4;
-  pointer-events: none;
-  border-radius: 6px;
-}
-
-/* Hover: bring behind-images to life */
-.image-top:hover,
-.image-bottom:hover {
-  opacity: 0.75;
-  filter: saturate(0.5) brightness(0.85);
+.showcase-frame {
+  display: flex;
+  flex-direction: column;
+  background-color: color-mix(in srgb, var(--card-color) 12%, rgba(255, 255, 255, 0.04));
+  border-radius: 0.75rem;
+  padding: 0 6px 6px;
+  border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  opacity: 0.6;
+  transition: opacity 0.3s ease,
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
   cursor: pointer;
 }
 
-/* ─── Mobile: reflow ─── */
+/* Center card: always active */
+.showcase-frame:nth-child(2) {
+  opacity: 1;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+              0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
+  z-index: 2;
+}
+
+/* ─── Hover: hovered card highlights, others recede ─── */
+
+.showcase-stack:hover .showcase-frame:not(:hover):not(:nth-child(2)) {
+  opacity: 0.25;
+}
+
+.showcase-stack:hover .showcase-frame:hover {
+  opacity: 1;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+              0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
+  z-index: 2;
+}
+
+/* ─── Mobile: horizontal row ─── */
 @media (max-width: 1023px) {
-  .image-stack {
-    position: relative;
-    right: auto;
-    top: auto;
-    transform: none;
-    width: 100%;
-    aspect-ratio: auto;
-    height: 50vh;
-    margin-bottom: 1rem;
+  .showcase-stack {
+    flex-direction: row;
+    gap: 6px;
+    max-width: 100%;
   }
 
-  .image-card {
-    width: 70%;
-    left: 15%;
-    transform: rotate(4deg);
-  }
-
-  .image-center {
-    top: 50%;
-    transform: translateY(-50%) rotate(4deg);
-  }
-
-  .image-top {
-    top: -10%;
-    right: auto;
-  }
-
-  .image-bottom {
-    bottom: -10%;
-    left: 15%;
+  .showcase-frame {
+    flex: 1;
+    min-width: 0;
   }
 }
 
