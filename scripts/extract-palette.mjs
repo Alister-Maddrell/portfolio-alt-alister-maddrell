@@ -77,7 +77,7 @@ function contrastRatio(rgb1, rgb2) {
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 }
 
-// ─── STEP 1: Extract dominant colours (median-cut) ───
+// ─── STEP 1: Extract dominant colours (median-cut, 10 clusters at 80x80) ───
 
 function medianCut(pixels, n) {
   const widest = (bucket) => {
@@ -113,12 +113,12 @@ function medianCut(pixels, n) {
 
 async function extractDominants(imagePath) {
   const { data } = await sharp(imagePath)
-    .resize(50, 50, { fit: 'cover' })
+    .resize(80, 80, { fit: 'cover' })
     .removeAlpha().raw()
     .toBuffer({ resolveWithObject: true });
   const px = [];
   for (let i = 0; i < data.length; i += 3) px.push([data[i], data[i+1], data[i+2]]);
-  return medianCut(px, 5).map(c => ({
+  return medianCut(px, 10).map(c => ({
     ...c,
     hsl: rgbToHsl(...c.rgb),
   }));
@@ -127,26 +127,33 @@ async function extractDominants(imagePath) {
 // ─── STEP 2: Select base (most "characterful" colour) ───
 
 function selectBase(dominants) {
-  // "Characterful" = S > 30% and L between 30-65%
-  const candidates = dominants.filter(c => c.hsl.s > 30 && c.hsl.l >= 30 && c.hsl.l <= 65);
+  // "Characterful" = S > 30% and L between 25-65% (widened to catch rich darks)
+  const candidates = dominants.filter(c => c.hsl.s > 30 && c.hsl.l >= 25 && c.hsl.l <= 65);
 
   if (candidates.length > 0) {
     // Pick highest saturation among candidates
     candidates.sort((a, b) => b.hsl.s - a.hsl.s);
     const pick = candidates[0];
-    // Ensure minimum vibrancy — boost low saturation picks
-    const hsl = { ...pick.hsl, s: Math.max(pick.hsl.s, 55) };
+    // Ensure minimum vibrancy and usable lightness
+    const hsl = {
+      h: pick.hsl.h,
+      s: Math.max(pick.hsl.s, 55),
+      l: Math.max(Math.min(pick.hsl.l, 45), 35),
+    };
     return { hsl, rgb: pick.rgb, nudged: false };
   }
 
-  // No characterful colour — find most chromatic mid-tone and nudge
-  let best = dominants[0];
+  // No characterful colour — find the most chromatic mid-tone
+  let best = null;
   for (const c of dominants) {
-    if (c.hsl.l > 15 && c.hsl.l < 85 && c.hsl.s > best.hsl.s) best = c;
+    if (c.hsl.l > 15 && c.hsl.l < 85 && c.hsl.s > 2) {
+      if (!best || c.hsl.s > best.hsl.s) best = c;
+    }
   }
+  const h = best ? best.hsl.h : 0;
   return {
-    hsl: { h: best.hsl.h, s: 55, l: 40 },
-    rgb: best.rgb,
+    hsl: { h, s: 55, l: 40 },
+    rgb: best ? best.rgb : [128, 128, 128],
     nudged: true,
   };
 }
@@ -163,12 +170,12 @@ function generateAccent(bgHsl) {
 
   // Accent lightness = bg lightness + 25-35, clamped to 75-92%
   const rawL = bgHsl.l + 30;
-  const accentL = Math.max(75, Math.min(92, rawL));
+  const accentL = Math.max(75, Math.min(88, rawL));
 
   return { h: accentHue, s: accentSat, l: accentL };
 }
 
-// ─── STEP 6: Contrast enforcement ───
+// ─── Contrast enforcement ───
 
 function enforceContrast(bgHsl, accentHsl) {
   const mode = bgHsl.l < 50 ? 'light' : 'dark';
@@ -186,7 +193,7 @@ function enforceContrast(bgHsl, accentHsl) {
   }
   if (textCR < 4.5) warnings.push(`text ${textCR.toFixed(2)}:1`);
 
-  // Enforce accent >= 3:1 (lighten accent toward bg)
+  // Enforce accent >= 3:1 (lighten accent)
   let accentRgb = hslToRgb(accentHsl.h, accentHsl.s, accentHsl.l);
   let accentCR = contrastRatio(bgRgb, accentRgb);
   while (accentCR < 3 && accentHsl.l < 96) {
@@ -197,6 +204,34 @@ function enforceContrast(bgHsl, accentHsl) {
   if (accentCR < 3) warnings.push(`accent ${accentCR.toFixed(2)}:1`);
 
   return { bgHsl, accentHsl, bgRgb, accentRgb, textRgb, textCR, accentCR, mode, warnings };
+}
+
+// ─── Ensure adjacent slides don't share hues ───
+
+function hueDist(a, b) { const d = Math.abs(a - b); return Math.min(d, 360 - d); }
+
+function ensureVariety(palettes, projectIds) {
+  // Check consecutive slides — if bg hues are within 40°, shift the second
+  for (let i = 0; i < projectIds.length - 1; i++) {
+    const a = palettes[projectIds[i]];
+    const b = palettes[projectIds[i + 1]];
+    if (!a || !b) continue;
+
+    const bgA = rgbToHsl(...a._bgRgb);
+    const bgB = rgbToHsl(...b._bgRgb);
+    if (hueDist(bgA.h, bgB.h) < 40 && b._nudged) {
+      // Shift the nudged one to complement (180°) for maximum separation
+      const newH = (bgB.h + 180) % 360;
+      const newBgRgb = hslToRgb(newH, 55, b._bgHsl.l);
+      const newAccentHsl = { h: (newH + 155) % 360, s: b._accentHsl.s, l: b._accentHsl.l };
+      const newAccentRgb = hslToRgb(newAccentHsl.h, newAccentHsl.s, newAccentHsl.l);
+      b.background = rgbToHex(...newBgRgb);
+      b.accent = rgbToHex(...newAccentRgb);
+      b.wash = `rgba(${newBgRgb[0]}, ${newBgRgb[1]}, ${newBgRgb[2]}, 0.7)`;
+      b._bgRgb = newBgRgb;
+      b._shifted = true;
+    }
+  }
 }
 
 // ─── Main ───
@@ -210,7 +245,7 @@ async function main() {
     const imagePath = join(ROOT, 'public', 'thumbnails', project.file);
     if (!existsSync(imagePath)) { console.log(`  ⚠ ${project.id}: not found`); continue; }
 
-    // Step 1: Extract 5 dominant colours
+    // Step 1: Extract 10 dominant colours at 80x80
     const dominants = await extractDominants(imagePath);
 
     // Step 2: Select most characterful as background base
@@ -223,7 +258,7 @@ async function main() {
     // Step 6: Enforce contrast ratios
     const result = enforceContrast(bgHsl, accentHsl);
 
-    // Steps 4, 5, 7: Output
+    // Output
     const bgHex = rgbToHex(...result.bgRgb);
     const accentHex = rgbToHex(...result.accentRgb);
     const textHex = result.mode === 'light' ? '#f0f0f0' : '#1a1a1a';
@@ -235,13 +270,33 @@ async function main() {
       text: textHex,
       textMode: result.mode,
       wash,
+      // Internal metadata for variety pass
+      _bgRgb: result.bgRgb,
+      _bgHsl: result.bgHsl,
+      _accentHsl: result.accentHsl,
+      _nudged: base.nudged,
     };
 
     // Print reasoning
     const hueRot = ((result.accentHsl.h - base.hsl.h + 360) % 360).toFixed(0);
     const nudge = base.nudged ? ' [nudged]' : '';
-    console.log(`  ${project.id}: bg=${bgHex} (${base.hsl.h.toFixed(0)}° S:${base.hsl.s.toFixed(0)}% L:${result.bgHsl.l.toFixed(0)}%${nudge}) → accent=${accentHex} (hue +${hueRot}°, S:${result.accentHsl.s.toFixed(0)}% L:${result.accentHsl.l.toFixed(0)}%) — contrast ${result.accentCR.toFixed(1)}:1`);
+    const srcHex = rgbToHex(...base.rgb);
+    console.log(`  ${project.id}: src=${srcHex} → bg=${bgHex} (${base.hsl.h.toFixed(0)}° S:${base.hsl.s.toFixed(0)}% L:${result.bgHsl.l.toFixed(0)}%${nudge}) → accent=${accentHex} (hue +${hueRot}°, S:${result.accentHsl.s.toFixed(0)}% L:${result.accentHsl.l.toFixed(0)}%) — contrast ${result.accentCR.toFixed(1)}:1`);
     if (result.warnings.length) console.log(`    ⚠ ${result.warnings.join(', ')}`);
+  }
+
+  // Ensure consecutive slides have distinct hues
+  ensureVariety(palettes, PROJECTS.map(p => p.id));
+
+  // Clean internal metadata and save
+  for (const id of Object.keys(palettes)) {
+    const shifted = palettes[id]._shifted;
+    delete palettes[id]._bgRgb;
+    delete palettes[id]._bgHsl;
+    delete palettes[id]._accentHsl;
+    delete palettes[id]._nudged;
+    delete palettes[id]._shifted;
+    if (shifted) console.log(`  ${id}: ↻ hue shifted for variety`);
   }
 
   writeFileSync(join(ROOT, 'src', 'data', 'palettes.json'), JSON.stringify(palettes, null, 2));
