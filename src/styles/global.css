@@ -412,6 +412,17 @@ a.ui-text:hover {
   width: 100%;
   max-width: calc(68vh - 3.125vw);
   transform: rotateY(-10deg) rotateX(5deg) rotate(5deg);
+  transition: transform 0.5s cubic-bezier(0.22, 1.4, 0.36, 1);
+}
+
+/* Carousel: hover top card → stack shifts down */
+.showcase-stack:has(.showcase-frame:first-child:hover) {
+  transform: rotateY(-10deg) rotateX(5deg) rotate(5deg) translateY(calc(100% / 3 + 10px));
+}
+
+/* Carousel: hover bottom card → stack shifts up */
+.showcase-stack:has(.showcase-frame:last-child:hover) {
+  transform: rotateY(-10deg) rotateX(5deg) rotate(5deg) translateY(calc(-100% / 3 - 10px));
 }
 
 .showcase-frame {
@@ -440,7 +451,7 @@ a.ui-text:hover {
 
 /* ─── Hover: hovered card highlights, others recede ─── */
 
-.showcase-stack:hover .showcase-frame:not(:hover):not(:nth-child(2)) {
+.showcase-stack:hover .showcase-frame:not(:hover) {
   opacity: 0.25;
 }
 
