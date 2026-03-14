@@ -112,7 +112,7 @@ const navItems = [
       <!-- ═══════════════════════════════════════ -->
       <!-- SLIDE 0: HERO                          -->
       <!-- ═══════════════════════════════════════ -->
-      <section id="slide-0" class="slide mounted active" style={`--slide-accent: ${heroAccent};`}>
+      <section id="slide-0" class="slide active" style={`--slide-accent: ${heroAccent};`}>
         <div class="accent-bar" style={`background-color: ${heroAccent};`}></div>
         <div class="hero-layout">
           <!-- Left: name + role + CTAs -->
@@ -398,27 +398,22 @@ const navItems = [
         if (prevSlide && prevSlide._leaveCarousel) prevSlide._leaveCarousel();
         if (nextSlide && nextSlide._resetCarousel) nextSlide._resetCarousel();
 
-        // Set entry direction on new slide, mount it, then animate in
+        // Position new slide at entry point, then animate in
         if (nextSlide) {
-          nextSlide.classList.remove('slide-exit-up', 'slide-exit-down', 'slide-enter-from-below', 'slide-enter-from-above', 'active');
+          nextSlide.classList.remove('slide-exit-up', 'slide-exit-down', 'active');
           nextSlide.classList.add(goingDown ? 'slide-enter-from-below' : 'slide-enter-from-above');
-          nextSlide.classList.add('mounted');
           // Force reflow so browser registers the starting position
           nextSlide.offsetHeight;
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
-              nextSlide.classList.add('active');
-            });
-          });
+          nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
+          nextSlide.classList.add('active');
         }
 
-        // Animate out current slide, then unmount
+        // Animate out current slide
         if (prevSlide) {
           prevSlide.classList.remove('active');
           prevSlide.classList.add(goingDown ? 'slide-exit-up' : 'slide-exit-down');
           setTimeout(() => {
-            prevSlide.classList.remove('mounted', 'slide-exit-up', 'slide-exit-down');
+            prevSlide.classList.remove('slide-exit-up', 'slide-exit-down');
           }, 700);
         }
 
