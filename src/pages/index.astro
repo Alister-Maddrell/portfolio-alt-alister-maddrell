@@ -112,7 +112,7 @@ const navItems = [
       <!-- ═══════════════════════════════════════ -->
       <!-- SLIDE 0: HERO                          -->
       <!-- ═══════════════════════════════════════ -->
-      <section id="slide-0" class="slide active" style={`--slide-accent: ${heroAccent};`}>
+      <section id="slide-0" class="slide active" style={`--slide-accent: ${heroAccent}; background-color: ${heroBg};`}>
         <div class="accent-bar" style={`background-color: ${heroAccent};`}></div>
         <div class="hero-layout">
           <!-- Left: name + role + CTAs -->
@@ -175,7 +175,7 @@ const navItems = [
       {projects.map((project, i) => {
         const slideIndex = i + 1;
         return (
-          <section id={`slide-${slideIndex}`} class="slide" data-slide-index={slideIndex} style={`--slide-accent: ${project.accent};`}>
+          <section id={`slide-${slideIndex}`} class="slide" data-slide-index={slideIndex} style={`--slide-accent: ${project.accent}; background-color: ${project.bg};`}>
             <!-- Accent bar -->
             <div class="accent-bar" style={`background-color: ${project.accent};`}></div>
 
@@ -285,7 +285,7 @@ const navItems = [
       <!-- ═══════════════════════════════════════ -->
       <!-- SLIDE 6: ABOUT / CONTACT               -->
       <!-- ═══════════════════════════════════════ -->
-      <section id="slide-6" class="slide" data-slide-index="6" style={`--slide-accent: ${contactAccent};`}>
+      <section id="slide-6" class="slide" data-slide-index="6" style={`--slide-accent: ${contactAccent}; background-color: ${contactBg};`}>
         <div class="accent-bar" style={`background-color: ${contactAccent};`}></div>
         <div class="flex flex-col lg:flex-row h-full pt-[90px] relative">
           <!-- Left: Decorative monogram -->
