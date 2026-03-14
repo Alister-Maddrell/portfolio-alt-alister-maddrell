@@ -866,17 +866,73 @@ a.ui-text:hover {
 }
 
 /* ═══════════════════════════════════════ */
-/* CONTACT MONOGRAM                       */
+/* CONTACT FORM CARD                      */
 /* ═══════════════════════════════════════ */
 
-.am-monogram::before {
-  content: 'AM';
-  font-family: var(--font-display);
-  font-size: 40vw;
-  line-height: 1;
-  color: rgba(255, 255, 255, 0.03);
-  user-select: none;
-  pointer-events: none;
+.contact-form-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 480px;
+  background-color: color-mix(in srgb, var(--card-color) 8%, rgba(255, 255, 255, 0.04));
+  border-radius: 1rem;
+  padding: 0 8px 8px;
+  border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
+              0 0 0 1px color-mix(in srgb, var(--card-color) 10%, transparent);
+}
+
+.contact-form-body {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0.5rem;
+  padding: 28px 24px;
+}
+
+.contact-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 15px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.contact-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.contact-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75em;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-submit:hover {
+  filter: brightness(0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.contact-submit .cta-arrow {
+  transition: transform 0.2s ease-in-out;
+}
+
+.contact-submit:hover .cta-arrow {
+  transform: translateX(4px);
 }
 
 /* ═══════════════════════════════════════ */

@@ -296,66 +296,88 @@ const navItems = [
       <!-- ═══════════════════════════════════════ -->
       <section id="slide-6" class="slide" data-slide-index="6" style={`--slide-accent: ${contactAccent}; background-color: ${contactBg};`}>
         <div class="accent-bar" style={`background-color: ${contactAccent};`}></div>
-        <div class="flex flex-col lg:flex-row h-full pt-[90px] relative">
-          <!-- Left: Decorative monogram -->
-          <div class="hidden lg:flex w-1/2 items-center justify-center overflow-hidden relative am-monogram" aria-hidden="true"></div>
-
-          <!-- Right: Content -->
-          <div class="w-full lg:w-1/2 flex flex-col justify-center px-[6.25%] lg:pr-[6.25%] lg:pl-0 py-8">
-            <h2 class="title-display slide-title" style={`font-size: clamp(32px, 5vw, 90px); color: ${contactAccent};`}>
-              Let's Work Together
-            </h2>
-            <p class="desc-text text-white mt-6 slide-desc">
-              I design and build fast, modern websites for local businesses across Sydney. Every site is custom-built, SEO-optimised, and designed to turn visitors into customers.
-            </p>
-
-            <div class="mt-8 slide-cta">
-              <a href="mailto:alistermaddrell@gmail.com" class="cta-link ui-text ui-text-md" style={`color: ${contactAccent};`}>
-                <span>alistermaddrell@gmail.com</span>
-                <span class="cta-arrow">&rarr;</span>
-              </a>
-              <p class="text-white text-sm mt-2">Sydney, Australia</p>
+        <div class="showcase-layout" style={`color: #ffffff;`}>
+          <!-- Left column: title + info -->
+          <div class="showcase-left">
+            <div class="showcase-content">
+              <p class="ui-text ui-text-sm slide-desc" style={`color: ${contactAccent}; letter-spacing: 3px; opacity: 0.8;`}>Get in Touch</p>
+              <h2 class="title-display title-project mt-4 slide-title" style={`color: ${contactAccent};`}>
+                Let's Work<br/>Together
+              </h2>
+              <p class="desc-text mt-6 slide-desc" style="opacity: 0.7;">
+                I design and build fast, modern websites for local businesses across Sydney. Every site is custom-built, SEO-optimised, and designed to turn visitors into customers.
+              </p>
+              <div class="flex flex-col gap-3 mt-8 slide-cta">
+                <a href="mailto:alistermaddrell@gmail.com" class="cta-link ui-text ui-text-md" style={`color: ${contactAccent};`}>
+                  <span>alistermaddrell@gmail.com</span>
+                  <span class="cta-arrow">&rarr;</span>
+                </a>
+              </div>
             </div>
+            <p class="ui-text ui-text-sm slide-meta" style={`color: ${contactAccent}; opacity: 0.5;`}>Sydney, Australia</p>
+          </div>
 
-            <!-- Contact form -->
-            <form action="https://formspree.io/f/placeholder" method="POST" class="mt-10 space-y-5 max-w-[480px] slide-meta">
-              <div>
-                <label for="name" class="ui-text text-xs text-white block mb-1" style="letter-spacing: 1px;">Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  class="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white text-base font-body focus:outline-none focus:border-white/30 transition-colors"
-                />
+          <!-- Right column: form in browser chrome card -->
+          <div class="showcase-cards slide-image">
+            <div class="contact-form-card" style={`--card-color: ${contactAccent};`}>
+              <div class="card-work-topbar">
+                <span class="card-work-dots" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                </span>
+                <div class="card-work-urlbar">
+                  <svg class="card-work-globe" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M1 8h14M8 1c-2.5 3-2.5 9 0 14M8 1c2.5 3 2.5 9 0 14" stroke="currentColor" stroke-width="1.2"/></svg>
+                  <span class="card-work-url"><span class="card-work-url-proto">mailto:</span> alistermaddrell@gmail.com</span>
+                </div>
               </div>
-              <div>
-                <label for="email" class="ui-text text-xs text-white block mb-1" style="letter-spacing: 1px;">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  class="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white text-base font-body focus:outline-none focus:border-white/30 transition-colors"
-                />
+              <div class="contact-form-body">
+                <form action="https://formspree.io/f/placeholder" method="POST" class="space-y-5">
+                  <div>
+                    <label for="name" class="ui-text text-xs block mb-2" style={`letter-spacing: 1px; color: ${contactAccent};`}>Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      required
+                      placeholder="Your name"
+                      class="contact-input"
+                      style={`--accent: ${contactAccent};`}
+                    />
+                  </div>
+                  <div>
+                    <label for="email" class="ui-text text-xs block mb-2" style={`letter-spacing: 1px; color: ${contactAccent};`}>Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      placeholder="you@example.com"
+                      class="contact-input"
+                      style={`--accent: ${contactAccent};`}
+                    />
+                  </div>
+                  <div>
+                    <label for="message" class="ui-text text-xs block mb-2" style={`letter-spacing: 1px; color: ${contactAccent};`}>Message</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows="4"
+                      required
+                      placeholder="Tell me about your project..."
+                      class="contact-input resize-none"
+                      style={`--accent: ${contactAccent};`}
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    class="contact-submit ui-text ui-text-md"
+                    style={`background: ${contactAccent}; color: ${contactBg};`}
+                  >
+                    <span>Send Message</span>
+                    <span class="cta-arrow">&rarr;</span>
+                  </button>
+                </form>
               </div>
-              <div>
-                <label for="message" class="ui-text text-xs text-white block mb-1" style="letter-spacing: 1px;">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="4"
-                  required
-                  class="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white text-base font-body focus:outline-none focus:border-white/30 transition-colors resize-none"
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                class="ui-text ui-text-md bg-white text-black px-8 py-3 rounded hover:bg-white/80 hover:scale-[1.02] transition-all duration-200 cursor-pointer"
-              >
-                Send Message
-              </button>
-            </form>
+            </div>
           </div>
         </div>
       </section>
