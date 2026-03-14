@@ -126,7 +126,10 @@ a {
 }
 
 .title-project {
-  font-size: clamp(42px, 7vw, 120px);
+  font-size: clamp(64px, 12vw, 200px);
+  font-weight: 700;
+  line-height: 0.9em;
+  letter-spacing: -0.02em;
 }
 
 .title-solid {
@@ -498,7 +501,7 @@ a.ui-text:hover {
   position: absolute;
   left: 0;
   top: 0;
-  width: 6px;
+  width: 8px;
   height: 100%;
   z-index: 5;
   opacity: 0;

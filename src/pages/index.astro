@@ -6,8 +6,8 @@ const projects = [
     id: 'hartley',
     title: 'Hartley',
     description: 'Emergency-focused trade website with 24/7 lead capture, click-to-call, and service area mapping that converts urgent searches into booked jobs.',
-    bg: '#0F1E2E',
-    secondary: '#F28C38',
+    bg: '#0033CC',
+    secondary: '#FF6600',
     url: 'https://demo-hartley-plumbing.vercel.app',
     image: '/thumbnails/hartley.webp',
   },
@@ -15,8 +15,8 @@ const projects = [
     id: 'kin',
     title: 'Kin',
     description: 'Warm editorial hospitality site with interactive digital menu, event listings, email capture, and catering enquiries — a community hub that drives repeat visits.',
-    bg: '#5C3D28',
-    secondary: '#D4956A',
+    bg: '#CC2255',
+    secondary: '#FFBE0B',
     url: 'https://demo-kin-grain-cafe.vercel.app',
     image: '/thumbnails/cafe.webp',
   },
@@ -24,8 +24,8 @@ const projects = [
     id: 'apex',
     title: 'Apex',
     description: 'Conversion-optimised fitness site built as a sales funnel — multi-step lead capture, membership pricing, and urgency-driven CTAs that turn visitors into trial members.',
-    bg: '#1A1210',
-    secondary: '#F06824',
+    bg: '#0D0D0D',
+    secondary: '#FF3D00',
     url: 'https://demo-apex-fitness.vercel.app',
     image: '/thumbnails/fitness.webp',
   },
@@ -33,8 +33,8 @@ const projects = [
     id: 'whitfield',
     title: 'Whitfield',
     description: 'Authority-driven professional services site with insights blog, consultation booking, animated credibility metrics, and content marketing architecture.',
-    bg: '#111D33',
-    secondary: '#D4A04A',
+    bg: '#0A0044',
+    secondary: '#FFD700',
     url: 'https://demo-whitfield-accounting.vercel.app',
     image: '/thumbnails/accounting.webp',
   },
@@ -42,14 +42,14 @@ const projects = [
     id: 'luma',
     title: 'LUMA',
     description: 'Luxury appointment-based site with a full booking flow, expandable service menu, transformation gallery, and team showcase — replacing phone bookings with digital elegance.',
-    bg: '#3A2832',
-    secondary: '#C7A04B',
+    bg: '#440033',
+    secondary: '#FF1493',
     url: 'https://demo-luma-hair-beauty.vercel.app',
     image: '/thumbnails/hair.webp',
   },
 ];
 
-const bgColors = ['#3A7D8C', ...projects.map(p => p.bg), '#2E6B5A'];
+const bgColors = ['#00B4D8', ...projects.map(p => p.bg), '#00C853'];
 const secondaryColors = ['#ffffff', ...projects.map(p => p.secondary), '#ffffff'];
 
 const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }));
@@ -78,7 +78,7 @@ const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }))
       <!-- ═══════════════════════════════════════ -->
       <!-- BACKGROUND LAYER                       -->
       <!-- ═══════════════════════════════════════ -->
-      <div id="bg-layer" class="absolute inset-0" style="background-color: #3A7D8C;"></div>
+      <div id="bg-layer" class="absolute inset-0" style="background-color: #00B4D8;"></div>
 
       <!-- ═══════════════════════════════════════ -->
       <!-- FIXED HEADER — always visible          -->
@@ -492,20 +492,22 @@ const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }))
           card.addEventListener('mouseenter', () => {
             bounds = card.getBoundingClientRect();
             // Disable transform transition for instant mouse tracking
-            card.style.transition = 'box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease';
+            card.style.transition = 'box-shadow 0.3s ease, border-color 0.3s ease';
           }, { passive: true });
 
           card.addEventListener('mousemove', (e) => {
             if (!bounds) bounds = card.getBoundingClientRect();
             const x = (e.clientX - bounds.left) / bounds.width - 0.5;
             const y = (e.clientY - bounds.top) / bounds.height - 0.5;
-            card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+            card.style.transform = `perspective(600px) rotateY(${x * 15}deg) rotateX(${-y * 15}deg) translateZ(10px)`;
+            card.style.boxShadow = `${-x * 30}px ${y * 30}px 40px rgba(0,0,0,0.4)`;
           }, { passive: true });
 
           card.addEventListener('mouseleave', () => {
             // Restore transform transition for smooth return
-            card.style.transition = '';
+            card.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease, border-color 0.3s ease';
             card.style.transform = '';
+            card.style.boxShadow = '';
           }, { passive: true });
         });
       }
