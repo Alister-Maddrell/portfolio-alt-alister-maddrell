@@ -126,7 +126,7 @@ a {
 }
 
 .title-project {
-  font-size: clamp(64px, 7vw, 120px);
+  font-size: clamp(72px, 9vw, 160px);
   font-weight: 700;
   line-height: 0.9em;
   letter-spacing: -0.02em;
