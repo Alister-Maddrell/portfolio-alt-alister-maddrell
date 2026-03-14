@@ -203,7 +203,7 @@ const navItems = [
               <div class="w-full lg:w-[60%] flex items-center justify-center relative order-1 lg:order-2 py-4 lg:py-0">
                 <div class="slide-image showcase-stack" style={`--card-color: ${project.accent};`}>
                   <!-- Page 2 (top slot) -->
-                  <div class="showcase-frame" data-slot="top">
+                  <div class="showcase-frame">
                     <div class="card-work-topbar card-work-topbar--mini">
                       <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
                         <span></span><span></span><span></span>
@@ -217,7 +217,7 @@ const navItems = [
                     </div>
                   </div>
                   <!-- Landing page (center slot, flush) -->
-                  <div class="showcase-frame" data-slot="center">
+                  <div class="showcase-frame">
                     <div class="card-work-topbar card-work-topbar--mini">
                       <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
                         <span></span><span></span><span></span>
@@ -234,7 +234,7 @@ const navItems = [
                     </div>
                   </div>
                   <!-- Page 3 (bottom slot) -->
-                  <div class="showcase-frame" data-slot="bottom">
+                  <div class="showcase-frame">
                     <div class="card-work-topbar card-work-topbar--mini">
                       <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
                         <span></span><span></span><span></span>
@@ -536,41 +536,10 @@ const navItems = [
         });
       }
 
-      // ─── Showcase carousel (slot swapping on hover) ───
-      function initShowcaseCarousel() {
-        document.querySelectorAll('.showcase-stack').forEach(stack => {
-          const frames = [...stack.querySelectorAll('.showcase-frame')];
-          if (frames.length !== 3) return;
-
-          const defaultSlots = ['top', 'center', 'bottom'];
-          let slots = [...defaultSlots];
-
-          function applySlots() {
-            frames.forEach((f, i) => { f.dataset.slot = slots[i]; });
-          }
-
-          frames.forEach((frame, i) => {
-            frame.addEventListener('mouseenter', () => {
-              if (slots[i] === 'center') return;
-              const centerIdx = slots.indexOf('center');
-              slots[centerIdx] = slots[i];
-              slots[i] = 'center';
-              applySlots();
-            });
-          });
-
-          stack.addEventListener('mouseleave', () => {
-            slots = [...defaultSlots];
-            applySlots();
-          });
-        });
-      }
-
       // ─── Init ───
       document.addEventListener('DOMContentLoaded', () => {
         initHeroAnimation();
         initCardTilt();
-        initShowcaseCarousel();
       });
     </script>
   </body>
