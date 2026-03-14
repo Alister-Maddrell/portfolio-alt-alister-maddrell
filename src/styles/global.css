@@ -774,7 +774,7 @@ a.ui-text:hover {
   .hero-right {
     width: 50%;
     order: 2;
-    padding: 2rem calc(6.25% + 40px) 2rem 0;
+    padding: 2rem 0;
   }
 }
 
@@ -793,8 +793,9 @@ a.ui-text:hover {
   flex-direction: column;
   gap: 1.25rem;
   width: 100%;
-  max-width: calc(60vh);
+  max-width: calc(75vh - 3.125vw);
   transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg);
+  margin-right: calc(6.25% + 40px);
 }
 
 .hero-featured-card {
