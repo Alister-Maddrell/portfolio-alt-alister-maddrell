@@ -400,12 +400,16 @@ const navItems = [
 
         // Set entry direction on new slide, mount it, then animate in
         if (nextSlide) {
-          nextSlide.classList.remove('slide-exit-up', 'slide-exit-down', 'slide-enter-from-below', 'slide-enter-from-above');
+          nextSlide.classList.remove('slide-exit-up', 'slide-exit-down', 'slide-enter-from-below', 'slide-enter-from-above', 'active');
           nextSlide.classList.add(goingDown ? 'slide-enter-from-below' : 'slide-enter-from-above');
           nextSlide.classList.add('mounted');
+          // Force reflow so browser registers the starting position
+          nextSlide.offsetHeight;
           requestAnimationFrame(() => {
-            nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
-            nextSlide.classList.add('active');
+            requestAnimationFrame(() => {
+              nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
+              nextSlide.classList.add('active');
+            });
           });
         }
 
