@@ -392,24 +392,30 @@ const navItems = [
         const nextSlide = document.getElementById(`slide-${index}`);
         const prevIndex = currentSlide;
 
+        const goingDown = index > prevIndex;
+
         // Stop scroll on outgoing slide, reset and start on incoming slide
         if (prevSlide && prevSlide._leaveCarousel) prevSlide._leaveCarousel();
         if (nextSlide && nextSlide._resetCarousel) nextSlide._resetCarousel();
 
-        // Mount new slide (display: block), then after a frame fade it in
+        // Set entry direction on new slide, mount it, then animate in
         if (nextSlide) {
+          nextSlide.classList.remove('slide-exit-up', 'slide-exit-down', 'slide-enter-from-below', 'slide-enter-from-above');
+          nextSlide.classList.add(goingDown ? 'slide-enter-from-below' : 'slide-enter-from-above');
           nextSlide.classList.add('mounted');
           requestAnimationFrame(() => {
+            nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
             nextSlide.classList.add('active');
           });
         }
 
-        // Fade out current slide, then unmount after transition
+        // Animate out current slide, then unmount
         if (prevSlide) {
           prevSlide.classList.remove('active');
+          prevSlide.classList.add(goingDown ? 'slide-exit-up' : 'slide-exit-down');
           setTimeout(() => {
-            prevSlide.classList.remove('mounted');
-          }, 800);
+            prevSlide.classList.remove('mounted', 'slide-exit-up', 'slide-exit-down');
+          }, 700);
         }
 
         // Crossfade background colour
