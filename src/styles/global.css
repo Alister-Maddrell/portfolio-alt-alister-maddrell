@@ -393,6 +393,81 @@ a.ui-text:hover {
   font-size: 0.5625rem;
 }
 
+.card-work-capsule--mini {
+  padding: 3px 6px;
+}
+
+.card-work-capsule--mini svg {
+  width: 0.75rem;
+}
+
+/* ═══════════════════════════════════════ */
+/* SHOWCASE STACK — 3 stacked screenshots */
+/* ═══════════════════════════════════════ */
+
+.showcase-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: calc(68vh - 3.125vw);
+}
+
+.showcase-frame {
+  --offset: 0px;
+  display: flex;
+  flex-direction: column;
+  background-color: color-mix(in srgb, var(--card-color) 12%, rgba(255, 255, 255, 0.04));
+  border-radius: 0.75rem;
+  padding: 0 6px 6px;
+  border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.4s ease,
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+  opacity: 0.55;
+  transform: translateX(var(--offset)) skewY(-2deg);
+  will-change: transform;
+}
+
+/* Diagonal offset: top right → bottom left */
+.showcase-frame:nth-child(1) { --offset: 35px; }
+.showcase-frame:nth-child(2) { --offset: 0px; }
+.showcase-frame:nth-child(3) { --offset: -35px; }
+
+/* Middle frame (landing page) is focused by default */
+.showcase-frame--focused {
+  opacity: 1;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4),
+              0 0 20px color-mix(in srgb, var(--card-color) 15%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 40%, transparent);
+}
+
+/* Hover: focused frame comes forward, others recede */
+.showcase-stack:hover .showcase-frame {
+  opacity: 0.4;
+}
+
+.showcase-stack:hover .showcase-frame:hover {
+  opacity: 1;
+  transform: translateX(0) skewY(-2deg) scale(1.03);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5),
+              0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
+  z-index: 2;
+}
+
+/* Mobile: reduce offsets and show single column */
+@media (max-width: 1023px) {
+  .showcase-stack {
+    max-width: 100%;
+  }
+
+  .showcase-frame:nth-child(1) { --offset: 15px; }
+  .showcase-frame:nth-child(3) { --offset: -15px; }
+}
+
 /* ═══════════════════════════════════════ */
 /* NAVIGATION — unified expandable        */
 /* ═══════════════════════════════════════ */
@@ -574,16 +649,14 @@ a.ui-text:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.62em;
-  color: #0d0d0d;
-  background: #ffffff;
   padding: 10px 24px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .hero-cta-primary:hover {
-  background: rgba(255, 255, 255, 0.88);
+  filter: brightness(0.9);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
