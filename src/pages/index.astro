@@ -217,6 +217,11 @@ const navItems = [
                 </div>
               </div>
 
+              <!-- Bottom-left: miniature thumbnail -->
+              <div class="image-thumb hidden lg:block" style={`border-color: ${project.accent};`}>
+                <img src={project.image} alt={`${project.title} thumbnail`} width="1440" height="900" loading="lazy" decoding="async" />
+              </div>
+
               <!-- Mobile: text below images -->
               <div class="flex flex-col justify-center py-6 lg:hidden">
                 <h2 class="title-display title-project slide-title" style={`color: ${project.accent};`}>

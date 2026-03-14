@@ -471,6 +471,24 @@ a.ui-text:hover {
   cursor: pointer;
 }
 
+/* Bottom-left miniature thumbnail */
+.image-thumb {
+  position: absolute;
+  left: 6.25%;
+  bottom: 2rem;
+  width: 120px;
+  z-index: 10;
+  border: 4px solid currentColor;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.image-thumb img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* ─── Mobile: reflow ─── */
 @media (max-width: 1023px) {
   .image-stack {
