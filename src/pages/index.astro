@@ -4,60 +4,55 @@ import '../styles/global.css';
 const projects = [
   {
     id: 'hartley',
-    title: 'Hartley & Co',
+    title: 'Hartley',
     description: 'Emergency-focused trade website with 24/7 lead capture, click-to-call, and service area mapping that converts urgent searches into booked jobs.',
-    bg: '#1E3A5F',
-    textMode: 'light',
+    bg: '#0F1E2E',
+    secondary: '#F28C38',
     url: 'https://demo-hartley-plumbing.vercel.app',
     image: '/thumbnails/hartley.webp',
-    accent: '#F97316',
   },
   {
     id: 'kin',
-    title: 'Kin & Grain',
+    title: 'Kin',
     description: 'Warm editorial hospitality site with interactive digital menu, event listings, email capture, and catering enquiries — a community hub that drives repeat visits.',
-    bg: '#C4704B',
-    textMode: 'light',
+    bg: '#5C3D28',
+    secondary: '#D4956A',
     url: 'https://demo-kin-grain-cafe.vercel.app',
     image: '/thumbnails/cafe.webp',
-    accent: '#F5EDE3',
   },
   {
     id: 'apex',
-    title: 'Apex Performance',
+    title: 'Apex',
     description: 'Conversion-optimised fitness site built as a sales funnel — multi-step lead capture, membership pricing, and urgency-driven CTAs that turn visitors into trial members.',
-    bg: '#B83A2A',
-    textMode: 'light',
+    bg: '#1A1210',
+    secondary: '#F06824',
     url: 'https://demo-apex-fitness.vercel.app',
     image: '/thumbnails/fitness.webp',
-    accent: '#FF6B2C',
   },
   {
     id: 'whitfield',
-    title: 'Whitfield & Associates',
+    title: 'Whitfield',
     description: 'Authority-driven professional services site with insights blog, consultation booking, animated credibility metrics, and content marketing architecture.',
-    bg: '#1B2B4B',
-    textMode: 'light',
+    bg: '#111D33',
+    secondary: '#D4A04A',
     url: 'https://demo-whitfield-accounting.vercel.app',
     image: '/thumbnails/accounting.webp',
-    accent: '#B8924A',
   },
   {
     id: 'luma',
     title: 'LUMA',
     description: 'Luxury appointment-based site with a full booking flow, expandable service menu, transformation gallery, and team showcase — replacing phone bookings with digital elegance.',
-    bg: '#C4828A',
-    textMode: 'light',
+    bg: '#3A2832',
+    secondary: '#C7A04B',
     url: 'https://demo-luma-hair-beauty.vercel.app',
     image: '/thumbnails/hair.webp',
-    accent: '#D4A853',
   },
 ];
 
 const bgColors = ['#3A7D8C', ...projects.map(p => p.bg), '#2E6B5A'];
-const textModes = ['light', ...projects.map(p => p.textMode), 'light'];
+const secondaryColors = ['#ffffff', ...projects.map(p => p.secondary), '#ffffff'];
 
-const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Associates' ? 'Whitfield' : p.title, slideIndex: i + 1 }));
+const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }));
 ---
 
 <html lang="en">
@@ -110,7 +105,7 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
           <!-- Project preview strip -->
           <div class="hero-preview-strip slide-image mt-8 lg:mt-10">
             {projects.map((project, i) => (
-              <button class="hero-card card-work" data-slide={i + 1} style={`--card-color: ${project.accent};`}>
+              <button class="hero-card card-work" data-slide={i + 1} style={`--card-color: ${project.secondary};`}>
                 <div class="card-work-topbar card-work-topbar--mini">
                   <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
                     <span></span>
@@ -161,13 +156,15 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
       <!-- ═══════════════════════════════════════ -->
       {projects.map((project, i) => {
         const slideIndex = i + 1;
-        const textColor = project.textMode === 'light' ? '#ffffff' : '#0d0d0d';
         return (
-          <section id={`slide-${slideIndex}`} class="slide" data-slide-index={slideIndex}>
-            <div class="flex flex-col lg:flex-row items-center h-full pt-[90px] px-[6.25%]" style={`color: ${textColor};`}>
+          <section id={`slide-${slideIndex}`} class="slide" data-slide-index={slideIndex} style={`--slide-secondary: ${project.secondary};`}>
+            <!-- Accent bar -->
+            <div class="accent-bar" style={`background-color: ${project.secondary};`}></div>
+
+            <div class="flex flex-col lg:flex-row items-center h-full pt-[90px] px-[6.25%] pl-[calc(6.25%+16px)]" style="color: #ffffff;">
               <!-- Left: Text (40%) -->
               <div class="w-full lg:w-[40%] flex flex-col justify-center py-6 lg:py-0 order-2 lg:order-1 overflow-visible">
-                <h2 class="title-display title-project slide-title" style={`color: ${textColor};`}>
+                <h2 class="title-display title-project slide-title" style={`color: ${project.secondary};`}>
                   {project.title}
                 </h2>
                 <p class="desc-text mt-6 slide-desc">
@@ -178,38 +175,41 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
                   target="_blank"
                   rel="noopener noreferrer"
                   class="cta-link ui-text ui-text-md mt-[34px] slide-cta"
+                  style={`--cta-accent: ${project.secondary};`}
                 >
                   <span>View Live Site</span>
-                  <span class="cta-arrow">&rarr;</span>
+                  <span class="cta-arrow" style={`color: ${project.secondary};`}>&rarr;</span>
                 </a>
               </div>
 
               <!-- Right: Browser mockup (60%) -->
               <div class="w-full lg:w-[60%] flex items-center justify-center relative order-1 lg:order-2 py-4 lg:py-0 overflow-visible">
-                <div class="card-work relative w-full max-w-[calc(68vh-3.125vw)] slide-image" style={`--card-color: ${project.accent};`}>
-                  <div class="card-work-topbar">
-                    <span class="card-work-dots" aria-hidden="true">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </span>
-                    <div class="card-work-urlbar">
-                      <svg class="card-work-globe" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 1C7.25065 2.36917 7.9614 4.14602 8 6C7.9614 7.854 7.25065 9.6308 6 11M6 1C4.74936 2.36917 4.03862 4.14602 4 6C4.03862 7.854 4.74936 9.6308 6 11M6 1C3.23857 1 1 3.23857 1 6C1 8.7614 3.23857 11 6 11M6 1C8.7614 1 11 3.23857 11 6C11 8.7614 8.7614 11 6 11M1.25001 4.5H10.75M1.25 7.5H10.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                      <span class="card-work-url"><span class="card-work-url-proto">https://</span>{new URL(project.url).hostname}</span>
+                <div class="slide-image relative w-full max-w-[calc(68vh-3.125vw)]">
+                  <div class="card-work w-full" style={`--card-color: ${project.secondary};`}>
+                    <div class="card-work-topbar">
+                      <span class="card-work-dots" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </span>
+                      <div class="card-work-urlbar">
+                        <svg class="card-work-globe" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 1C7.25065 2.36917 7.9614 4.14602 8 6C7.9614 7.854 7.25065 9.6308 6 11M6 1C4.74936 2.36917 4.03862 4.14602 4 6C4.03862 7.854 4.74936 9.6308 6 11M6 1C3.23857 1 1 3.23857 1 6C1 8.7614 3.23857 11 6 11M6 1C8.7614 1 11 3.23857 11 6C11 8.7614 8.7614 11 6 11M1.25001 4.5H10.75M1.25 7.5H10.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <span class="card-work-url"><span class="card-work-url-proto">https://</span>{new URL(project.url).hostname}</span>
+                      </div>
+                      <a href={project.url} target="_blank" rel="noopener noreferrer" class="card-work-capsule" aria-label={`Visit ${project.title}`}>
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </a>
                     </div>
-                    <a href={project.url} target="_blank" rel="noopener noreferrer" class="card-work-capsule" aria-label={`Visit ${project.title}`}>
-                      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </a>
-                  </div>
-                  <div class="card-work-img">
-                    <img
-                      src={project.image}
-                      alt={`${project.title} website screenshot`}
-                      width="1440"
-                      height="900"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      decoding="async"
-                    />
+                    <div class="card-work-img">
+                      <img
+                        src={project.image}
+                        alt={`${project.title} website screenshot`}
+                        width="1440"
+                        height="900"
+                        loading={i === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -288,14 +288,14 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
       </section>
 
       <!-- ═══════════════════════════════════════ -->
-      <!-- UNIFIED SLIDE NAV (top bar, expandable) -->
+      <!-- UNIFIED SLIDE NAV                      -->
       <!-- ═══════════════════════════════════════ -->
-      <nav id="slide-nav" class="absolute top-[88px] left-1/2 -translate-x-1/2 z-40 transition-opacity duration-500 text-white" style="display: none;">
+      <nav id="slide-nav" class="slide-nav z-40 transition-opacity duration-500 text-white" style="display: none;">
         <div class="slide-nav-inner">
           {navItems.map((item, i) => (
             <button class="slide-nav-item" data-slide={item.slideIndex}>
-              <span class="slide-nav-dot"></span>
               <span class="slide-nav-label">{item.label}</span>
+              <span class="slide-nav-dot"></span>
             </button>
           ))}
         </div>
@@ -305,7 +305,7 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
     <!-- ═══════════════════════════════════════ -->
     <!-- CLIENT-SIDE JS                         -->
     <!-- ═══════════════════════════════════════ -->
-    <script define:vars={{ bgColors, textModes }}>
+    <script define:vars={{ bgColors, secondaryColors }}>
       // ─── State ───
       let currentSlide = 0;
       const totalSlides = 7;
@@ -346,9 +346,9 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
         // Crossfade background colour
         if (bgLayer) bgLayer.style.backgroundColor = bgColors[index];
 
-        // Update header text colour
-        const headerColor = textModes[index] === 'light' ? '#ffffff' : '#0d0d0d';
-        if (appHeader) appHeader.style.color = headerColor;
+        // Update nav accent colour from secondary palette
+        const secColor = secondaryColors[index];
+        if (slideNav) slideNav.style.color = secColor;
 
         // Show/hide slide nav (visible on slides 1-5)
         const showNav = index >= 1 && index <= 5;
@@ -487,30 +487,25 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
         if (prefersReduced || !hasFineCursor) return;
 
         document.querySelectorAll('[data-slide-index] .card-work').forEach((card) => {
-          const el = card;
           let bounds;
-          let tiltActive = false;
 
-          el.addEventListener('mouseenter', () => {
-            // Only allow tilt when the parent slide is fully active
-            const parentSlide = el.closest('.slide');
-            if (!parentSlide || !parentSlide.classList.contains('active')) return;
-            tiltActive = true;
-            bounds = el.getBoundingClientRect();
+          card.addEventListener('mouseenter', () => {
+            bounds = card.getBoundingClientRect();
+            // Disable transform transition for instant mouse tracking
+            card.style.transition = 'box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease';
           }, { passive: true });
 
-          el.addEventListener('mousemove', (e) => {
-            if (!tiltActive) return;
-            if (!bounds) bounds = el.getBoundingClientRect();
+          card.addEventListener('mousemove', (e) => {
+            if (!bounds) bounds = card.getBoundingClientRect();
             const x = (e.clientX - bounds.left) / bounds.width - 0.5;
             const y = (e.clientY - bounds.top) / bounds.height - 0.5;
-            el.style.transform = `perspective(800px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-3px)`;
+            card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
           }, { passive: true });
 
-          el.addEventListener('mouseleave', () => {
-            if (!tiltActive) return;
-            tiltActive = false;
-            el.style.transform = '';
+          card.addEventListener('mouseleave', () => {
+            // Restore transform transition for smooth return
+            card.style.transition = '';
+            card.style.transform = '';
           }, { passive: true });
         });
       }
