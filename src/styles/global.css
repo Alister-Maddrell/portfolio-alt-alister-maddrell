@@ -886,7 +886,7 @@ a.ui-text:hover {
     align-items: flex-start;
     justify-content: flex-end;
     padding-top: clamp(120px, 18vh, 200px);
-    padding-right: 4%;
+    padding-right: 10%;
   }
 }
 
