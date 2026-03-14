@@ -209,18 +209,19 @@ a.ui-text:hover {
 .cta-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.62em;
+  gap: 0.75em;
   cursor: pointer;
-  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-  padding: 6px 0;
-  margin-left: 0;
+  padding: 10px 20px;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  align-self: flex-start;
 }
 
 .cta-link:hover {
-  color: rgba(255, 255, 255, 0.9);
-  transform: translateX(4px);
-  background-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, currentColor 18%, transparent);
+  transform: translateY(-1px);
 }
 
 .cta-link .cta-arrow {
