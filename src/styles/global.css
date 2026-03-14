@@ -411,6 +411,7 @@ a.ui-text:hover {
   gap: 10px;
   width: 100%;
   max-width: calc(68vh - 3.125vw);
+  perspective: 800px;
 }
 
 .showcase-frame {
@@ -422,15 +423,17 @@ a.ui-text:hover {
   border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   opacity: 0.6;
+  transform: rotateX(-20deg) rotateY(-20deg);
   transition: opacity 0.3s ease,
               box-shadow 0.4s ease,
               border-color 0.4s ease;
   cursor: pointer;
 }
 
-/* Center card: always active */
+/* Center card: always active, flush 2D */
 .showcase-frame:nth-child(2) {
   opacity: 1;
+  transform: none;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
               0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
   border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
