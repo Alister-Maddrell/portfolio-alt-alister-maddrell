@@ -772,9 +772,9 @@ a.ui-text:hover {
 
 @media (min-width: 1024px) {
   .hero-right {
-    width: 55%;
+    width: 50%;
     order: 2;
-    padding: 2rem 0;
+    padding: 2rem 3rem 2rem 0;
   }
 }
 
@@ -988,6 +988,17 @@ a.ui-text:hover {
 }
 
 .scroll-indicator {
+  animation: pulse-down 2s ease-in-out infinite;
+}
+
+.scroll-indicator-wrap {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  opacity: 0.5;
+  transition: opacity 0.5s ease, color 0.6s ease;
   animation: pulse-down 2s ease-in-out infinite;
 }
 

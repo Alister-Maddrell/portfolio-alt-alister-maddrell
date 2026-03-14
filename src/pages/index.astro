@@ -118,12 +118,12 @@ const navItems = [
           <!-- Left: name + role + CTAs -->
           <div class="hero-left">
             <div class="hero-content">
-              <p class="ui-text ui-text-sm slide-desc" style={`color: ${heroAccent}; letter-spacing: 3px; opacity: 0.8;`}>Web Designer &amp; Developer · Sydney</p>
-              <div class="relative mt-4 slide-title">
+              <div class="relative slide-title">
                 <h1 id="hero-title-solid" class="hero-name title-solid" style={`color: ${heroAccent};`}></h1>
                 <div id="hero-title-outline" class="hero-name title-outline absolute inset-0" style={`-webkit-text-stroke-color: ${heroAccent};`} aria-hidden="true"></div>
               </div>
-              <p class="desc-text mt-6 slide-desc" style="opacity: 0.7;">I design and build conversion-focused websites for small businesses — clean, fast, and built to turn visitors into customers.</p>
+              <p class="ui-text ui-text-sm mt-4 slide-desc" style={`color: ${heroAccent}; letter-spacing: 3px; opacity: 0.8;`}>Web Designer &amp; Developer · Sydney</p>
+              <p class="desc-text mt-6 slide-desc" style="opacity: 0.7; max-width: 400px;">I design and build conversion-focused websites for small businesses — clean, fast, and built to turn visitors into customers.</p>
               <div class="flex gap-4 mt-8 slide-cta">
                 <a href="#" class="hero-cta-primary ui-text ui-text-md" data-slide="1" style={`background: ${heroAccent}; color: #1a1a1a;`}>
                   <span>View My Work</span>
@@ -395,16 +395,23 @@ const navItems = [
       <!-- ═══════════════════════════════════════ -->
       <!-- UNIFIED SLIDE NAV                      -->
       <!-- ═══════════════════════════════════════ -->
-      <nav id="slide-nav" class="slide-nav z-40 transition-opacity duration-500 text-white" style="display: none;">
+      <nav id="slide-nav" class="slide-nav z-40 transition-opacity duration-500" style={`color: ${heroAccent};`}>
         <div class="slide-nav-inner">
           {navItems.map((item, i) => (
-            <button class="slide-nav-item" data-slide={item.slideIndex}>
+            <button class={`slide-nav-item ${i === 0 ? 'active' : ''}`} data-slide={item.slideIndex}>
               <span class="slide-nav-label">{item.label}</span>
               <span class="slide-nav-dot"></span>
             </button>
           ))}
         </div>
       </nav>
+
+      <!-- Scroll indicator -->
+      <div id="scroll-indicator" class="scroll-indicator-wrap" style={`color: ${heroAccent};`}>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 4L10 16M10 16L5 11M10 16L15 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════ -->
@@ -422,6 +429,7 @@ const navItems = [
       const appHeader = document.getElementById('app-header');
       const slideNav = document.getElementById('slide-nav');
       const slideNavItems = document.querySelectorAll('#slide-nav .slide-nav-item');
+      const scrollIndicator = document.getElementById('scroll-indicator');
 
       // ─── Go to slide ───
       function goToSlide(index) {
@@ -469,14 +477,9 @@ const navItems = [
         if (slideNav) slideNav.style.color = accentColor;
         if (appHeader) appHeader.style.color = accentColor;
 
-        // Show nav on all slides
-        if (slideNav) {
-          slideNav.style.display = 'flex';
-          requestAnimationFrame(() => {
-            slideNav.style.opacity = '1';
-            slideNav.style.pointerEvents = 'auto';
-          });
-        }
+        // Update nav + scroll indicator color
+        if (slideNav) slideNav.style.color = accentColor;
+        if (scrollIndicator) scrollIndicator.style.color = accentColor;
 
         // Update active nav item
         slideNavItems.forEach((item, i) => {
