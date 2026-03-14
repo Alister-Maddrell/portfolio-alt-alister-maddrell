@@ -679,17 +679,17 @@ const navItems = [
 
           // Wheel to cycle within stack (stops page scroll propagation)
           let stackWheelAccum = 0;
-          const STACK_WHEEL_THRESHOLD = 40;
-          let stackWheelTimeout;
+          const STACK_WHEEL_THRESHOLD = 50;
 
           stack.addEventListener('wheel', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            if (isLocked) return;
+            if (isLocked) {
+              stackWheelAccum = 0;
+              return;
+            }
 
             stackWheelAccum += e.deltaY;
-            clearTimeout(stackWheelTimeout);
-            stackWheelTimeout = setTimeout(() => { stackWheelAccum = 0; }, 150);
 
             if (Math.abs(stackWheelAccum) >= STACK_WHEEL_THRESHOLD) {
               if (stackWheelAccum > 0) setActive(activeIndex + 1);
