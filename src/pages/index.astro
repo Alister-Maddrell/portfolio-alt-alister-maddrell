@@ -89,9 +89,9 @@ const navItems = [
       <!-- ═══════════════════════════════════════ -->
       <!-- FIXED HEADER — always visible          -->
       <!-- ═══════════════════════════════════════ -->
-      <header id="app-header" class="absolute top-0 left-0 w-full h-[90px] px-[6.25%] flex items-center justify-between z-30 text-white">
+      <header id="app-header" class="absolute top-0 left-0 w-full h-[90px] px-[6.25%] flex items-center justify-between z-30 transition-colors duration-600" style={`color: ${heroAccent};`}>
         <a href="#" class="ui-text ui-text-sm" data-slide="0">Alister Maddrell</a>
-        <a href="#" class="ui-text ui-text-sm hover:text-white/70 transition-colors duration-200" data-slide="6">Contact</a>
+        <a href="#" class="ui-text ui-text-sm hover:opacity-70 transition-opacity duration-200" data-slide="6">Contact</a>
       </header>
 
       <!-- ═══════════════════════════════════════ -->
@@ -182,9 +182,10 @@ const navItems = [
                   target="_blank"
                   rel="noopener noreferrer"
                   class="cta-link ui-text ui-text-md mt-[34px] slide-cta"
+                  style={`color: ${project.accent};`}
                 >
                   <span>View Live Site</span>
-                  <span class="cta-arrow" style={`color: ${project.accent};`}>&rarr;</span>
+                  <span class="cta-arrow">&rarr;</span>
                 </a>
               </div>
 
@@ -353,9 +354,10 @@ const navItems = [
         // Crossfade background colour
         if (bgLayer) bgLayer.style.backgroundColor = bgColors[index];
 
-        // Update nav accent colour
+        // Update accent colour on nav + header (chromatic restraint: only two voices)
         const accentColor = accentColors[index];
         if (slideNav) slideNav.style.color = accentColor;
+        if (appHeader) appHeader.style.color = accentColor;
 
         // Show nav on all slides
         if (slideNav) {
