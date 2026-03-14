@@ -422,7 +422,6 @@ a.ui-text:hover {
   border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   opacity: 0.6;
-  transform: rotate(6deg) rotateX(2deg);
   transition: opacity 0.3s ease,
               box-shadow 0.4s ease,
               border-color 0.4s ease;
