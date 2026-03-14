@@ -74,34 +74,34 @@ a {
 }
 
 .slide.active.slide-animating {
-  overflow: hidden;
+  clip-path: inset(0);
 }
 
 .slide.slide-exit-up {
   transform: translateY(-100%);
   visibility: visible;
-  overflow: hidden;
+  clip-path: inset(0);
   transition: transform 0.6s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
 .slide.slide-exit-down {
   transform: translateY(100%);
   visibility: visible;
-  overflow: hidden;
+  clip-path: inset(0);
   transition: transform 0.6s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
 .slide.slide-enter-from-below {
   transform: translateY(100%);
   visibility: visible;
-  overflow: hidden;
+  clip-path: inset(0);
   transition: none;
 }
 
 .slide.slide-enter-from-above {
   transform: translateY(-100%);
   visibility: visible;
-  overflow: hidden;
+  clip-path: inset(0);
   transition: none;
 }
 
