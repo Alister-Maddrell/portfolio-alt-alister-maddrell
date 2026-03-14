@@ -601,14 +601,81 @@ const navItems = [
         const items = strip.querySelectorAll('.hero-strip-item');
         const images = card.querySelectorAll('.hero-card-image');
         const titles = [].map.call(items, el => el.querySelector('.hero-strip-label')?.textContent?.toLowerCase() || '');
+        let currentHeroIndex = 0;
+        let urlAnimId = null;
+
+        function typeUrl(newDomain) {
+          if (urlAnimId) clearInterval(urlAnimId);
+          const prefix = '<span class="card-work-url-proto">https://</span> ';
+          const fullNew = newDomain + '.com.au';
+          // Get current text (strip HTML)
+          const tmp = document.createElement('span');
+          tmp.innerHTML = urlEl.innerHTML;
+          const currentText = tmp.textContent.trim();
+          const cursor = '<span class="hero-url-cursor"></span>';
+
+          let phase = 'delete';
+          let deleteText = currentText;
+          let typeIndex = 0;
+
+          urlAnimId = setInterval(() => {
+            if (phase === 'delete') {
+              if (deleteText.length > 0) {
+                deleteText = deleteText.slice(0, -1);
+                urlEl.innerHTML = prefix + deleteText + cursor;
+              } else {
+                phase = 'type';
+              }
+            } else {
+              if (typeIndex <= fullNew.length) {
+                urlEl.innerHTML = prefix + fullNew.slice(0, typeIndex) + cursor;
+                typeIndex++;
+              } else {
+                urlEl.innerHTML = prefix + fullNew;
+                clearInterval(urlAnimId);
+                urlAnimId = null;
+              }
+            }
+          }, 25);
+        }
 
         items.forEach((item, i) => {
           item.addEventListener('mouseenter', () => {
+            if (i === currentHeroIndex) return;
+            const prevIndex = currentHeroIndex;
+
+            // Update strip active state
             items.forEach(it => it.classList.remove('active'));
             item.classList.add('active');
-            images.forEach(img => img.classList.remove('active'));
-            if (images[i]) images[i].classList.add('active');
-            if (urlEl) urlEl.innerHTML = '<span class="card-work-url-proto">https://</span> ' + titles[i] + '.com.au';
+
+            // Slide image transition
+            const goingDown = i > prevIndex;
+            const prevImg = images[prevIndex];
+            const nextImg = images[i];
+
+            // Exit old image
+            if (prevImg) {
+              prevImg.classList.remove('active', 'enter-from-below');
+              prevImg.classList.add('exit-up');
+              setTimeout(() => prevImg.classList.remove('exit-up'), 600);
+            }
+
+            // Enter new image
+            if (nextImg) {
+              nextImg.classList.remove('active', 'exit-up');
+              nextImg.classList.add('enter-from-below');
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  nextImg.classList.remove('enter-from-below');
+                  nextImg.classList.add('active');
+                });
+              });
+            }
+
+            // Typing URL animation
+            typeUrl(titles[i]);
+
+            currentHeroIndex = i;
           }, { passive: true });
         });
       }
