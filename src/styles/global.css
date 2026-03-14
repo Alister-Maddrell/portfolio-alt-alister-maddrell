@@ -736,7 +736,7 @@ a.ui-text:hover {
   .hero-layout {
     flex-direction: row;
     align-items: stretch;
-    gap: 2rem;
+    gap: 0;
   }
 }
 
@@ -751,7 +751,7 @@ a.ui-text:hover {
 
 @media (min-width: 1024px) {
   .hero-left {
-    width: 45%;
+    width: 40%;
     order: 1;
   }
 }
@@ -772,7 +772,7 @@ a.ui-text:hover {
 
 @media (min-width: 1024px) {
   .hero-right {
-    width: 50%;
+    width: 60%;
     order: 2;
     padding: 2rem 0;
   }
