@@ -774,7 +774,7 @@ a.ui-text:hover {
   .hero-right {
     width: 50%;
     order: 2;
-    padding: 2rem 3rem 2rem 0;
+    padding: 2rem calc(6.25% + 40px) 2rem 0;
   }
 }
 
