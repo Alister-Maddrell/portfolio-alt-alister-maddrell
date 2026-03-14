@@ -26,7 +26,7 @@ const projects = [
     id: 'apex',
     title: 'Apex Performance',
     description: 'Conversion-optimised fitness site built as a sales funnel — multi-step lead capture, membership pricing, and urgency-driven CTAs that turn visitors into trial members.',
-    bg: '#0D0D0D',
+    bg: '#B83A2A',
     textMode: 'light',
     url: 'https://demo-apex-fitness.vercel.app',
     image: '/thumbnails/fitness.webp',
@@ -54,7 +54,7 @@ const projects = [
   },
 ];
 
-const bgColors = ['#0A0A0A', ...projects.map(p => p.bg), '#0A0A0A'];
+const bgColors = ['#3A7D8C', ...projects.map(p => p.bg), '#2E6B5A'];
 const textModes = ['light', ...projects.map(p => p.textMode), 'light'];
 
 const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Associates' ? 'Whitfield' : p.title, slideIndex: i + 1 }));
@@ -83,14 +83,14 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
       <!-- ═══════════════════════════════════════ -->
       <!-- BACKGROUND LAYER                       -->
       <!-- ═══════════════════════════════════════ -->
-      <div id="bg-layer" class="absolute inset-0" style="background-color: #0A0A0A;"></div>
+      <div id="bg-layer" class="absolute inset-0" style="background-color: #3A7D8C;"></div>
 
       <!-- ═══════════════════════════════════════ -->
       <!-- FIXED HEADER — always visible          -->
       <!-- ═══════════════════════════════════════ -->
       <header id="app-header" class="absolute top-0 left-0 w-full h-[90px] px-[6.25%] flex items-center justify-between z-30 text-white">
         <a href="#" class="ui-text ui-text-sm" data-slide="0">Alister Maddrell</a>
-        <a href="#" class="ui-text ui-text-sm hover:text-white/70 transition-colors duration-200" data-slide="6">About</a>
+        <a href="#" class="ui-text ui-text-sm hover:text-white/70 transition-colors duration-200" data-slide="6">Contact</a>
       </header>
 
       <!-- ═══════════════════════════════════════ -->
@@ -143,7 +143,7 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
             <div class="flex flex-col lg:flex-row items-center h-full pt-[90px] px-[6.25%]" style={`color: ${textColor};`}>
               <!-- Left: Text (40%) -->
               <div class="w-full lg:w-[40%] flex flex-col justify-center py-6 lg:py-0 order-2 lg:order-1 overflow-visible">
-                <h2 class="title-display slide-title" style={`color: ${textColor};`}>
+                <h2 class="title-display title-project slide-title" style={`color: ${textColor};`}>
                   {project.title}
                 </h2>
                 <p class="desc-text mt-6 slide-desc">
@@ -209,7 +209,7 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
           <div class="hidden lg:flex w-1/2 items-center justify-center overflow-hidden relative am-monogram" aria-hidden="true"></div>
 
           <!-- Right: Content -->
-          <div class="w-full lg:w-1/2 flex flex-col justify-center px-[6.25%] lg:pr-[6.25%] lg:pl-0 py-8" style="background: #0A0A0A;">
+          <div class="w-full lg:w-1/2 flex flex-col justify-center px-[6.25%] lg:pr-[6.25%] lg:pl-0 py-8">
             <h2 class="title-display slide-title text-white" style="font-size: clamp(32px, 5vw, 90px);">
               Let's Work Together
             </h2>
@@ -226,7 +226,7 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
             </div>
 
             <!-- Contact form -->
-            <form action="https://formspree.io/f/placeholder" method="POST" class="mt-10 space-y-5 max-w-[480px] slide-meta" style="background: #0A0A0A;">
+            <form action="https://formspree.io/f/placeholder" method="POST" class="mt-10 space-y-5 max-w-[480px] slide-meta">
               <div>
                 <label for="name" class="ui-text text-xs text-white block mb-1" style="letter-spacing: 1px;">Name</label>
                 <input

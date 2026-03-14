@@ -125,6 +125,10 @@ a {
   margin: 0;
 }
 
+.title-project {
+  font-size: clamp(36px, 5.5vw, 100px);
+}
+
 .title-solid {
   color: var(--color-hero-text);
 }
