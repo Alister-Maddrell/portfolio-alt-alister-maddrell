@@ -368,24 +368,11 @@ a.ui-text:hover {
   transform: translateX(2px);
 }
 
-.card-work-window {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: flex-end;
-  background-color: rgba(255, 255, 255, 0.04);
-  border-radius: 0.75rem;
-  overflow: hidden;
-  padding: 2rem 0.1875rem 0;
-  width: 100%;
-}
-
 .card-work-window-inner {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.06);
   border-radius: 0.75rem 0.75rem 0 0;
+  overflow: hidden;
   width: 100%;
-  max-width: 82%;
-  margin: 0 auto;
   padding: 0 0.1875rem;
 }
 
@@ -448,6 +435,112 @@ a.ui-text:hover {
 .mobile-dot.active {
   opacity: 1;
   width: 24px;
+}
+
+/* ═══════════════════════════════════════ */
+/* HERO LAYOUT                            */
+/* ═══════════════════════════════════════ */
+
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 10vw, 180px);
+  font-weight: 400;
+  line-height: 1em;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Project preview strip */
+.hero-preview-strip {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: stretch;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 0.5rem 0;
+  scrollbar-width: none;
+}
+
+.hero-preview-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.hero-card {
+  flex: 0 0 auto;
+  width: clamp(140px, 15vw, 200px);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+  position: relative;
+  padding: 0;
+}
+
+.hero-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  border-color: var(--card-accent);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+.hero-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  object-position: top;
+}
+
+.hero-card-label {
+  display: block;
+  padding: 6px 10px;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.25);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-card:hover .hero-card-label {
+  color: #fff;
+}
+
+/* Primary CTA — filled button */
+.hero-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.62em;
+  color: #0d0d0d;
+  background: #ffffff;
+  padding: 10px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-cta-primary:hover {
+  background: rgba(255, 255, 255, 0.88);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hero-cta-primary .cta-arrow {
+  transition: transform 0.2s ease-in-out;
+}
+
+.hero-cta-primary:hover .cta-arrow {
+  transform: translateX(4px);
 }
 
 /* ═══════════════════════════════════════ */

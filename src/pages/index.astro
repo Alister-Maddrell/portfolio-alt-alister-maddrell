@@ -97,34 +97,47 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
       <!-- SLIDE 0: HERO                          -->
       <!-- ═══════════════════════════════════════ -->
       <section id="slide-0" class="slide mounted active">
-        <div class="flex flex-col h-full pt-[90px]">
-          <div class="flex-1 flex items-center px-[6.25%] relative pb-[180px]">
-            <div class="w-full max-w-[700px]">
-              <div class="relative mb-[0.91vw] slide-title">
-                <h1 id="hero-title-solid" class="title-display title-solid"></h1>
-                <div id="hero-title-outline" class="title-display title-outline absolute inset-0" aria-hidden="true"></div>
-              </div>
-              <p class="ui-text ui-text-md text-white mt-2 slide-desc" style="letter-spacing: 1px;">Web Designer & Developer</p>
-              <div class="flex gap-6 mt-8 slide-cta">
-                <a href="#" class="cta-link ui-text ui-text-md text-white" data-slide="1">
-                  <span>View My Work</span>
-                  <span class="cta-arrow">&rarr;</span>
-                </a>
-                <a href="#" class="cta-link ui-text ui-text-md text-white" data-slide="6">
-                  <span>Get in Touch</span>
-                  <span class="cta-arrow">&rarr;</span>
-                </a>
-              </div>
-            </div>
+        <div class="flex flex-col items-center justify-center h-full pt-[90px] px-[6.25%] text-center relative">
+          <!-- Role label -->
+          <p class="ui-text ui-text-sm text-white slide-desc" style="letter-spacing: 3px; opacity: 0.7;">Web Designer &amp; Developer · Sydney</p>
+
+          <!-- Name — massive, center statement -->
+          <div class="relative mt-4 slide-title">
+            <h1 id="hero-title-solid" class="hero-name title-solid"></h1>
+            <div id="hero-title-outline" class="hero-name title-outline absolute inset-0" aria-hidden="true"></div>
           </div>
 
-          <div class="absolute bottom-[80px] left-[6.25%] z-10 slide-bubble">
-            <button class="speech-bubble cursor-pointer border-none" type="button" data-slide="1">
-              Building high-performance websites for Sydney businesses — one pixel at a time.
-            </button>
+          <!-- Project preview strip -->
+          <div class="hero-preview-strip slide-image mt-8 lg:mt-10">
+            {projects.map((project, i) => (
+              <button class="hero-card" data-slide={i + 1} style={`--card-accent: ${project.accent};`}>
+                <img
+                  src={project.image}
+                  alt={`${project.title} preview`}
+                  width="400"
+                  height="248"
+                  loading="eager"
+                  decoding="async"
+                />
+                <span class="hero-card-label">{project.title}</span>
+              </button>
+            ))}
           </div>
 
-          <button class="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator text-white slide-bubble cursor-pointer bg-transparent border-none p-2 rounded-full transition-all duration-200 hover:bg-white/10 hover:scale-110 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1)]" data-slide="1" aria-label="Scroll to projects">
+          <!-- CTAs -->
+          <div class="flex gap-8 mt-8 slide-cta">
+            <a href="#" class="hero-cta-primary ui-text ui-text-md" data-slide="1">
+              <span>View My Work</span>
+              <span class="cta-arrow">&rarr;</span>
+            </a>
+            <a href="#" class="cta-link ui-text ui-text-md text-white" data-slide="6">
+              <span>Get in Touch</span>
+              <span class="cta-arrow">&rarr;</span>
+            </a>
+          </div>
+
+          <!-- Scroll indicator -->
+          <button class="absolute bottom-6 left-1/2 -translate-x-1/2 scroll-indicator text-white slide-bubble cursor-pointer bg-transparent border-none p-2 rounded-full transition-all duration-200 hover:bg-white/10 hover:scale-110 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1)]" data-slide="1" aria-label="Scroll to projects">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 5v14M5 12l7 7 7-7" />
             </svg>
@@ -173,23 +186,21 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
                       <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </a>
                   </div>
-                  <div class="card-work-window">
-                    <div class="card-work-window-inner">
-                      <span class="card-work-dots" aria-hidden="true">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                      </span>
-                      <div class="card-work-img">
-                        <img
-                          src={project.image}
-                          alt={`${project.title} website screenshot`}
-                          width="1440"
-                          height="900"
-                          loading={i === 0 ? "eager" : "lazy"}
-                          decoding="async"
-                        />
-                      </div>
+                  <div class="card-work-window-inner">
+                    <span class="card-work-dots" aria-hidden="true">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </span>
+                    <div class="card-work-img">
+                      <img
+                        src={project.image}
+                        alt={`${project.title} website screenshot`}
+                        width="1440"
+                        height="900"
+                        loading={i === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                      />
                     </div>
                   </div>
                 </div>
