@@ -415,7 +415,11 @@ const navItems = [
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
               nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
-              nextSlide.classList.add('active');
+              nextSlide.classList.add('active', 'slide-animating');
+              // Restore overflow: visible after transition completes
+              setTimeout(() => {
+                nextSlide.classList.remove('slide-animating');
+              }, 650);
             });
           });
         }
