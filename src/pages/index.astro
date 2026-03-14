@@ -607,14 +607,7 @@ const navItems = [
             stack.classList.remove('stack-pos-0', 'stack-pos-1', 'stack-pos-2');
             stack.classList.add(`stack-pos-${activeIndex}`);
 
-            // Update live preview iframe — stop scroll, change page, restart
-            if (iframe && pages[activeIndex]) {
-              stopScroll();
-              const p = pages[activeIndex];
-              const hash = p.includes('#') ? p.substring(p.indexOf('#')) : '';
-              iframe.src = baseUrl + '?preview' + hash;
-              iframe.addEventListener('load', () => startScroll(), { once: true });
-            }
+            // Iframe continues scrolling unaffected by card changes
 
             setTimeout(() => { isLocked = false; }, LOCK_MS);
           }
