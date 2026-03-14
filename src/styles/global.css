@@ -253,10 +253,9 @@ a.ui-text:hover {
 .card-work {
   display: flex;
   flex-direction: column;
-  align-items: center;
   background-color: rgba(255, 255, 255, 0.06);
   border-radius: 1rem;
-  padding: 0 0.5rem 0.5rem;
+  padding: 0 8px 8px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
@@ -270,76 +269,52 @@ a.ui-text:hover {
   border-color: color-mix(in srgb, var(--card-color) 30%, transparent);
 }
 
+/* Topbar: [dots] [url pill] [arrow] */
 .card-work-topbar {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 8px;
+  padding: 12px 6px;
   width: 100%;
 }
 
-@media (min-width: 769px) {
-  .card-work-topbar {
-    gap: 14px;
-    padding: 12px 10px;
-  }
-}
-
-/* Compact topbar for hero preview cards */
-.card-work-topbar-sm {
-  padding: 6px;
-  gap: 8px;
-}
-
-.card-work-topbar-sm .card-work-dots span {
-  flex: 0 0 5px;
-  height: 5px;
-}
-
-.card-work-topbar-sm .card-work-urlbar {
-  padding: 4px 10px;
-}
-
-.card-work-topbar-sm .card-work-url {
-  font-size: 0.625rem;
-}
-
-.card-work-topbar-sm .card-work-globe {
-  width: 0.625rem;
-}
-
+/* Dots — fixed size, never shrink */
 .card-work-dots {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   flex: 0 0 auto;
+  padding: 0;
 }
 
 .card-work-dots span {
-  border-radius: 100px;
-  flex: 0 0 0.375rem;
-  height: 0.375rem;
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
 }
 
 .card-work-dots span:nth-child(1) { background-color: #ef4444; }
 .card-work-dots span:nth-child(2) { background-color: #facc15; }
 .card-work-dots span:nth-child(3) { background-color: #4ade80; }
 
+/* URL pill — takes remaining space, truncates */
 .card-work-urlbar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 6px;
   background-color: rgba(255, 255, 255, 0.08);
   border-radius: 100px;
   padding: 6px 14px;
-  flex: 1 1 0;
+  flex: 1 1 0%;
   min-width: 0;
   overflow: hidden;
 }
 
 .card-work-globe {
-  width: 0.75rem;
-  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
   color: rgba(255, 255, 255, 0.5);
 }
 
@@ -347,7 +322,7 @@ a.ui-text:hover {
   font-family: var(--font-body);
   font-size: 0.75rem;
   font-weight: 400;
-  line-height: 0.875rem;
+  line-height: 1;
   color: rgba(255, 255, 255, 0.5);
   white-space: nowrap;
   overflow: hidden;
@@ -364,14 +339,15 @@ a.ui-text:hover {
   text-transform: uppercase;
 }
 
+/* Arrow capsule — fixed size */
 .card-work-capsule {
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 100px;
-  padding: 0.375rem 0.5625rem;
-  flex-shrink: 0;
+  padding: 6px 9px;
+  flex: 0 0 auto;
   color: rgba(255, 255, 255, 0.6);
   transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
 }
@@ -391,8 +367,9 @@ a.ui-text:hover {
   transform: translateX(2px);
 }
 
+/* Screenshot — all-corner radius */
 .card-work-img {
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   overflow: hidden;
   width: 100%;
 }
@@ -403,6 +380,31 @@ a.ui-text:hover {
   display: block;
   object-fit: cover;
   object-position: top;
+}
+
+/* ─── Mini variant (hero preview cards) ─── */
+
+.card-work-topbar--mini {
+  gap: 6px;
+  padding: 6px 4px;
+}
+
+.card-work-dots--mini span {
+  width: 5px;
+  height: 5px;
+}
+
+.card-work-dots--mini {
+  gap: 4px;
+}
+
+.card-work-urlbar--mini {
+  padding: 3px 8px;
+  gap: 4px;
+}
+
+.card-work-urlbar--mini .card-work-url {
+  font-size: 0.5625rem;
 }
 
 /* ═══════════════════════════════════════ */
@@ -468,14 +470,11 @@ a.ui-text:hover {
   flex: 0 0 auto;
   width: clamp(140px, 15vw, 200px);
   cursor: pointer;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.35s ease,
-              box-shadow 0.35s ease;
+  padding: 0 4px 4px;
 }
 
 .hero-card:hover {
   transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
 }
 
 /* Primary CTA — filled button */
