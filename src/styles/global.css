@@ -435,6 +435,9 @@ a.ui-text:hover {
   display: flex;
   align-items: center;
   gap: 0;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
   cursor: pointer;
   border: none;
   background: none;
@@ -539,9 +542,16 @@ a.ui-text:hover {
   align-items: stretch;
   max-width: 100%;
   overflow-x: auto;
-  overflow-y: visible;
+  overflow-y: hidden;
   padding: 0.5rem 0;
   scrollbar-width: none;
+}
+
+@media (max-width: 1023px) {
+  .hero-preview-strip {
+    justify-content: flex-start;
+    padding: 0.5rem 1rem;
+  }
 }
 
 .hero-preview-strip::-webkit-scrollbar {
@@ -550,7 +560,7 @@ a.ui-text:hover {
 
 .hero-card {
   flex: 0 0 auto;
-  width: clamp(140px, 15vw, 200px);
+  width: clamp(120px, 15vw, 200px);
   cursor: pointer;
   padding: 0 4px 4px;
 }
