@@ -402,19 +402,19 @@ a.ui-text:hover {
 }
 
 /* ═══════════════════════════════════════ */
-/* SHOWCASE STACK — 3 stacked screenshots */
+/* SHOWCASE STACK — 3D perspective stack  */
 /* ═══════════════════════════════════════ */
 
 .showcase-stack {
+  perspective: 1200px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
   max-width: calc(68vh - 3.125vw);
 }
 
 .showcase-frame {
-  --offset: 0px;
   display: flex;
   flex-direction: column;
   background-color: color-mix(in srgb, var(--card-color) 12%, rgba(255, 255, 255, 0.04));
@@ -422,50 +422,92 @@ a.ui-text:hover {
   padding: 0 6px 6px;
   border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.4s ease,
+  transform-origin: right center;
+  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.9);
+  opacity: 0.5;
+  transition: transform 0.55s cubic-bezier(0.22, 1.4, 0.36, 1),
+              opacity 0.3s ease,
               box-shadow 0.4s ease,
               border-color 0.4s ease;
-  opacity: 0.55;
-  transform: translateX(var(--offset)) skewY(-2deg);
   will-change: transform;
 }
 
-/* Diagonal offset: top right → bottom left */
-.showcase-frame:nth-child(1) { --offset: 35px; }
-.showcase-frame:nth-child(2) { --offset: 0px; }
-.showcase-frame:nth-child(3) { --offset: -35px; }
-
 /* Middle frame (landing page) is focused by default */
 .showcase-frame--focused {
+  transform: rotateY(-6deg) rotateX(1.5deg) scale(1);
   opacity: 1;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4),
               0 0 20px color-mix(in srgb, var(--card-color) 15%, transparent);
   border-color: color-mix(in srgb, var(--card-color) 40%, transparent);
 }
 
-/* Hover: focused frame comes forward, others recede */
+/* ─── Hover: focus switching with bounce ─── */
+
 .showcase-stack:hover .showcase-frame {
   opacity: 0.4;
+  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.88);
 }
 
 .showcase-stack:hover .showcase-frame:hover {
   opacity: 1;
-  transform: translateX(0) skewY(-2deg) scale(1.03);
+  transform: rotateY(-6deg) rotateX(1.5deg) scale(1);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5),
               0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
   border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
   z-index: 2;
 }
 
-/* Mobile: reduce offsets and show single column */
+/* Push cards away when top card hovered */
+.showcase-stack:has(.showcase-frame:nth-child(1):hover) .showcase-frame:nth-child(2) {
+  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.88) translateY(14px);
+}
+.showcase-stack:has(.showcase-frame:nth-child(1):hover) .showcase-frame:nth-child(3) {
+  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.88) translateY(22px);
+}
+
+/* Push cards away when bottom card hovered */
+.showcase-stack:has(.showcase-frame:nth-child(3):hover) .showcase-frame:nth-child(1) {
+  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.88) translateY(-22px);
+}
+.showcase-stack:has(.showcase-frame:nth-child(3):hover) .showcase-frame:nth-child(2) {
+  transform: rotateY(-6deg) rotateX(1.5deg) scale(0.88) translateY(-14px);
+}
+
+/* ─── Mobile: horizontal row ─── */
 @media (max-width: 1023px) {
   .showcase-stack {
+    flex-direction: row;
+    gap: 6px;
     max-width: 100%;
+    perspective: none;
   }
 
-  .showcase-frame:nth-child(1) { --offset: 15px; }
-  .showcase-frame:nth-child(3) { --offset: -15px; }
+  .showcase-frame {
+    transform-origin: center center;
+    transform: scale(0.92);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .showcase-frame--focused {
+    transform: scale(1);
+  }
+
+  .showcase-stack:hover .showcase-frame {
+    transform: scale(0.9);
+  }
+
+  .showcase-stack:hover .showcase-frame:hover {
+    transform: scale(1);
+  }
+
+  /* Reset push effects for horizontal layout */
+  .showcase-stack:has(.showcase-frame:nth-child(1):hover) .showcase-frame:nth-child(2),
+  .showcase-stack:has(.showcase-frame:nth-child(1):hover) .showcase-frame:nth-child(3),
+  .showcase-stack:has(.showcase-frame:nth-child(3):hover) .showcase-frame:nth-child(1),
+  .showcase-stack:has(.showcase-frame:nth-child(3):hover) .showcase-frame:nth-child(2) {
+    transform: scale(0.9);
+  }
 }
 
 /* ═══════════════════════════════════════ */
