@@ -1,32 +1,37 @@
 {
   "hartley": {
-    "background": "#543c2b",
-    "accent": "#afdeda",
+    "background": "#9b5d2c",
+    "accent": "#e3cfc0",
     "text": "#f0f0f0",
-    "textMode": "light"
+    "textMode": "light",
+    "wash": "#b98e6b"
   },
   "kin": {
-    "background": "#4b4e32",
-    "accent": "#b5b8d9",
+    "background": "#247b2a",
+    "accent": "#c0e3c2",
     "text": "#f0f0f0",
-    "textMode": "light"
+    "textMode": "light",
+    "wash": "#66a36a"
   },
   "apex": {
-    "background": "#593326",
-    "accent": "#ace2cb",
+    "background": "#67391e",
+    "accent": "#94c1db",
     "text": "#f0f0f0",
-    "textMode": "light"
+    "textMode": "light",
+    "wash": "#957462"
   },
   "whitfield": {
-    "background": "#324e4b",
-    "accent": "#d9b5c4",
+    "background": "#22776d",
+    "accent": "#c0e3de",
     "text": "#f0f0f0",
-    "textMode": "light"
+    "textMode": "light",
+    "wash": "#64a099"
   },
   "luma": {
-    "background": "#4e3234",
-    "accent": "#b5d6d9",
+    "background": "#306ba6",
+    "accent": "#c0d1e3",
     "text": "#f0f0f0",
-    "textMode": "light"
+    "textMode": "light",
+    "wash": "#6e97c1"
   }
 }

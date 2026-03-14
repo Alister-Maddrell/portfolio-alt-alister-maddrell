@@ -1,13 +1,15 @@
 /**
  * extract-palette.mjs
- * Extracts dominant colours from project thumbnails and generates
- * harmonious complementary palettes (background + accent pairs).
+ * Robin-Noguier-style palette generation with pop-art energy.
  *
- * Strategy:
- * 1. Filter to chromatic pixels, find hue peaks
- * 2. When multiple projects share similar hues, use secondary peaks
- * 3. Different accent rotation per project for variety
- * 4. Verify WCAG contrast ratios
+ * Colour logic:
+ *   ONE leads, ONE supports. The pair shares tonal DNA.
+ *   Vivid dominant  → TINT: bg = bold hue, title = same hue tint (lighter, less saturated)
+ *   Muted dominant  → COMPLEMENT: bg = dominant, title = complement at matched saturation
+ *   Neutral dominant → NEUTRAL+CHROMATIC: dark bg, title = vivid secondary colour
+ *
+ * Clusters scored by count * saturation (not raw count) so brand colours
+ * beat page backgrounds.
  */
 
 import { createRequire } from 'module';
@@ -17,7 +19,6 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-
 const require = createRequire(join(ROOT, 'node_modules', 'astro', 'package.json'));
 const sharp = require('sharp');
 
@@ -29,10 +30,7 @@ const PROJECTS = [
   { id: 'luma',    file: 'hair.webp' },
 ];
 
-// Varied accent rotations for visual diversity
-const ACCENT_ROTATIONS = [150, 170, 140, 160, 190];
-
-// ─── Colour helpers ───
+// ─── Colour math ───
 
 function rgbToHsl(r, g, b) {
   r /= 255; g /= 255; b /= 255;
@@ -53,23 +51,21 @@ function rgbToHsl(r, g, b) {
 
 function hslToRgb(h, s, l) {
   h /= 360; s /= 100; l /= 100;
-  let r, g, b;
-  if (s === 0) { r = g = b = l; }
-  else {
-    const hue2rgb = (p, q, t) => {
-      if (t < 0) t += 1; if (t > 1) t -= 1;
-      if (t < 1/6) return p + (q - p) * 6 * t;
-      if (t < 1/2) return q;
-      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-      return p;
-    };
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
-    r = hue2rgb(p, q, h + 1/3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1/3);
-  }
-  return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
+  if (s === 0) { const v = Math.round(l * 255); return { r: v, g: v, b: v }; }
+  const hue2rgb = (p, q, t) => {
+    if (t < 0) t += 1; if (t > 1) t -= 1;
+    if (t < 1/6) return p + (q - p) * 6 * t;
+    if (t < 1/2) return q;
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+  };
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  return {
+    r: Math.round(hue2rgb(p, q, h + 1/3) * 255),
+    g: Math.round(hue2rgb(p, q, h) * 255),
+    b: Math.round(hue2rgb(p, q, h - 1/3) * 255),
+  };
 }
 
 function rgbToHex(r, g, b) {
@@ -77,203 +73,259 @@ function rgbToHex(r, g, b) {
 }
 
 function relativeLuminance(r, g, b) {
-  const [rs, gs, bs] = [r, g, b].map(c => {
-    c /= 255;
-    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  });
-  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+  const f = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
 }
 
 function contrastRatio(r1, g1, b1, r2, g2, b2) {
-  const l1 = relativeLuminance(r1, g1, b1);
-  const l2 = relativeLuminance(r2, g2, b2);
+  const l1 = relativeLuminance(r1, g1, b1), l2 = relativeLuminance(r2, g2, b2);
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 }
 
-function hueDist(a, b) {
-  const d = Math.abs(a - b);
-  return Math.min(d, 360 - d);
+function hueDist(a, b) { const d = Math.abs(a - b); return Math.min(d, 360 - d); }
+
+// ─── Median-cut ───
+
+function medianCut(pixels, n) {
+  const widest = (bucket) => {
+    let r0=255,r1=0,g0=255,g1=0,b0=255,b1=0;
+    for (const [r,g,b] of bucket) {
+      if(r<r0)r0=r;if(r>r1)r1=r;if(g<g0)g0=g;if(g>g1)g1=g;if(b<b0)b0=b;if(b>b1)b1=b;
+    }
+    const d=[r1-r0,g1-g0,b1-b0]; return d.indexOf(Math.max(...d));
+  };
+  const avg = (bucket) => {
+    let rs=0,gs=0,bs=0;
+    for (const [r,g,b] of bucket) { rs+=r; gs+=g; bs+=b; }
+    const n=bucket.length;
+    return [Math.round(rs/n),Math.round(gs/n),Math.round(bs/n)];
+  };
+  let buckets = [pixels];
+  while (buckets.length < n) {
+    let bi=0, br=0;
+    for (let i=0;i<buckets.length;i++) {
+      if (buckets[i].length<2) continue;
+      const ch=widest(buckets[i]);
+      const vals=buckets[i].map(p=>p[ch]);
+      const range=Math.max(...vals)-Math.min(...vals);
+      if (range>br){br=range;bi=i;}
+    }
+    const b=buckets[bi]; if(b.length<2)break;
+    const ch=widest(b); b.sort((a,c)=>a[ch]-c[ch]);
+    const m=b.length>>1;
+    buckets.splice(bi,1,b.slice(0,m),b.slice(m));
+  }
+  return buckets.map(b => ({ rgb: avg(b), count: b.length }));
 }
 
-// ─── Hue extraction ───
+// ─── Extract ───
 
-function findHuePeaks(pixels) {
-  const chromatic = [];
-  for (const [r, g, b] of pixels) {
-    const hsl = rgbToHsl(r, g, b);
-    // Strict filter: real colours only (S>20%, L 15-85%)
-    if (hsl.s > 20 && hsl.l > 15 && hsl.l < 85) {
-      chromatic.push(hsl);
+async function extractClusters(imagePath) {
+  const { data } = await sharp(imagePath)
+    .resize(80, 80, { fit: 'cover' })
+    .removeAlpha().raw()
+    .toBuffer({ resolveWithObject: true });
+  const px = [];
+  for (let i = 0; i < data.length; i += 3) px.push([data[i], data[i+1], data[i+2]]);
+  return medianCut(px, 8).map(c => {
+    const hsl = rgbToHsl(...c.rgb);
+    return { ...c, hsl };
+  });
+}
+
+// ─── Find character colour ───
+// The most chromatic mid-tone cluster — the colour that gives the image its personality.
+// Prioritises saturation and usable lightness (L 20–70) over raw pixel count.
+
+function findCharacterColour(clusters) {
+  let best = null, bestScore = 0;
+  for (const c of clusters) {
+    const { s, l } = c.hsl;
+    // Lightness weight peaks at L:35-55 (ideal bg range)
+    let lw = 1;
+    if (l < 10 || l > 92) lw = 0;
+    else if (l < 20 || l > 80) lw = 0.15;
+    else if (l < 25 || l > 70) lw = 0.5;
+    // Saturation is king — minimum 8 to qualify
+    if (s < 8) continue;
+    const score = s * lw * Math.sqrt(c.count);
+    if (score > bestScore) { bestScore = score; best = c; }
+  }
+  return best;
+}
+
+// ─── Strategy selection ───
+
+function pickStrategy(clusters) {
+  const character = findCharacterColour(clusters);
+
+  if (character && character.hsl.s >= 35) {
+    // Vivid character → TINT (same hue family, bold bg + soft accent)
+    return tintMethod(character.hsl.h, character.hsl.s);
+  }
+
+  if (character && character.hsl.s >= 15) {
+    // Muted but chromatic → COMPLEMENT
+    return complementMethod(character.hsl.h, character.hsl.s);
+  }
+
+  // Truly neutral image — use the image's subtle colour temperature
+  // Weight by saturation AND count to find the true tonal character
+  let bestH = 30, bestWeight = 0;
+  for (const c of clusters) {
+    if (c.hsl.l > 15 && c.hsl.l < 85 && c.hsl.s > 2) {
+      const w = c.hsl.s * Math.sqrt(c.count);
+      if (w > bestWeight) { bestWeight = w; bestH = c.hsl.h; }
     }
   }
-
-  if (chromatic.length < 10) return [];
-
-  // Hue histogram — 36 bins of 10°
-  const bins = new Array(36).fill(0);
-  const satSum = new Array(36).fill(0);
-
-  for (const { h, s } of chromatic) {
-    const bin = Math.floor(h / 10) % 36;
-    bins[bin]++;
-    satSum[bin] += s;
-  }
-
-  const peaks = [];
-  for (let i = 0; i < 36; i++) {
-    if (bins[i] < 3) continue; // minimum pixel threshold
-    const avgSat = satSum[i] / bins[i];
-    peaks.push({ hue: i * 10 + 5, count: bins[i], avgSat, score: bins[i] * avgSat });
-  }
-  peaks.sort((a, b) => b.score - a.score);
-
-  return peaks;
+  // Boost into bold palette — pop-art rule
+  return tintMethod(bestH, 55);
 }
 
-// ─── Palette generation ───
+// ─── Palette strategies ───
 
-function makePalette(hue, sat, rotation) {
-  const bgHsl = {
-    h: hue,
-    s: Math.max(Math.min(sat * 0.6, 45), 22),
-    l: 25,
+function tintMethod(hue, sat) {
+  // Bold saturated bg, tinted title with enough colour for pop-art energy
+  return {
+    strategy: 'TINT',
+    bgHsl:    { h: hue, s: Math.max(sat, 55), l: 42 },
+    titleHsl: { h: hue, s: 38, l: 82 },
   };
-  const accentHsl = {
-    h: (hue + rotation) % 360,
-    s: Math.max(Math.min(bgHsl.s + 10, 48), 25),
-    l: 78,
-  };
-  return { bgHsl, accentHsl };
 }
 
-function ensureContrast(bgHsl, accentHsl) {
-  const textRgb = [240, 240, 240];
+function complementMethod(hue, sat) {
+  // Darker saturated bg, vivid complement accent — clear distinction from TINT
+  const titleHue = (hue + 180) % 360;
+  return {
+    strategy: 'COMPLEMENT',
+    bgHsl:    { h: hue, s: Math.max(sat + 10, 50), l: 26 },
+    titleHsl: { h: titleHue, s: Math.max(sat, 45), l: 72 },
+  };
+}
 
-  let bgRgb = hslToRgb(bgHsl.h, bgHsl.s, bgHsl.l);
-  let textCR = contrastRatio(bgRgb.r, bgRgb.g, bgRgb.b, ...textRgb);
+// ─── Contrast enforcement ───
+
+function enforce(bgHsl, titleHsl) {
+  const textRgb = bgHsl.l < 50 ? [240, 240, 240] : [13, 13, 13];
+
+  let bg = hslToRgb(bgHsl.h, bgHsl.s, bgHsl.l);
+  let textCR = contrastRatio(bg.r, bg.g, bg.b, ...textRgb);
   while (textCR < 4.5 && bgHsl.l > 8) {
     bgHsl.l -= 1;
-    bgRgb = hslToRgb(bgHsl.h, bgHsl.s, bgHsl.l);
-    textCR = contrastRatio(bgRgb.r, bgRgb.g, bgRgb.b, ...textRgb);
+    bg = hslToRgb(bgHsl.h, bgHsl.s, bgHsl.l);
+    textCR = contrastRatio(bg.r, bg.g, bg.b, ...textRgb);
   }
 
-  let accentRgb = hslToRgb(accentHsl.h, accentHsl.s, accentHsl.l);
-  let accentCR = contrastRatio(bgRgb.r, bgRgb.g, bgRgb.b, accentRgb.r, accentRgb.g, accentRgb.b);
-  while (accentCR < 3 && accentHsl.l < 95) {
-    accentHsl.l += 1;
-    accentRgb = hslToRgb(accentHsl.h, accentHsl.s, accentHsl.l);
-    accentCR = contrastRatio(bgRgb.r, bgRgb.g, bgRgb.b, accentRgb.r, accentRgb.g, accentRgb.b);
+  let title = hslToRgb(titleHsl.h, titleHsl.s, titleHsl.l);
+  let titleCR = contrastRatio(bg.r, bg.g, bg.b, title.r, title.g, title.b);
+  while (titleCR < 3 && titleHsl.l < 95) {
+    titleHsl.l += 1;
+    title = hslToRgb(titleHsl.h, titleHsl.s, titleHsl.l);
+    titleCR = contrastRatio(bg.r, bg.g, bg.b, title.r, title.g, title.b);
   }
 
   return {
-    bgHsl, accentHsl,
-    bgRgb: [bgRgb.r, bgRgb.g, bgRgb.b],
-    accentRgb: [accentRgb.r, accentRgb.g, accentRgb.b],
+    bgHsl, titleHsl,
+    bgRgb: [bg.r, bg.g, bg.b],
+    titleRgb: [title.r, title.g, title.b],
+    textRgb,
     textCR: textCR.toFixed(2),
-    accentCR: accentCR.toFixed(2),
+    titleCR: titleCR.toFixed(2),
   };
+}
+
+// ─── Post-process: ensure variety ───
+
+function ensureVariety(results) {
+  // Build a list of "taken" hue slots. When a project collides,
+  // try: 1) flip to COMPLEMENT, 2) shift +90°, 3) shift +180°
+  const taken = [];
+
+  for (const r of results) {
+    const collisions = taken.filter(h => hueDist(h, r.bgHsl.h) < 35);
+
+    if (collisions.length === 0) {
+      taken.push(r.bgHsl.h);
+      continue;
+    }
+
+    if (collisions.length === 1 && r.strategy === 'TINT') {
+      // First collision — flip to COMPLEMENT (same hue, opposite accent)
+      const h = r.bgHsl.h;
+      const s = r.bgHsl.s;
+      r.strategy = 'COMPLEMENT';
+      r.bgHsl = { h, s: Math.max(s, 50), l: 26 };
+      r.titleHsl = { h: (h + 180) % 360, s: Math.max(s - 5, 45), l: 72 };
+      taken.push(h);
+    } else {
+      // Too crowded — rotate hue to find an open slot
+      for (const offset of [90, 180, 270, 45, 135]) {
+        const newH = (r.bgHsl.h + offset) % 360;
+        if (taken.every(h => hueDist(h, newH) >= 35)) {
+          r.bgHsl.h = newH;
+          r.titleHsl.h = r.strategy === 'COMPLEMENT'
+            ? (newH + 180) % 360 : newH;
+          taken.push(newH);
+          break;
+        }
+      }
+    }
+  }
 }
 
 // ─── Main ───
 
 async function main() {
-  console.log('\n  Palette Extraction\n  ══════════════════\n');
+  console.log('\n  Palette Generation (Robin-style)\n  ════════════════════════════════\n');
 
-  // Phase 1: extract all hue peaks
-  const projectPeaks = [];
+  const results = [];
 
   for (const project of PROJECTS) {
     const imagePath = join(ROOT, 'public', 'thumbnails', project.file);
-    if (!existsSync(imagePath)) {
-      projectPeaks.push({ id: project.id, peaks: [] });
-      continue;
-    }
-    const { data } = await sharp(imagePath)
-      .resize(100, 100, { fit: 'cover' })
-      .removeAlpha()
-      .raw()
-      .toBuffer({ resolveWithObject: true });
+    if (!existsSync(imagePath)) { console.log(`  ⚠ ${project.id}: not found`); continue; }
 
-    const pixels = [];
-    for (let i = 0; i < data.length; i += 3) {
-      pixels.push([data[i], data[i + 1], data[i + 2]]);
-    }
-    projectPeaks.push({ id: project.id, peaks: findHuePeaks(pixels) });
+    const clusters = await extractClusters(imagePath);
+    const character = findCharacterColour(clusters);
+    const result = pickStrategy(clusters);
+    result.id = project.id;
+    result.character = character || clusters[0];
+    results.push(result);
   }
 
-  // Phase 2: assign hues — use secondary peaks when primaries collide
-  const MIN_SEP = 35;
-  const assignedHues = [];
-  const assignedSats = [];
-  const peakUsed = []; // which peak index was used
+  // Sort by character saturation — vivid images keep their hue, neutral ones get shifted
+  const order = results.map((r, i) => i);
+  const sortedByPriority = [...results].sort((a, b) => b.character.hsl.s - a.character.hsl.s);
+  ensureVariety(sortedByPriority);
+  // Restore original order
+  results.length = 0;
+  results.push(...order.map(i => sortedByPriority.find(r => r.id === PROJECTS[i].id)));
 
-  for (let i = 0; i < projectPeaks.length; i++) {
-    const { peaks } = projectPeaks[i];
-    if (peaks.length === 0) {
-      assignedHues.push(i * 72);
-      assignedSats.push(40);
-      peakUsed.push(-1);
-      continue;
-    }
-
-    // Try each peak until we find one that's far enough from already-assigned hues
-    let chosen = null;
-    for (const peak of peaks) {
-      const tooClose = assignedHues.some(h => hueDist(peak.hue, h) < MIN_SEP);
-      if (!tooClose) {
-        chosen = peak;
-        break;
-      }
-    }
-
-    // If all peaks collide, still use the top peak
-    if (!chosen) chosen = peaks[0];
-
-    assignedHues.push(chosen.hue);
-    assignedSats.push(chosen.avgSat);
-    peakUsed.push(peaks.indexOf(chosen));
-  }
-
-  // Phase 3: generate palettes
+  // Enforce contrast and output
   const palettes = {};
 
-  for (let i = 0; i < PROJECTS.length; i++) {
-    const project = PROJECTS[i];
-    const rotation = ACCENT_ROTATIONS[i];
-    const hue = assignedHues[i];
-    const sat = assignedSats[i];
-    const peaks = projectPeaks[i].peaks;
+  for (const r of results) {
+    const final = enforce(r.bgHsl, r.titleHsl);
+    const bgHex = rgbToHex(...final.bgRgb);
+    const titleHex = rgbToHex(...final.titleRgb);
+    const textMode = final.bgHsl.l < 50 ? 'light' : 'dark';
+    const textHex = textMode === 'light' ? '#f0f0f0' : '#0d0d0d';
+    const washHex = rgbToHex(...final.bgRgb.map(c => Math.round(c * 0.7 + 255 * 0.3)));
 
-    const { bgHsl, accentHsl } = makePalette(hue, sat, rotation);
-    const result = ensureContrast(bgHsl, accentHsl);
-    const bgHex = rgbToHex(...result.bgRgb);
-    const accentHex = rgbToHex(...result.accentRgb);
+    palettes[r.id] = { background: bgHex, accent: titleHex, text: textHex, textMode, wash: washHex };
 
-    palettes[project.id] = {
-      background: bgHex,
-      accent: accentHex,
-      text: '#f0f0f0',
-      textMode: 'light',
-    };
-
-    const peakInfo = peaks.length > 0
-      ? peaks.slice(0, 3).map((p, j) => `${p.hue}°${j === peakUsed[i] ? '*' : ''}`).join(', ')
-      : 'fallback';
-
-    console.log(`  ${project.id.toUpperCase()}`);
-    console.log(`    Peaks:       ${peakInfo}  (used: ${hue}° + ${rotation}° rotation)`);
-    console.log(`    Background:  ${bgHex}  (H:${result.bgHsl.h.toFixed(0)} S:${result.bgHsl.s.toFixed(0)} L:${result.bgHsl.l.toFixed(0)})`);
-    console.log(`    Accent:      ${accentHex}  (H:${result.accentHsl.h.toFixed(0)} S:${result.accentHsl.s.toFixed(0)} L:${result.accentHsl.l.toFixed(0)})`);
-    console.log(`    Contrast:    accent ${result.accentCR}:1  text ${result.textCR}:1`);
+    const cHex = rgbToHex(...r.character.rgb);
+    console.log(`  ${r.id.toUpperCase()}`);
+    console.log(`    Character:   ${cHex}  H:${r.character.hsl.h.toFixed(0)}  S:${r.character.hsl.s.toFixed(0)}  L:${r.character.hsl.l.toFixed(0)}`);
+    console.log(`    Strategy:    ${r.strategy}`);
+    console.log(`    Background:  ${bgHex}  (H:${final.bgHsl.h.toFixed(0)} S:${final.bgHsl.s.toFixed(0)} L:${final.bgHsl.l.toFixed(0)})`);
+    console.log(`    Accent:      ${titleHex}  (H:${final.titleHsl.h.toFixed(0)} S:${final.titleHsl.s.toFixed(0)} L:${final.titleHsl.l.toFixed(0)})`);
+    console.log(`    Text:        ${textHex}  Wash: ${washHex}`);
+    console.log(`    Contrast:    title ${final.titleCR}:1   text ${final.textCR}:1`);
     console.log('');
   }
 
-  const outPath = join(ROOT, 'src', 'data', 'palettes.json');
-  writeFileSync(outPath, JSON.stringify(palettes, null, 2));
-  console.log(`  ✓ Saved to src/data/palettes.json\n`);
+  writeFileSync(join(ROOT, 'src', 'data', 'palettes.json'), JSON.stringify(palettes, null, 2));
+  console.log('  ✓ Saved to src/data/palettes.json\n');
 }
 
-main().catch(err => {
-  console.error('Palette extraction failed:', err);
-  process.exit(1);
-});
+main().catch(err => { console.error(err); process.exit(1); });
