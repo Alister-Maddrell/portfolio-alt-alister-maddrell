@@ -28,10 +28,24 @@
     "wash": "rgba(34, 119, 109, 0.7)"
   },
   "luma": {
-    "background": "#866727",
-    "accent": "#97d3e8",
+    "background": "#8e6629",
+    "accent": "#97d9e8",
     "text": "#f0f0f0",
     "textMode": "light",
-    "wash": "rgba(134, 103, 39, 0.7)"
+    "wash": "rgba(142, 102, 41, 0.7)"
+  },
+  "flowline": {
+    "background": "#0374ab",
+    "accent": "#101b5bc",
+    "text": "#f0f0f0",
+    "textMode": "light",
+    "wash": "rgba(3, 116, 171, 0.7)"
+  },
+  "evergreen": {
+    "background": "#9a5d2d",
+    "accent": "#97e5e8",
+    "text": "#f0f0f0",
+    "textMode": "light",
+    "wash": "rgba(154, 93, 45, 0.7)"
   }
 }

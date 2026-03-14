@@ -22,7 +22,9 @@ const PROJECTS = [
   { id: 'kin',     file: 'cafe.webp' },
   { id: 'apex',    file: 'fitness.webp' },
   { id: 'whitfield', file: 'accounting.webp' },
-  { id: 'luma',    file: 'hair.webp' },
+  { id: 'luma',    file: 'beauty.webp' },
+  { id: 'flowline', file: 'saas.webp' },
+  { id: 'evergreen', file: 'events.webp' },
 ];
 
 // ─── Colour math ───

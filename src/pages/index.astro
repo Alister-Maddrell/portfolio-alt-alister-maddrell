@@ -46,12 +46,32 @@ const projects = [
   {
     id: 'luma',
     title: 'LUMA',
-    description: 'Luxury appointment-based site with a full booking flow, expandable service menu, transformation gallery, and team showcase — replacing phone bookings with digital elegance.',
-    url: 'https://demo-luma-hair-beauty.vercel.app',
-    pages: ['/#services', '/', '/#book'],
-    image: '/thumbnails/hair.webp',
-    image2: '/thumbnails/hair-2.webp',
-    image3: '/thumbnails/hair-3.webp',
+    description: 'Premium skincare e-commerce site with product filtering, detailed product pages, size selectors, and a polished add-to-bag flow — warm luxury that drives conversions.',
+    url: 'https://demo-luma-beauty.vercel.app',
+    pages: ['/shop', '/', '/about'],
+    image: '/thumbnails/beauty.webp',
+    image2: '/thumbnails/beauty-2.webp',
+    image3: '/thumbnails/beauty-3.webp',
+  },
+  {
+    id: 'flowline',
+    title: 'Flowline',
+    description: 'Dark-mode SaaS landing page with gradient mesh hero, tabbed product showcase, tiered pricing, and social proof — built for sign-ups.',
+    url: 'https://demo-flowline-saas.vercel.app',
+    pages: ['/#features', '/', '/#pricing'],
+    image: '/thumbnails/saas.webp',
+    image2: '/thumbnails/saas-2.webp',
+    image3: '/thumbnails/saas-3.webp',
+  },
+  {
+    id: 'evergreen',
+    title: 'Evergreen',
+    description: 'Romantic editorial wedding & event planning site with filterable portfolio, lightbox gallery, service packages, and an elegant multi-field enquiry form.',
+    url: 'https://demo-evergreen-events.vercel.app',
+    pages: ['/portfolio', '/', '/services'],
+    image: '/thumbnails/events.webp',
+    image2: '/thumbnails/events-2.webp',
+    image3: '/thumbnails/events-3.webp',
   },
 ].map(p => ({
   ...p,
@@ -107,7 +127,7 @@ const navItems = [
       <!-- ═══════════════════════════════════════ -->
       <header id="app-header" class="absolute top-0 left-0 w-full h-[90px] pr-[6.25%] pl-[calc(6.25%+16px)] flex items-center justify-between z-30 transition-colors duration-600" style={`color: ${heroAccent};`}>
         <a href="#" class="ui-text ui-text-sm flex items-center min-h-[44px]" data-slide="0">Alister Maddrell</a>
-        <a href="#" class="ui-text ui-text-sm hover:opacity-70 transition-opacity duration-200 flex items-center min-h-[44px]" data-slide="6">Contact</a>
+        <a href="#" class="ui-text ui-text-sm hover:opacity-70 transition-opacity duration-200 flex items-center min-h-[44px]" data-slide="8">Contact</a>
       </header>
 
       <!-- ═══════════════════════════════════════ -->
@@ -130,7 +150,7 @@ const navItems = [
                   <span>View My Work</span>
                   <span class="cta-arrow">&rarr;</span>
                 </a>
-                <a href="#" class="cta-link ui-text ui-text-md text-white" data-slide="6">
+                <a href="#" class="cta-link ui-text ui-text-md text-white" data-slide="8">
                   <span>Get in Touch</span>
                   <span class="cta-arrow">&rarr;</span>
                 </a>
@@ -305,7 +325,7 @@ const navItems = [
       <!-- ═══════════════════════════════════════ -->
       <!-- SLIDE 6: ABOUT / CONTACT               -->
       <!-- ═══════════════════════════════════════ -->
-      <section id="slide-6" class="slide" data-slide-index="6" style={`--slide-accent: ${contactAccent}; background-color: ${contactBg};`}>
+      <section id="slide-8" class="slide" data-slide-index="8" style={`--slide-accent: ${contactAccent}; background-color: ${contactBg};`}>
         <div class="accent-bar" style={`background-color: ${contactAccent};`}></div>
         <div class="showcase-layout" style={`color: #ffffff;`}>
           <!-- Left column: title + info -->
@@ -421,7 +441,7 @@ const navItems = [
     <script define:vars={{ bgColors, accentColors }}>
       // ─── State ───
       let currentSlide = 0;
-      const totalSlides = 7;
+      const totalSlides = 9;
       let isTransitioning = false;
       const TRANSITION_LOCK_MS = 1200;
 
