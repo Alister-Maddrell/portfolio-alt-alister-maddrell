@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://portfolio-alt-alister-maddrell.vercel.app/sitemap.xml
