@@ -137,36 +137,42 @@ const navItems = [
             </div>
           </div>
 
-          <!-- Right: project preview cards -->
-          <div class="hero-right slide-image">
-            <div class="hero-preview-grid">
-              {projects.map((project, i) => (
-                <button class="hero-card card-work" data-slide={i + 1} style={`--card-color: ${heroAccent};`}>
-                  <div class="card-work-topbar card-work-topbar--mini">
-                    <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </span>
-                    <div class="card-work-urlbar card-work-urlbar--mini">
-                      <span class="card-work-url">{project.title}</span>
-                    </div>
-                    <span class="card-work-capsule card-work-capsule--mini" aria-hidden="true">
-                      <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </span>
+          <!-- Right: featured project card -->
+          <div class="hero-right slide-image" style="perspective: 800px;">
+            <div class="hero-featured">
+              <button class="hero-featured-card card-work" data-slide="1" style={`--card-color: ${heroAccent};`}>
+                <div class="card-work-topbar">
+                  <span class="card-work-dots" aria-hidden="true">
+                    <span></span><span></span><span></span>
+                  </span>
+                  <div class="card-work-urlbar">
+                    <svg class="card-work-globe" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M1 8h14M8 1c-2.5 3-2.5 9 0 14M8 1c2.5 3 2.5 9 0 14" stroke="currentColor" stroke-width="1.2"/></svg>
+                    <span class="card-work-url"><span class="card-work-url-proto">https://</span> {projects[0].title.toLowerCase()}.com.au</span>
                   </div>
-                  <div class="card-work-img">
-                    <img
-                      src={project.image}
-                      alt={`${project.title} preview`}
-                      width="400"
-                      height="248"
-                      loading="eager"
-                      decoding="async"
-                    />
-                  </div>
-                </button>
-              ))}
+                  <span class="card-work-capsule" aria-hidden="true">
+                    <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </div>
+                <div class="card-work-img">
+                  <img
+                    src={projects[0].image}
+                    alt={`${projects[0].title} preview`}
+                    width="1440"
+                    height="900"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </button>
+              <!-- Project count strip -->
+              <div class="hero-project-strip">
+                {projects.map((project, i) => (
+                  <button class="hero-strip-item" data-slide={i + 1} style={`--strip-color: ${project.accent};`}>
+                    <span class="hero-strip-dot"></span>
+                    <span class="hero-strip-label">{project.title}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -581,33 +587,7 @@ const navItems = [
         }
       }
 
-      // ─── Card tilt effect (mouse-tracking, hero cards only) ───
-      function initCardTilt() {
-        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const hasFineCursor = window.matchMedia('(pointer: fine)').matches;
-        if (prefersReduced || !hasFineCursor) return;
-
-        document.querySelectorAll('.hero-card.card-work').forEach((card) => {
-          let bounds;
-
-          card.addEventListener('mouseenter', () => {
-            bounds = card.getBoundingClientRect();
-            card.style.transition = 'box-shadow 0.3s ease, border-color 0.3s ease';
-          }, { passive: true });
-
-          card.addEventListener('mousemove', (e) => {
-            if (!bounds) bounds = card.getBoundingClientRect();
-            const x = (e.clientX - bounds.left) / bounds.width - 0.5;
-            const y = (e.clientY - bounds.top) / bounds.height - 0.5;
-            card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateZ(5px)`;
-          }, { passive: true });
-
-          card.addEventListener('mouseleave', () => {
-            card.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease, border-color 0.3s ease';
-            card.style.transform = '';
-          }, { passive: true });
-        });
-      }
+      // (card tilt removed — featured card uses CSS hover)
 
       // ─── Showcase carousel (scroll/click/hover/swipe to cycle cards) ───
       let hoverEnabled = true;
@@ -751,7 +731,6 @@ const navItems = [
       // ─── Init ───
       document.addEventListener('DOMContentLoaded', () => {
         initHeroAnimation();
-        initCardTilt();
         initShowcaseCarousel();
       });
     </script>

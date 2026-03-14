@@ -787,31 +787,93 @@ a.ui-text:hover {
   margin: 0;
 }
 
-/* Project preview grid */
-.hero-preview-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
+/* Featured project card */
+.hero-featured {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
   width: 100%;
-  max-width: 560px;
+  max-width: calc(60vh);
+  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg);
+}
+
+.hero-featured-card {
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.22, 1.4, 0.36, 1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+}
+
+.hero-featured-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+              0 0 30px -5px color-mix(in srgb, var(--card-color) 25%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
+}
+
+/* Project name strip below card */
+.hero-project-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 4px;
+}
+
+.hero-strip-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 100px;
+  transition: background 0.3s ease, transform 0.2s ease;
+  color: inherit;
+}
+
+.hero-strip-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.hero-strip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--strip-color);
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.hero-strip-item:hover .hero-strip-dot {
+  opacity: 1;
+}
+
+.hero-strip-label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.hero-strip-item:hover .hero-strip-label {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 @media (max-width: 1023px) {
-  .hero-preview-grid {
-    grid-template-columns: repeat(5, 1fr);
+  .hero-featured {
     max-width: 100%;
   }
-}
 
-.hero-card {
-  cursor: pointer;
-  padding: 0 4px 4px;
-  transition: transform 0.3s cubic-bezier(0.22, 1.4, 0.36, 1), box-shadow 0.3s ease;
-}
-
-.hero-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  .hero-project-strip {
+    flex-wrap: wrap;
+  }
 }
 
 /* Primary CTA — filled button */
