@@ -455,6 +455,16 @@ a.ui-text:hover {
   cursor: pointer;
 }
 
+.showcase-frame:hover .card-work-capsule {
+  background: rgba(255, 255, 255, 0.9);
+  color: #0d0d0d;
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.showcase-frame:hover .card-work-capsule svg {
+  transform: translateX(2px);
+}
+
 /* Active card styling — JS toggles .frame-active */
 .showcase-frame.frame-active {
   opacity: 1;

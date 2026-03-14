@@ -151,6 +151,9 @@ const navItems = [
                     <div class="card-work-urlbar card-work-urlbar--mini">
                       <span class="card-work-url">{project.title}</span>
                     </div>
+                    <span class="card-work-capsule card-work-capsule--mini" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
                   </div>
                   <div class="card-work-img">
                     <img
@@ -238,6 +241,9 @@ const navItems = [
                       <div class="card-work-urlbar card-work-urlbar--mini">
                         <span class="card-work-url">{project.title}</span>
                       </div>
+                      <a href={`${project.url}${project.pages[0]}`} target="_blank" rel="noopener noreferrer" class="card-work-capsule card-work-capsule--mini" aria-label={`Visit ${project.title}`}>
+                        <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </a>
                     </div>
                     <div class="card-work-img">
                       <img src={project.image2} alt={`${project.title} page 2`} width="1440" height="900" loading="eager" decoding="async" />
@@ -269,6 +275,9 @@ const navItems = [
                       <div class="card-work-urlbar card-work-urlbar--mini">
                         <span class="card-work-url">{project.title}</span>
                       </div>
+                      <a href={`${project.url}${project.pages[2]}`} target="_blank" rel="noopener noreferrer" class="card-work-capsule card-work-capsule--mini" aria-label={`Visit ${project.title}`}>
+                        <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </a>
                     </div>
                     <div class="card-work-img">
                       <img src={project.image3} alt={`${project.title} page 3`} width="1440" height="900" loading="eager" decoding="async" />
