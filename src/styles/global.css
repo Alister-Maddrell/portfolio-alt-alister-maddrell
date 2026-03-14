@@ -411,8 +411,6 @@ a.ui-text:hover {
   gap: 10px;
   width: 100%;
   max-width: calc(68vh - 3.125vw);
-  perspective: 800px;
-  transform-style: preserve-3d;
   transform: rotateY(45deg);
 }
 
