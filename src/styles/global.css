@@ -126,7 +126,7 @@ a {
 }
 
 .title-project {
-  font-size: clamp(36px, 5.5vw, 100px);
+  font-size: clamp(42px, 7vw, 120px);
 }
 
 .title-solid {
@@ -168,25 +168,6 @@ a.ui-text:hover {
   line-height: 1.5em;
 }
 
-.nav-item {
-  font-family: var(--font-body);
-  font-size: 16px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  line-height: 1.5em;
-  transition: color 0.2s, transform 0.2s, background-color 0.2s;
-  padding: 4px 8px;
-  border-radius: 4px;
-  background-color: rgba(10, 10, 10, 0.8);
-}
-
-.nav-item:hover {
-  color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.08);
-  transform: translateX(-4px);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
-}
 
 .desc-text {
   font-family: var(--font-body);
@@ -408,32 +389,76 @@ a.ui-text:hover {
 }
 
 /* ═══════════════════════════════════════ */
-/* NAVIGATION                             */
+/* NAVIGATION — unified expandable bar    */
 /* ═══════════════════════════════════════ */
 
-.nav-dot {
-  width: 8px;
-  height: 16px;
-  border-radius: 4px;
-  background: currentColor;
-  transition: top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.slide-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 100px;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.mobile-dot {
+.slide-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 4px 2px;
+  color: white;
+  overflow: hidden;
+  border-radius: 100px;
+  transition: background-color 0.3s ease;
+}
+
+.slide-nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.slide-nav-dot {
   width: 12px;
   height: 5px;
   border-radius: 4px;
   background: currentColor;
   opacity: 0.4;
   transition: opacity 0.3s, width 0.3s;
-  cursor: pointer;
-  border: none;
-  padding: 0;
+  flex: 0 0 auto;
 }
 
-.mobile-dot.active {
+.slide-nav-item.active .slide-nav-dot {
   opacity: 1;
-  width: 24px;
+  width: 20px;
+}
+
+.slide-nav-label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  transition: max-width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 0.3s ease,
+              padding 0.3s ease;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.slide-nav-inner:hover .slide-nav-label {
+  max-width: 180px;
+  opacity: 1;
+  padding-left: 8px;
+  padding-right: 4px;
 }
 
 /* ═══════════════════════════════════════ */

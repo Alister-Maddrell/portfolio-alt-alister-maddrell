@@ -288,27 +288,17 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
       </section>
 
       <!-- ═══════════════════════════════════════ -->
-      <!-- FIXED RIGHT-SIDE NAV (Desktop)         -->
+      <!-- UNIFIED SLIDE NAV (top bar, expandable) -->
       <!-- ═══════════════════════════════════════ -->
-      <nav id="project-nav" class="absolute right-[6.25%] top-1/2 -translate-y-1/2 z-40 flex-col items-end transition-opacity duration-500" style="display: none;">
-        <div class="relative flex flex-col gap-[10px]">
-          <div id="nav-dot" class="nav-dot absolute right-0 top-0 text-white" style="transform: translateX(calc(100% + 12px));"></div>
+      <nav id="slide-nav" class="absolute top-[88px] left-1/2 -translate-x-1/2 z-40 transition-opacity duration-500 text-white" style="display: none;">
+        <div class="slide-nav-inner">
           {navItems.map((item, i) => (
-            <button
-              class="nav-item block text-right whitespace-nowrap text-white cursor-pointer border-none opacity-60"
-              data-slide={item.slideIndex}
-            >
-              {item.label}
+            <button class="slide-nav-item" data-slide={item.slideIndex}>
+              <span class="slide-nav-dot"></span>
+              <span class="slide-nav-label">{item.label}</span>
             </button>
           ))}
         </div>
-      </nav>
-
-      <!-- MOBILE DOT NAV -->
-      <nav id="mobile-nav" class="absolute top-[88px] left-0 w-full z-40 items-center justify-center gap-[10px] transition-opacity duration-500 text-white" style="display: none;">
-        {navItems.map((item, i) => (
-          <button class="mobile-dot" data-slide={item.slideIndex} aria-label={`Go to ${item.label}`}></button>
-        ))}
       </nav>
     </div>
 
@@ -325,11 +315,8 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
       // ─── DOM refs ───
       const bgLayer = document.getElementById('bg-layer');
       const appHeader = document.getElementById('app-header');
-      const projectNav = document.getElementById('project-nav');
-      const mobileNav = document.getElementById('mobile-nav');
-      const navDot = document.getElementById('nav-dot');
-      const navButtons = document.querySelectorAll('#project-nav [data-slide]');
-      const mobileDots = document.querySelectorAll('#mobile-nav [data-slide]');
+      const slideNav = document.getElementById('slide-nav');
+      const slideNavItems = document.querySelectorAll('#slide-nav .slide-nav-item');
 
       // ─── Go to slide ───
       function goToSlide(index) {
@@ -363,57 +350,27 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
         const headerColor = textModes[index] === 'light' ? '#ffffff' : '#0d0d0d';
         if (appHeader) appHeader.style.color = headerColor;
 
-        // Show/hide project nav (visible on slides 1-5)
+        // Show/hide slide nav (visible on slides 1-5)
         const showNav = index >= 1 && index <= 5;
-        if (projectNav) {
+        if (slideNav) {
           if (showNav) {
-            projectNav.style.display = 'flex';
+            slideNav.style.display = 'flex';
             requestAnimationFrame(() => {
-              projectNav.style.opacity = '1';
-              projectNav.style.pointerEvents = 'auto';
+              slideNav.style.opacity = '1';
+              slideNav.style.pointerEvents = 'auto';
             });
           } else {
-            projectNav.style.opacity = '0';
-            projectNav.style.pointerEvents = 'none';
-            setTimeout(() => { if (!showNav) projectNav.style.display = 'none'; }, 500);
-          }
-        }
-        if (mobileNav) {
-          if (showNav) {
-            mobileNav.style.display = 'flex';
-            requestAnimationFrame(() => {
-              mobileNav.style.opacity = '1';
-              mobileNav.style.pointerEvents = 'auto';
-            });
-          } else {
-            mobileNav.style.opacity = '0';
-            mobileNav.style.pointerEvents = 'none';
-            setTimeout(() => { if (!showNav) mobileNav.style.display = 'none'; }, 500);
+            slideNav.style.opacity = '0';
+            slideNav.style.pointerEvents = 'none';
+            setTimeout(() => { if (!showNav) slideNav.style.display = 'none'; }, 500);
           }
         }
 
         // Update active nav item (slides 1-5 map to nav indices 0-4)
         if (index >= 1 && index <= 5) {
           const navIndex = index - 1;
-          navButtons.forEach((btn, i) => {
-            if (i === navIndex) {
-              btn.classList.remove('opacity-60');
-              btn.classList.add('opacity-100');
-            } else {
-              btn.classList.add('opacity-60');
-              btn.classList.remove('opacity-100');
-            }
-          });
-
-          // Move nav dot
-          if (navDot && navButtons[navIndex]) {
-            const linkTop = navButtons[navIndex].offsetTop;
-            navDot.style.top = `${linkTop + 4}px`;
-          }
-
-          // Update mobile dots
-          mobileDots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === navIndex);
+          slideNavItems.forEach((item, i) => {
+            item.classList.toggle('active', i === navIndex);
           });
         }
 
@@ -523,21 +480,27 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
         }
       }
 
-      // ─── Card tilt effect (mouse-tracking) ───
+      // ─── Card tilt effect (mouse-tracking, project slides only) ───
       function initCardTilt() {
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const hasFineCursor = window.matchMedia('(pointer: fine)').matches;
         if (prefersReduced || !hasFineCursor) return;
 
-        document.querySelectorAll('.slide .card-work').forEach((card) => {
+        document.querySelectorAll('[data-slide-index] .card-work').forEach((card) => {
           const el = card;
           let bounds;
+          let tiltActive = false;
 
           el.addEventListener('mouseenter', () => {
+            // Only allow tilt when the parent slide is fully active
+            const parentSlide = el.closest('.slide');
+            if (!parentSlide || !parentSlide.classList.contains('active')) return;
+            tiltActive = true;
             bounds = el.getBoundingClientRect();
           }, { passive: true });
 
           el.addEventListener('mousemove', (e) => {
+            if (!tiltActive) return;
             if (!bounds) bounds = el.getBoundingClientRect();
             const x = (e.clientX - bounds.left) / bounds.width - 0.5;
             const y = (e.clientY - bounds.top) / bounds.height - 0.5;
@@ -545,6 +508,8 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
           }, { passive: true });
 
           el.addEventListener('mouseleave', () => {
+            if (!tiltActive) return;
+            tiltActive = false;
             el.style.transform = '';
           }, { passive: true });
         });
@@ -554,11 +519,6 @@ const navItems = projects.map((p, i) => ({ label: p.title === 'Whitfield & Assoc
       document.addEventListener('DOMContentLoaded', () => {
         initHeroAnimation();
         initCardTilt();
-
-        // Set initial nav dot position
-        if (navDot && navButtons[0]) {
-          navDot.style.top = `${navButtons[0].offsetTop + 4}px`;
-        }
       });
     </script>
   </body>
