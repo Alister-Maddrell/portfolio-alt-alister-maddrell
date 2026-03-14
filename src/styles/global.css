@@ -529,20 +529,31 @@ a.ui-text:hover {
 /* ═══════════════════════════════════════ */
 
 .live-preview {
-  width: 240px;
-  height: 150px;
-  border: 3px solid currentColor;
-  border-radius: 6px;
-  overflow: hidden;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  background-color: color-mix(in srgb, var(--card-color) 12%, rgba(255, 255, 255, 0.04));
+  border-radius: 0.75rem;
+  padding: 0 6px 6px;
+  border: 1px solid color-mix(in srgb, var(--card-color) 30%, transparent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   flex-shrink: 0;
+}
+
+.live-preview-viewport {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 0 0 6px 6px;
+  position: relative;
 }
 
 .live-preview-iframe {
   width: 1440px;
   height: 900px;
   border: none;
-  transform: scale(0.16667);
   transform-origin: top left;
+  transform: scale(calc(268 / 1440));
   pointer-events: none;
 }
 

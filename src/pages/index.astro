@@ -204,16 +204,29 @@ const navItems = [
                     <span class="cta-arrow">&rarr;</span>
                   </a>
                 </div>
-                <div class="live-preview hidden lg:block" style={`border-color: ${project.accent};`}>
-                  <iframe
-                    class="live-preview-iframe"
-                    data-base-url={project.url}
-                    data-pages={JSON.stringify(project.pages)}
-                    src={`${project.url}?preview`}
-                    title={`${project.title} live preview`}
-                    loading="eager"
-                    sandbox="allow-scripts allow-same-origin"
-                  ></iframe>
+                <div class="live-preview hidden lg:block" style={`--card-color: ${project.accent}; border-color: ${project.accent};`}>
+                  <div class="card-work-topbar card-work-topbar--mini">
+                    <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
+                      <span></span><span></span><span></span>
+                    </span>
+                    <div class="card-work-urlbar card-work-urlbar--mini">
+                      <span class="card-work-url">{project.title}</span>
+                    </div>
+                    <a href={project.url} target="_blank" rel="noopener noreferrer" class="card-work-capsule card-work-capsule--mini" aria-label={`Visit ${project.title}`}>
+                      <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                  </div>
+                  <div class="live-preview-viewport">
+                    <iframe
+                      class="live-preview-iframe"
+                      data-base-url={project.url}
+                      data-pages={JSON.stringify(project.pages)}
+                      src={`${project.url}?preview`}
+                      title={`${project.title} live preview`}
+                      loading="eager"
+                      sandbox="allow-scripts allow-same-origin"
+                    ></iframe>
+                  </div>
                 </div>
               </div>
 
