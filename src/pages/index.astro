@@ -1,13 +1,12 @@
 ---
 import '../styles/global.css';
+import palettes from '../data/palettes.json';
 
 const projects = [
   {
     id: 'hartley',
     title: 'Hartley',
     description: 'Emergency-focused trade website with 24/7 lead capture, click-to-call, and service area mapping that converts urgent searches into booked jobs.',
-    bg: '#0033CC',
-    secondary: '#FF6600',
     url: 'https://demo-hartley-plumbing.vercel.app',
     image: '/thumbnails/hartley.webp',
   },
@@ -15,8 +14,6 @@ const projects = [
     id: 'kin',
     title: 'Kin',
     description: 'Warm editorial hospitality site with interactive digital menu, event listings, email capture, and catering enquiries — a community hub that drives repeat visits.',
-    bg: '#CC2255',
-    secondary: '#FFBE0B',
     url: 'https://demo-kin-grain-cafe.vercel.app',
     image: '/thumbnails/cafe.webp',
   },
@@ -24,8 +21,6 @@ const projects = [
     id: 'apex',
     title: 'Apex',
     description: 'Conversion-optimised fitness site built as a sales funnel — multi-step lead capture, membership pricing, and urgency-driven CTAs that turn visitors into trial members.',
-    bg: '#0D0D0D',
-    secondary: '#FF3D00',
     url: 'https://demo-apex-fitness.vercel.app',
     image: '/thumbnails/fitness.webp',
   },
@@ -33,8 +28,6 @@ const projects = [
     id: 'whitfield',
     title: 'Whitfield',
     description: 'Authority-driven professional services site with insights blog, consultation booking, animated credibility metrics, and content marketing architecture.',
-    bg: '#0A0044',
-    secondary: '#FFD700',
     url: 'https://demo-whitfield-accounting.vercel.app',
     image: '/thumbnails/accounting.webp',
   },
@@ -42,17 +35,30 @@ const projects = [
     id: 'luma',
     title: 'LUMA',
     description: 'Luxury appointment-based site with a full booking flow, expandable service menu, transformation gallery, and team showcase — replacing phone bookings with digital elegance.',
-    bg: '#440033',
-    secondary: '#FF1493',
     url: 'https://demo-luma-hair-beauty.vercel.app',
     image: '/thumbnails/hair.webp',
   },
+].map(p => ({
+  ...p,
+  bg: palettes[p.id].background,
+  accent: palettes[p.id].accent,
+  text: palettes[p.id].text,
+}));
+
+// Hero and contact get their own palette
+const heroBg = '#2B4F5B';
+const heroAccent = '#E8C4A0';
+const contactBg = '#2B4A3E';
+const contactAccent = '#D4B0C8';
+
+const bgColors = [heroBg, ...projects.map(p => p.bg), contactBg];
+const accentColors = [heroAccent, ...projects.map(p => p.accent), contactAccent];
+
+const navItems = [
+  { label: 'Home', slideIndex: 0 },
+  ...projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 })),
+  { label: 'Contact', slideIndex: 6 },
 ];
-
-const bgColors = ['#00B4D8', ...projects.map(p => p.bg), '#00C853'];
-const secondaryColors = ['#ffffff', ...projects.map(p => p.secondary), '#ffffff'];
-
-const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }));
 ---
 
 <html lang="en">
@@ -78,7 +84,7 @@ const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }))
       <!-- ═══════════════════════════════════════ -->
       <!-- BACKGROUND LAYER                       -->
       <!-- ═══════════════════════════════════════ -->
-      <div id="bg-layer" class="absolute inset-0" style="background-color: #00B4D8;"></div>
+      <div id="bg-layer" class="absolute inset-0" style={`background-color: ${heroBg};`}></div>
 
       <!-- ═══════════════════════════════════════ -->
       <!-- FIXED HEADER — always visible          -->
@@ -91,7 +97,8 @@ const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }))
       <!-- ═══════════════════════════════════════ -->
       <!-- SLIDE 0: HERO                          -->
       <!-- ═══════════════════════════════════════ -->
-      <section id="slide-0" class="slide mounted active">
+      <section id="slide-0" class="slide mounted active" style={`--slide-accent: ${heroAccent};`}>
+        <div class="accent-bar" style={`background-color: ${heroAccent};`}></div>
         <div class="flex flex-col items-center justify-center h-full pt-[90px] px-[6.25%] text-center relative">
           <!-- Role label -->
           <p class="ui-text ui-text-sm text-white slide-desc" style="letter-spacing: 3px; opacity: 0.7;">Web Designer &amp; Developer · Sydney</p>
@@ -105,7 +112,7 @@ const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }))
           <!-- Project preview strip -->
           <div class="hero-preview-strip slide-image mt-8 lg:mt-10">
             {projects.map((project, i) => (
-              <button class="hero-card card-work" data-slide={i + 1} style={`--card-color: ${project.secondary};`}>
+              <button class="hero-card card-work" data-slide={i + 1} style={`--card-color: ${project.accent};`}>
                 <div class="card-work-topbar card-work-topbar--mini">
                   <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
                     <span></span>
@@ -157,14 +164,14 @@ const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }))
       {projects.map((project, i) => {
         const slideIndex = i + 1;
         return (
-          <section id={`slide-${slideIndex}`} class="slide" data-slide-index={slideIndex} style={`--slide-secondary: ${project.secondary};`}>
+          <section id={`slide-${slideIndex}`} class="slide" data-slide-index={slideIndex} style={`--slide-accent: ${project.accent};`}>
             <!-- Accent bar -->
-            <div class="accent-bar" style={`background-color: ${project.secondary};`}></div>
+            <div class="accent-bar" style={`background-color: ${project.accent};`}></div>
 
-            <div class="flex flex-col lg:flex-row items-center h-full pt-[90px] px-[6.25%] pl-[calc(6.25%+16px)]" style="color: #ffffff;">
+            <div class="flex flex-col lg:flex-row items-center h-full pt-[90px] px-[6.25%] pl-[calc(6.25%+16px)]" style={`color: ${project.text};`}>
               <!-- Left: Text (40%) -->
               <div class="w-full lg:w-[40%] flex flex-col justify-center py-6 lg:py-0 order-2 lg:order-1 overflow-visible">
-                <h2 class="title-display title-project slide-title" style={`color: ${project.secondary};`}>
+                <h2 class="title-display title-project slide-title" style={`color: ${project.accent};`}>
                   {project.title}
                 </h2>
                 <p class="desc-text mt-6 slide-desc">
@@ -175,17 +182,16 @@ const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }))
                   target="_blank"
                   rel="noopener noreferrer"
                   class="cta-link ui-text ui-text-md mt-[34px] slide-cta"
-                  style={`--cta-accent: ${project.secondary};`}
                 >
                   <span>View Live Site</span>
-                  <span class="cta-arrow" style={`color: ${project.secondary};`}>&rarr;</span>
+                  <span class="cta-arrow" style={`color: ${project.accent};`}>&rarr;</span>
                 </a>
               </div>
 
               <!-- Right: Browser mockup (60%) -->
               <div class="w-full lg:w-[60%] flex items-center justify-center relative order-1 lg:order-2 py-4 lg:py-0 overflow-visible">
                 <div class="slide-image relative w-full max-w-[calc(68vh-3.125vw)]">
-                  <div class="card-work w-full" style={`--card-color: ${project.secondary};`}>
+                  <div class="card-work w-full" style={`--card-color: ${project.accent};`}>
                     <div class="card-work-topbar">
                       <span class="card-work-dots" aria-hidden="true">
                         <span></span>
@@ -222,7 +228,8 @@ const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }))
       <!-- ═══════════════════════════════════════ -->
       <!-- SLIDE 6: ABOUT / CONTACT               -->
       <!-- ═══════════════════════════════════════ -->
-      <section id="slide-6" class="slide" data-slide-index="6">
+      <section id="slide-6" class="slide" data-slide-index="6" style={`--slide-accent: ${contactAccent};`}>
+        <div class="accent-bar" style={`background-color: ${contactAccent};`}></div>
         <div class="flex flex-col lg:flex-row h-full pt-[90px] relative">
           <!-- Left: Decorative monogram -->
           <div class="hidden lg:flex w-1/2 items-center justify-center overflow-hidden relative am-monogram" aria-hidden="true"></div>
@@ -305,7 +312,7 @@ const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }))
     <!-- ═══════════════════════════════════════ -->
     <!-- CLIENT-SIDE JS                         -->
     <!-- ═══════════════════════════════════════ -->
-    <script define:vars={{ bgColors, secondaryColors }}>
+    <script define:vars={{ bgColors, accentColors }}>
       // ─── State ───
       let currentSlide = 0;
       const totalSlides = 7;
@@ -346,33 +353,23 @@ const navItems = projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 }))
         // Crossfade background colour
         if (bgLayer) bgLayer.style.backgroundColor = bgColors[index];
 
-        // Update nav accent colour from secondary palette
-        const secColor = secondaryColors[index];
-        if (slideNav) slideNav.style.color = secColor;
+        // Update nav accent colour
+        const accentColor = accentColors[index];
+        if (slideNav) slideNav.style.color = accentColor;
 
-        // Show/hide slide nav (visible on slides 1-5)
-        const showNav = index >= 1 && index <= 5;
+        // Show nav on all slides
         if (slideNav) {
-          if (showNav) {
-            slideNav.style.display = 'flex';
-            requestAnimationFrame(() => {
-              slideNav.style.opacity = '1';
-              slideNav.style.pointerEvents = 'auto';
-            });
-          } else {
-            slideNav.style.opacity = '0';
-            slideNav.style.pointerEvents = 'none';
-            setTimeout(() => { if (!showNav) slideNav.style.display = 'none'; }, 500);
-          }
-        }
-
-        // Update active nav item (slides 1-5 map to nav indices 0-4)
-        if (index >= 1 && index <= 5) {
-          const navIndex = index - 1;
-          slideNavItems.forEach((item, i) => {
-            item.classList.toggle('active', i === navIndex);
+          slideNav.style.display = 'flex';
+          requestAnimationFrame(() => {
+            slideNav.style.opacity = '1';
+            slideNav.style.pointerEvents = 'auto';
           });
         }
+
+        // Update active nav item
+        slideNavItems.forEach((item, i) => {
+          item.classList.toggle('active', i === index);
+        });
 
         // Fade in next slide
         if (nextSlide) {

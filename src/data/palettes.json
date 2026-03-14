@@ -1,0 +1,32 @@
+{
+  "hartley": {
+    "background": "#543c2b",
+    "accent": "#afdeda",
+    "text": "#f0f0f0",
+    "textMode": "light"
+  },
+  "kin": {
+    "background": "#4b4e32",
+    "accent": "#b5b8d9",
+    "text": "#f0f0f0",
+    "textMode": "light"
+  },
+  "apex": {
+    "background": "#593326",
+    "accent": "#ace2cb",
+    "text": "#f0f0f0",
+    "textMode": "light"
+  },
+  "whitfield": {
+    "background": "#324e4b",
+    "accent": "#d9b5c4",
+    "text": "#f0f0f0",
+    "textMode": "light"
+  },
+  "luma": {
+    "background": "#4e3234",
+    "accent": "#b5d6d9",
+    "text": "#f0f0f0",
+    "textMode": "light"
+  }
+}
