@@ -398,17 +398,7 @@ const navItems = [
         if (prevSlide && prevSlide._leaveCarousel) prevSlide._leaveCarousel();
         if (nextSlide && nextSlide._resetCarousel) nextSlide._resetCarousel();
 
-        // Position new slide at entry point, then animate in
-        if (nextSlide) {
-          nextSlide.classList.remove('slide-exit-up', 'slide-exit-down', 'active');
-          nextSlide.classList.add(goingDown ? 'slide-enter-from-below' : 'slide-enter-from-above');
-          // Force reflow so browser registers the starting position
-          nextSlide.offsetHeight;
-          nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
-          nextSlide.classList.add('active');
-        }
-
-        // Animate out current slide
+        // Animate out current slide immediately
         if (prevSlide) {
           prevSlide.classList.remove('active');
           prevSlide.classList.add(goingDown ? 'slide-exit-up' : 'slide-exit-down');
@@ -417,10 +407,23 @@ const navItems = [
           }, 700);
         }
 
+        // Position new slide at entry point (transition: none snaps instantly)
+        if (nextSlide) {
+          nextSlide.classList.remove('slide-exit-up', 'slide-exit-down', 'active');
+          nextSlide.classList.add(goingDown ? 'slide-enter-from-below' : 'slide-enter-from-above');
+          // Double-rAF ensures the browser paints the start position before animating
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
+              nextSlide.classList.add('active');
+            });
+          });
+        }
+
         // Crossfade background colour
         if (bgLayer) bgLayer.style.backgroundColor = bgColors[index];
 
-        // Update accent colour on nav + header (chromatic restraint: only two voices)
+        // Update accent colour on nav + header
         const accentColor = accentColors[index];
         if (slideNav) slideNav.style.color = accentColor;
         if (appHeader) appHeader.style.color = accentColor;
@@ -438,11 +441,6 @@ const navItems = [
         slideNavItems.forEach((item, i) => {
           item.classList.toggle('active', i === index);
         });
-
-        // Fade in next slide
-        if (nextSlide) {
-          nextSlide.classList.add('active');
-        }
 
         currentSlide = index;
         setTimeout(() => {
