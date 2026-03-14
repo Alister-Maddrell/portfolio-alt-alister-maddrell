@@ -751,7 +751,7 @@ a.ui-text:hover {
 
 @media (min-width: 1024px) {
   .hero-left {
-    width: 40%;
+    width: 36%;
     order: 1;
   }
 }
@@ -772,7 +772,7 @@ a.ui-text:hover {
 
 @media (min-width: 1024px) {
   .hero-right {
-    width: 60%;
+    width: 64%;
     order: 2;
     padding: 2rem 0;
   }
