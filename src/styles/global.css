@@ -425,13 +425,24 @@ a.ui-text:hover {
   opacity: 0.6;
   transition: opacity 0.3s ease,
               box-shadow 0.4s ease,
-              border-color 0.4s ease;
+              border-color 0.4s ease,
+              transform 0.5s cubic-bezier(0.22, 1.4, 0.36, 1);
   cursor: pointer;
 }
 
-/* ─── Hover: active card highlights, others recede ─── */
+/* Center card: always active, flush and centered */
+.showcase-frame:nth-child(2) {
+  opacity: 1;
+  transform: rotateY(20deg) rotateX(-10deg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+              0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
+  z-index: 2;
+}
 
-.showcase-stack:hover .showcase-frame:not(:hover) {
+/* ─── Hover: hovered card highlights, others recede ─── */
+
+.showcase-stack:hover .showcase-frame:not(:hover):not(:nth-child(2)) {
   opacity: 0.25;
 }
 
