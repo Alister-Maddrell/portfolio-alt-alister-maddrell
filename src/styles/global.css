@@ -402,104 +402,78 @@ a.ui-text:hover {
 }
 
 /* ═══════════════════════════════════════ */
-/* IMAGE STACK — Robin Noguier style      */
+/* SHOWCASE STACK — diagonal perspective  */
 /* ═══════════════════════════════════════ */
 
-.image-stack {
-  position: absolute;
-  right: 6.25%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 35vw;
-  aspect-ratio: 4 / 5;
-}
-
-.image-card {
-  position: absolute;
+.showcase-stack {
+  perspective: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
-  border-radius: 6px;
-  overflow: hidden;
-  transform: rotate(6deg) rotateY(-3deg) rotateX(2deg);
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1.4, 0.36, 1);
+  max-width: calc(68vh - 3.125vw);
 }
 
-.image-card img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Center image — hero, full colour */
-.image-center {
-  z-index: 2;
-  top: 50%;
-  transform: translateY(-50%) rotate(6deg) rotateY(-3deg) rotateX(2deg);
-  opacity: 1;
-}
-
-/* Top image — behind, bleeds off top, desaturated */
-.image-top {
-  z-index: 1;
-  top: -30%;
-  opacity: 0.4;
-  filter: saturate(0.15) brightness(0.7);
-}
-
-/* Bottom image — behind, bleeds off bottom, desaturated */
-.image-bottom {
-  z-index: 1;
-  bottom: -30%;
-  opacity: 0.4;
-  filter: saturate(0.15) brightness(0.7);
-}
-
-/* Colour wash overlay — tints behind-images into bg colour */
-.image-wash-overlay {
-  position: absolute;
-  inset: 0;
-  background: var(--wash-color);
-  opacity: 0.4;
-  pointer-events: none;
-  border-radius: 6px;
-}
-
-/* Hover: bring hovered behind-image to life */
-.image-top:hover,
-.image-bottom:hover {
-  opacity: 0.75;
-  filter: saturate(0.5) brightness(0.85);
+.showcase-frame {
+  display: flex;
+  flex-direction: column;
+  background-color: color-mix(in srgb, var(--card-color) 12%, rgba(255, 255, 255, 0.04));
+  border-radius: 0.75rem;
+  padding: 0 6px 6px;
+  border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transform-origin: center center;
+  transform: rotateY(-10deg) rotateX(3deg) rotate(-8deg);
+  opacity: 0.6;
+  transition: transform 0.55s cubic-bezier(0.22, 1.4, 0.36, 1),
+              opacity 0.3s ease,
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+  will-change: transform;
   cursor: pointer;
 }
 
-/* ─── Mobile: reflow ─── */
+/* Diagonal stagger: top offset right, bottom offset left */
+.showcase-frame:nth-child(1) { transform: rotateY(-10deg) rotateX(3deg) rotate(-8deg) translateX(40px); }
+.showcase-frame:nth-child(3) { transform: rotateY(-10deg) rotateX(3deg) rotate(-8deg) translateX(-40px); }
+
+/* ─── Hover: active card flattens, others recede ─── */
+
+.showcase-stack:hover .showcase-frame:not(:hover) {
+  opacity: 0.25;
+}
+
+.showcase-stack:hover .showcase-frame:hover {
+  transform: rotateY(-2deg) rotateX(0.5deg) rotate(-2deg) scale(1.03);
+  opacity: 1;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+              0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
+  z-index: 2;
+}
+
+/* ─── Mobile: horizontal row ─── */
 @media (max-width: 1023px) {
-  .image-stack {
-    position: relative;
-    right: auto;
-    top: auto;
-    transform: none;
-    width: 100%;
-    aspect-ratio: auto;
-    height: 50vh;
-    margin-bottom: 1rem;
+  .showcase-stack {
+    flex-direction: row;
+    gap: 6px;
+    max-width: 100%;
+    perspective: 600px;
   }
 
-  .image-card {
-    width: 70%;
-    left: 15%;
+  .showcase-frame {
+    flex: 1;
+    min-width: 0;
+    transform: rotateY(-6deg) rotateX(2deg) rotate(-5deg);
   }
 
-  .image-center {
-    top: 50%;
-    transform: translateY(-50%) rotate(4deg);
+  .showcase-frame:nth-child(1),
+  .showcase-frame:nth-child(3) {
+    transform: rotateY(-6deg) rotateX(2deg) rotate(-5deg);
   }
 
-  .image-top {
-    top: -10%;
-  }
-
-  .image-bottom {
-    bottom: -10%;
+  .showcase-stack:hover .showcase-frame:hover {
+    transform: rotateY(-1deg) rotateX(0.5deg) rotate(-1deg) scale(1.03);
   }
 }
 
