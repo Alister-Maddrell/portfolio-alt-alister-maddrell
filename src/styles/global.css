@@ -411,17 +411,17 @@ a.ui-text:hover {
   gap: 10px;
   width: 100%;
   max-width: calc(85vh - 3.125vw);
-  transform: rotateY(-10deg) rotateX(5deg) rotate(5deg);
+  transform: rotateY(-15deg) rotateX(5deg);
   transition: transform 0.5s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
 /* Carousel positions — JS adds these classes */
 .showcase-stack.stack-pos-0 {
-  transform: rotateY(-10deg) rotateX(5deg) rotate(5deg) translateY(calc(100% / 3 + 10px));
+  transform: rotateY(-15deg) rotateX(5deg) translateY(calc(100% / 3 + 10px));
 }
 
 .showcase-stack.stack-pos-2 {
-  transform: rotateY(-10deg) rotateX(5deg) rotate(5deg) translateY(calc(-100% / 3 - 10px));
+  transform: rotateY(-15deg) rotateX(5deg) translateY(calc(-100% / 3 - 10px));
 }
 
 .showcase-frame {
