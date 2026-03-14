@@ -634,8 +634,8 @@ const navItems = [
           // Called when slide becomes active
           function onSlideEnter() {
             resetToCenter();
-            // Delay start to let transition finish
-            setTimeout(() => startScroll(), 1400);
+            // Brief delay then start
+            setTimeout(() => startScroll(), 200);
           }
 
           // Called when slide is left
