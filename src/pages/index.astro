@@ -183,29 +183,42 @@ const navItems = [
             <!-- Accent bar -->
             <div class="accent-bar" style={`background-color: ${project.accent};`}></div>
 
-            <div class="flex flex-col lg:flex-row items-center h-full pt-[90px] px-[6.25%] pl-[calc(6.25%+16px)]" style={`color: ${project.text};`}>
-              <!-- Left: Text (40%) -->
-              <div class="w-full lg:w-[40%] flex flex-col justify-center py-6 lg:py-0 order-2 lg:order-1 overflow-visible">
-                <h2 class="title-display title-project slide-title" style={`color: ${project.accent};`}>
-                  {project.title}
-                </h2>
-                <p class="desc-text mt-6 slide-desc">
-                  {project.description}
-                </p>
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="cta-link ui-text ui-text-md mt-[34px] slide-cta"
-                  style={`color: ${project.accent};`}
-                >
-                  <span>View Live Site</span>
-                  <span class="cta-arrow">&rarr;</span>
-                </a>
+            <div class="showcase-layout" style={`color: ${project.text};`}>
+              <!-- Left column: content + live preview, evenly spaced -->
+              <div class="showcase-left">
+                <div class="showcase-content">
+                  <h2 class="title-display title-project slide-title" style={`color: ${project.accent};`}>
+                    {project.title}
+                  </h2>
+                  <p class="desc-text mt-6 slide-desc">
+                    {project.description}
+                  </p>
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="cta-link ui-text ui-text-md mt-[34px] slide-cta"
+                    style={`color: ${project.accent};`}
+                  >
+                    <span>View Live Site</span>
+                    <span class="cta-arrow">&rarr;</span>
+                  </a>
+                </div>
+                <div class="live-preview hidden lg:block" style={`border-color: ${project.accent};`}>
+                  <iframe
+                    class="live-preview-iframe"
+                    data-base-url={project.url}
+                    data-pages={JSON.stringify(project.pages)}
+                    src={`${project.url}?preview`}
+                    title={`${project.title} live preview`}
+                    loading="eager"
+                    sandbox="allow-scripts allow-same-origin"
+                  ></iframe>
+                </div>
               </div>
 
-              <!-- Right: Stacked screenshots (60%) -->
-              <div class="w-full lg:w-[60%] flex items-center justify-center relative order-1 lg:order-2 py-4 lg:py-0 slide-image" style="perspective: 800px;">
+              <!-- Center: Stacked screenshots -->
+              <div class="showcase-cards slide-image" style="perspective: 800px;">
                 <div class="showcase-stack" style={`--card-color: ${project.accent};`}>
                   <!-- Page 2 (top slot) -->
                   <div class="showcase-frame">
@@ -253,19 +266,6 @@ const navItems = [
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <!-- Bottom-left: live preview -->
-              <div class="live-preview hidden lg:block slide-meta" style={`border-color: ${project.accent};`}>
-                <iframe
-                  class="live-preview-iframe"
-                  data-base-url={project.url}
-                  data-pages={JSON.stringify(project.pages)}
-                  src={`${project.url}?preview`}
-                  title={`${project.title} live preview`}
-                  loading="eager"
-                  sandbox="allow-scripts allow-same-origin"
-                ></iframe>
               </div>
             </div>
 

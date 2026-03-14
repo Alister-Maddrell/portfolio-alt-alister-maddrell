@@ -410,18 +410,18 @@ a.ui-text:hover {
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  max-width: calc(85vh - 3.125vw);
-  transform: rotateY(-10deg) rotateX(2.5deg) skewX(-2.5deg) skewY(2.5deg);
+  max-width: calc(70vh - 3.125vw);
+  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg);
   transition: transform 0.5s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
 /* Carousel positions — JS adds these classes */
 .showcase-stack.stack-pos-0 {
-  transform: rotateY(-10deg) rotateX(2.5deg) skewX(-2.5deg) skewY(2.5deg) translateY(calc(100% / 3 + 10px));
+  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg) translateY(calc(100% / 3 + 10px));
 }
 
 .showcase-stack.stack-pos-2 {
-  transform: rotateY(-10deg) rotateX(2.5deg) skewX(-2.5deg) skewY(2.5deg) translateY(calc(-100% / 3 - 10px));
+  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg) translateY(calc(-100% / 3 - 10px));
 }
 
 .showcase-frame {
@@ -463,26 +463,83 @@ a.ui-text:hover {
 }
 
 /* ═══════════════════════════════════════ */
+/* SHOWCASE LAYOUT — project slides       */
+/* ═══════════════════════════════════════ */
+
+.showcase-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 90px 6.25% 0 calc(6.25% + 16px);
+}
+
+@media (min-width: 1024px) {
+  .showcase-layout {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 2rem;
+  }
+}
+
+.showcase-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 2rem 0;
+  order: 2;
+}
+
+@media (min-width: 1024px) {
+  .showcase-left {
+    width: 35%;
+    order: 1;
+    padding: 2rem 0;
+  }
+}
+
+.showcase-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+.showcase-cards {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  order: 1;
+  padding: 1rem 0;
+}
+
+@media (min-width: 1024px) {
+  .showcase-cards {
+    width: 50%;
+    order: 2;
+    padding: 2rem 0;
+  }
+}
+
+/* ═══════════════════════════════════════ */
 /* LIVE PREVIEW — bottom-left iframe      */
 /* ═══════════════════════════════════════ */
 
 .live-preview {
-  position: absolute;
-  left: 6.25%;
-  bottom: 2rem;
-  width: 180px;
-  height: 120px;
+  width: 240px;
+  height: 150px;
   border: 3px solid currentColor;
   border-radius: 6px;
   overflow: hidden;
-  z-index: 10;
+  flex-shrink: 0;
 }
 
 .live-preview-iframe {
   width: 1440px;
   height: 900px;
   border: none;
-  transform: scale(0.125);
+  transform: scale(0.16667);
   transform-origin: top left;
   pointer-events: none;
 }
@@ -544,18 +601,18 @@ a.ui-text:hover {
 }
 
 .slide-nav-dot {
-  width: 12px;
-  height: 5px;
+  width: 5px;
+  height: 12px;
   border-radius: 4px;
   background: currentColor;
   opacity: 0.4;
-  transition: opacity 0.3s, width 0.3s;
+  transition: opacity 0.3s, height 0.3s;
   flex: 0 0 auto;
 }
 
 .slide-nav-item.active .slide-nav-dot {
   opacity: 1;
-  width: 24px;
+  height: 24px;
 }
 
 .slide-nav-label {
