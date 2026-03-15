@@ -234,19 +234,19 @@ a.ui-text:hover {
   background-color: color-mix(in srgb, var(--card-color) 8%, rgba(255, 255, 255, 0.04));
   border-radius: 1rem;
   padding: 0 8px 8px;
-  border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
-              0 0 0 1px color-mix(in srgb, var(--card-color) 10%, transparent),
-              0 0 60px -10px color-mix(in srgb, var(--card-color) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-color) 50%, transparent);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+              0 0 30px -5px color-mix(in srgb, var(--card-color) 25%, transparent);
   transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
               border-color 0.4s ease,
               transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .card-work:hover {
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
-              0 0 30px -5px color-mix(in srgb, var(--card-color) 25%, transparent);
-  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
+  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.6),
+              0 0 50px -5px color-mix(in srgb, var(--card-color) 40%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 65%, transparent);
+  transform: scale(1.02);
 }
 
 /* Topbar: [dots] [url pill] [arrow] */
@@ -425,12 +425,12 @@ a.ui-text:hover {
   border-radius: 0.75rem;
   padding: 0 6px 6px;
   border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3),
-              0 0 60px -10px color-mix(in srgb, var(--card-color) 30%, transparent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   opacity: 0.6;
   transition: opacity 0.3s ease,
               box-shadow 0.4s ease,
-              border-color 0.4s ease;
+              border-color 0.4s ease,
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
 }
 
@@ -451,6 +451,13 @@ a.ui-text:hover {
               0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
   border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
   z-index: 2;
+}
+
+.showcase-frame.frame-active:hover {
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6),
+              0 0 50px color-mix(in srgb, var(--card-color) 40%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 65%, transparent);
+  transform: scale(1.02);
 }
 
 /* ─── Mobile: horizontal row ─── */
@@ -531,6 +538,13 @@ a.ui-text:hover {
 /* LIVE PREVIEW — bottom-left iframe      */
 /* ═══════════════════════════════════════ */
 
+.live-preview:hover {
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6),
+              0 0 50px color-mix(in srgb, var(--card-color) 40%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 65%, transparent);
+  transform: scale(1.02);
+}
+
 .live-preview:hover .card-work-capsule {
   background: rgba(255, 255, 255, 0.9);
   color: #0d0d0d;
@@ -548,10 +562,13 @@ a.ui-text:hover {
   background-color: color-mix(in srgb, var(--card-color) 12%, rgba(255, 255, 255, 0.04));
   border-radius: 0.75rem;
   padding: 0 6px 6px;
-  border: 1px solid color-mix(in srgb, var(--card-color) 30%, transparent);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3),
-              0 0 60px -10px color-mix(in srgb, var(--card-color) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-color) 50%, transparent);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+              0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
   flex-shrink: 0;
+  transition: box-shadow 0.4s ease,
+              border-color 0.4s ease,
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .live-preview-viewport {
@@ -786,10 +803,10 @@ a.ui-text:hover {
 }
 
 .hero-featured-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
-              0 0 30px -5px color-mix(in srgb, var(--card-color) 25%, transparent);
-  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.6),
+              0 0 50px -5px color-mix(in srgb, var(--card-color) 40%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 65%, transparent);
 }
 
 /* Stacked images — slide transition */
@@ -1027,10 +1044,19 @@ a.ui-text:hover {
   background-color: color-mix(in srgb, var(--card-color) 8%, rgba(255, 255, 255, 0.04));
   border-radius: 1rem;
   padding: 0 8px 8px;
-  border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
-              0 0 0 1px color-mix(in srgb, var(--card-color) 10%, transparent),
-              0 0 60px -10px color-mix(in srgb, var(--card-color) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-color) 50%, transparent);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+              0 0 30px -5px color-mix(in srgb, var(--card-color) 25%, transparent);
+  transition: box-shadow 0.4s ease,
+              border-color 0.4s ease,
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact-form-card:hover {
+  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.6),
+              0 0 50px -5px color-mix(in srgb, var(--card-color) 40%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 65%, transparent);
+  transform: scale(1.02);
 }
 
 .contact-form-body {
