@@ -137,7 +137,10 @@ async function extractDominants(imagePath) {
 function hueAdjustBg(h, s, l) {
   // Reds/oranges (345-45°): push saturation higher, raise lightness to avoid rust
   if (h >= 345 || h < 45) {
-    return { s: Math.max(s, 72), l: Math.max(Math.min(l, 42), 36) };
+    // Cap saturation to prevent harsh/burnt look; push toward richer tones
+    // Shift oranges (15-40°) toward crimson/red for more premium feel
+    return { s: Math.max(Math.min(s, 75), 65), l: Math.max(Math.min(l, 42), 35),
+             hShift: (h >= 15 && h < 40) ? Math.max(0, h - 12) : undefined };
   }
   // Yellows/golds (45-75°): need L>50% to flip to dark text mode.
   // Dark yellow = olive = ugly. Bright golden yellow with dark text = vibrant.
@@ -193,10 +196,10 @@ function selectBase(dominants) {
     // Pick highest saturation among candidates
     candidates.sort((a, b) => b.hsl.s - a.hsl.s);
     const pick = candidates[0];
-    // Apply hue-aware adjustment curve
+    // Apply hue-aware adjustment curve (may include hue shift for oranges→crimson)
     const adj = hueAdjustBg(pick.hsl.h, Math.max(pick.hsl.s, 65), pick.hsl.l);
     const hsl = {
-      h: pick.hsl.h,
+      h: adj.hShift !== undefined ? adj.hShift : pick.hsl.h,
       s: adj.s,
       l: adj.l,
     };
@@ -213,7 +216,7 @@ function selectBase(dominants) {
   const h = best ? best.hsl.h : 0;
   const adj = hueAdjustBg(h, 65, 40);
   return {
-    hsl: { h, s: adj.s, l: adj.l },
+    hsl: { h: adj.hShift !== undefined ? adj.hShift : h, s: adj.s, l: adj.l },
     rgb: best ? best.rgb : [128, 128, 128],
     nudged: true,
   };
@@ -343,7 +346,8 @@ function ensureVariety(palettes, projectIds) {
     // Update the palette with the new hue, applying hue-aware adjustments
     const p = palettes[entry.id];
     const adj = hueAdjustBg(newH, p._bgHsl.s, p._bgHsl.l);
-    const newBgHsl = { h: newH, s: adj.s, l: adj.l };
+    const adjustedH = adj.hShift !== undefined ? adj.hShift : newH;
+    const newBgHsl = { h: adjustedH, s: adj.s, l: adj.l };
     const newAccentHsl = generateAccent(newBgHsl);
 
     // Re-run contrast enforcement (critical — shifted hues have different luminance)

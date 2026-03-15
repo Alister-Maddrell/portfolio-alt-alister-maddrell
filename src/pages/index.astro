@@ -83,8 +83,8 @@ const projects = [
 // Hero and contact get their own palette
 const heroBg = '#7ab9e0';
 const heroAccent = '#fff794';
-const contactBg = '#2B4A3E';
-const contactAccent = '#D4B0C8';
+const contactBg = '#2a3a5c';
+const contactAccent = '#f0c87a';
 
 const bgColors = [heroBg, ...projects.map(p => p.bg), contactBg];
 const accentColors = [heroAccent, ...projects.map(p => p.accent), contactAccent];
@@ -144,13 +144,13 @@ const navItems = [
                 <div id="hero-title-outline" class="hero-name title-outline absolute inset-0" style={`-webkit-text-stroke-color: ${heroAccent};`} aria-hidden="true"></div>
               </div>
               <p class="ui-text ui-text-sm mt-4 slide-desc" style={`color: ${heroAccent}; letter-spacing: 3px; opacity: 0.8;`}>Web Designer &amp; Developer · Sydney</p>
-              <p class="desc-text mt-6 slide-desc" style="opacity: 0.7; max-width: 400px;">I design and build conversion-focused websites for small businesses — clean, fast, and built to turn visitors into customers.</p>
+              <p class="desc-text mt-6 slide-desc" style="color: #ffffff; max-width: 400px;">I design and build conversion-focused websites for small businesses — clean, fast, and built to turn visitors into customers.</p>
               <div class="flex gap-4 mt-8 slide-cta">
-                <a href="#" class="hero-cta-primary ui-text ui-text-md" data-slide="1">
+                <a href="#" class="hero-cta-primary ui-text ui-text-md" data-slide="1" style={`color: ${heroAccent}; border-color: ${heroAccent};`}>
                   <span>View My Work</span>
                   <span class="cta-arrow">&rarr;</span>
                 </a>
-                <a href="#" class="cta-link ui-text ui-text-md" data-slide="8">
+                <a href="#" class="cta-link ui-text ui-text-md" data-slide="8" style={`color: ${heroAccent};`}>
                   <span>Get in Touch</span>
                   <span class="cta-arrow">&rarr;</span>
                 </a>
