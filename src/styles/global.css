@@ -783,7 +783,7 @@ a.ui-text:hover {
     content: '';
     position: absolute;
     top: -50%;
-    left: -15%;
+    left: 5%;
     width: 120%;
     height: 160%;
     background: linear-gradient(
