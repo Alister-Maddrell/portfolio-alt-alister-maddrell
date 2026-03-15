@@ -522,12 +522,12 @@ const navItems = [
         if (tag === 'TEXTAREA' || tag === 'SELECT') return;
 
         e.preventDefault();
-        if (isTransitioning) return;
+        if (isTransitioning) { wheelAccum = 0; return; }
 
         wheelAccum += e.deltaY;
 
         clearTimeout(wheelTimeout);
-        wheelTimeout = setTimeout(() => { wheelAccum = 0; }, 200);
+        wheelTimeout = setTimeout(() => { wheelAccum = 0; }, 150);
 
         if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
           if (wheelAccum > 0) goToSlide(currentSlide + 1);

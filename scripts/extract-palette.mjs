@@ -30,6 +30,15 @@ const PROJECTS = [
   { id: 'evergreen', file: 'events.webp' },
 ];
 
+// Pinned palettes — these are locked and skip generation entirely.
+// The variety pass treats their hues as occupied anchors.
+const PINNED = {
+  evergreen: {
+    background: '#9a5d2d', accent: '#97e5e8', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(154, 93, 45, 0.7)',
+  },
+};
+
 // ─── Colour math ───
 
 function rgbToHsl(r, g, b) {
@@ -305,23 +314,33 @@ function ensureVariety(palettes, projectIds) {
     origHue: palettes[id]._bgHsl.h,
   }));
 
-  // Score uniqueness: how far is each hue from its nearest neighbour?
-  for (const e of entries) {
+  // Pinned palettes go first — they always anchor
+  const pinned = entries.filter(e => palettes[e.id]._pinned);
+  const unpinned = entries.filter(e => !palettes[e.id]._pinned);
+
+  // Score uniqueness among unpinned: how far is each hue from its nearest neighbour?
+  for (const e of unpinned) {
     e.uniqueness = Math.min(
       ...entries.filter(o => o.id !== e.id).map(o => hueDist(e.origHue, o.origHue))
     );
   }
   // Sort: most unique first (they anchor), most common last (they shift)
-  const order = [...entries].sort((a, b) => b.uniqueness - a.uniqueness);
+  const order = [...pinned, ...unpinned.sort((a, b) => b.uniqueness - a.uniqueness)];
 
   const placed = []; // { id, hue }
 
   for (const entry of order) {
     const myHue = entry.origHue;
+
+    // Pinned entries are always placed as-is
+    if (palettes[entry.id]._pinned) {
+      placed.push({ id: entry.id, hue: myHue });
+      continue;
+    }
+
     const tooClose = placed.some(p => hueDist(myHue, p.hue) < MIN_HUE_DIST);
 
     if (!tooClose) {
-      // This hue is fine — place it as-is
       placed.push({ id: entry.id, hue: myHue });
       continue;
     }
@@ -375,7 +394,20 @@ async function main() {
 
   const palettes = {};
 
+  // Insert pinned palettes first (they anchor the variety pass)
+  for (const [id, pin] of Object.entries(PINNED)) {
+    const bgRgb = hslToRgb(...Object.values(rgbToHsl(
+      parseInt(pin.background.slice(1,3),16),
+      parseInt(pin.background.slice(3,5),16),
+      parseInt(pin.background.slice(5,7),16)
+    )));
+    const bgHsl = rgbToHsl(bgRgb[0], bgRgb[1], bgRgb[2]);
+    palettes[id] = { ...pin, _bgRgb: bgRgb, _bgHsl: bgHsl, _accentHsl: bgHsl, _nudged: false, _pinned: true };
+    console.log(`  ${id}: 📌 pinned (bg=${pin.background} accent=${pin.accent})`);
+  }
+
   for (const project of PROJECTS) {
+    if (PINNED[project.id]) continue; // Skip pinned projects
     const imagePath = join(ROOT, 'public', 'thumbnails', project.file);
     if (!existsSync(imagePath)) { console.log(`  ⚠ ${project.id}: not found`); continue; }
 
@@ -430,6 +462,7 @@ async function main() {
     delete palettes[id]._accentHsl;
     delete palettes[id]._nudged;
     delete palettes[id]._shifted;
+    delete palettes[id]._pinned;
     if (shifted) console.log(`  ${id}: ↻ hue shifted for variety`);
   }
 
