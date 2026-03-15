@@ -129,6 +129,60 @@ async function extractDominants(imagePath) {
   }));
 }
 
+// ─── Hue-aware quality curve ───
+// Not all hues look equally good at the same S/L. Purple and magenta
+// are naturally jewel-toned at S:65% L:40%. Orange becomes rust. Yellow
+// becomes olive. This curve adjusts per hue zone so every color pops.
+
+function hueAdjustBg(h, s, l) {
+  // Reds/oranges (345-45°): push saturation higher, raise lightness to avoid rust
+  if (h >= 345 || h < 45) {
+    return { s: Math.max(s, 72), l: Math.max(Math.min(l, 42), 36) };
+  }
+  // Yellows/golds (45-75°): need L>50% to flip to dark text mode.
+  // Dark yellow = olive = ugly. Bright golden yellow with dark text = vibrant.
+  if (h >= 45 && h < 75) {
+    return { s: Math.max(s, 65), l: Math.max(Math.min(l, 58), 52) };
+  }
+  // Greens (75-160°): high luminance channel — needs darker L for text contrast
+  // Also cap saturation to prevent garish/cheap look
+  if (h >= 75 && h < 160) {
+    return { s: Math.max(Math.min(s, 58), 48), l: Math.max(Math.min(l, 34), 26) };
+  }
+  // Teals/cyans (160-200°): same luminance issue as greens — go darker
+  if (h >= 160 && h < 200) {
+    return { s: Math.max(s, 68), l: Math.max(Math.min(l, 36), 28) };
+  }
+  // Blues (200-260°): rich and premium at default values
+  if (h >= 200 && h < 260) {
+    return { s: Math.max(s, 65), l: Math.max(Math.min(l, 45), 35) };
+  }
+  // Purples (260-310°): jewel-toned sweet spot — the Flowline zone
+  if (h >= 260 && h < 310) {
+    return { s: Math.max(s, 65), l: Math.max(Math.min(l, 45), 35) };
+  }
+  // Magentas/pinks (310-345°): rich plum/berry — the Luma zone
+  return { s: Math.max(s, 65), l: Math.max(Math.min(l, 42), 33) };
+}
+
+// Accent hue quality: prevent electric cyans, washed pastels
+function hueAdjustAccent(h, s, l) {
+  // Cyans (160-200°): cap saturation to prevent electric/neon look
+  if (h >= 160 && h < 200) {
+    return { s: Math.min(s, 70), l: Math.max(Math.min(l, 78), 72) };
+  }
+  // Yellows/golds (30-80°): these look best slightly warmer and richer
+  if (h >= 30 && h < 80) {
+    return { s: Math.max(s, 60), l: Math.max(Math.min(l, 78), 72) };
+  }
+  // Pinks (300-360°): prevent pastels, keep vivid
+  if (h >= 300 || h < 15) {
+    return { s: Math.max(s, 55), l: Math.max(Math.min(l, 78), 70) };
+  }
+  // Default: keep vivid but not jarring
+  return { s: Math.max(Math.min(s, 80), 55), l: Math.max(Math.min(l, 78), 70) };
+}
+
 // ─── STEP 2: Select base (most "characterful" colour) ───
 
 function selectBase(dominants) {
@@ -139,12 +193,12 @@ function selectBase(dominants) {
     // Pick highest saturation among candidates
     candidates.sort((a, b) => b.hsl.s - a.hsl.s);
     const pick = candidates[0];
-    // Ensure minimum vibrancy (65% sat — the "Flowline standard")
-    // and usable lightness (35-45% for rich, deep backgrounds)
+    // Apply hue-aware adjustment curve
+    const adj = hueAdjustBg(pick.hsl.h, Math.max(pick.hsl.s, 65), pick.hsl.l);
     const hsl = {
       h: pick.hsl.h,
-      s: Math.max(pick.hsl.s, 65),
-      l: Math.max(Math.min(pick.hsl.l, 45), 35),
+      s: adj.s,
+      l: adj.l,
     };
     return { hsl, rgb: pick.rgb, nudged: false };
   }
@@ -157,8 +211,9 @@ function selectBase(dominants) {
     }
   }
   const h = best ? best.hsl.h : 0;
+  const adj = hueAdjustBg(h, 65, 40);
   return {
-    hsl: { h, s: 65, l: 40 },
+    hsl: { h, s: adj.s, l: adj.l },
     rgb: best ? best.rgb : [128, 128, 128],
     nudged: true,
   };
@@ -170,16 +225,14 @@ function generateAccent(bgHsl) {
   // Rotate hue 140-170° (near-complement zone, NOT exactly 180°)
   const accentHue = (bgHsl.h + 155) % 360;
 
-  // Accent saturation: at LEAST as saturated as bg, boosted 15-20%
-  // Floor of 55% ensures accent is never washed out
-  const accentSat = Math.min(100, Math.max(55, bgHsl.s * 1.2));
+  // Base accent: at least as saturated as bg, boosted 20%
+  const rawSat = Math.min(100, Math.max(55, bgHsl.s * 1.2));
+  const rawL = Math.max(70, Math.min(80, bgHsl.l + 30));
 
-  // Accent lightness: 70-80% — vivid but readable, never pastel
-  // Flowline's accent sits at ~75% which is the sweet spot
-  const rawL = bgHsl.l + 30;
-  const accentL = Math.max(70, Math.min(80, rawL));
+  // Apply hue-aware accent curve (prevents electric cyans, washed pastels)
+  const adj = hueAdjustAccent(accentHue, rawSat, rawL);
 
-  return { h: accentHue, s: accentSat, l: accentL };
+  return { h: accentHue, s: adj.s, l: adj.l };
 }
 
 // ─── Contrast enforcement ───
@@ -200,13 +253,34 @@ function enforceContrast(bgHsl, accentHsl) {
   }
   if (textCR < 4.5) warnings.push(`text ${textCR.toFixed(2)}:1`);
 
-  // Enforce accent >= 3:1 (lighten accent)
+  // Enforce accent >= 3:1
+  // Dark mode (bright bg): darken accent for contrast. Light mode (dark bg): lighten accent.
   let accentRgb = hslToRgb(accentHsl.h, accentHsl.s, accentHsl.l);
   let accentCR = contrastRatio(bgRgb, accentRgb);
-  while (accentCR < 3 && accentHsl.l < 96) {
-    accentHsl.l += 1;
+  const origAccentL = accentHsl.l;
+
+  if (mode === 'dark') {
+    // Bright bg — accent needs to go darker and more saturated for contrast
+    accentHsl.l = Math.min(accentHsl.l, 40); // Start from dark side
+    accentHsl.s = Math.max(accentHsl.s, 70); // Keep vivid
     accentRgb = hslToRgb(accentHsl.h, accentHsl.s, accentHsl.l);
     accentCR = contrastRatio(bgRgb, accentRgb);
+    while (accentCR < 3 && accentHsl.l > 5) {
+      accentHsl.l -= 1;
+      accentRgb = hslToRgb(accentHsl.h, accentHsl.s, accentHsl.l);
+      accentCR = contrastRatio(bgRgb, accentRgb);
+    }
+  } else {
+    // Dark bg — accent goes lighter
+    while (accentCR < 3 && accentHsl.l < 96) {
+      accentHsl.l += 1;
+      // If we've pushed lightness 6+ pts beyond target, boost saturation to stay vivid
+      if (accentHsl.l > origAccentL + 6 && accentHsl.s < 90) {
+        accentHsl.s = Math.min(90, accentHsl.s + 2);
+      }
+      accentRgb = hslToRgb(accentHsl.h, accentHsl.s, accentHsl.l);
+      accentCR = contrastRatio(bgRgb, accentRgb);
+    }
   }
   if (accentCR < 3) warnings.push(`accent ${accentCR.toFixed(2)}:1`);
 
@@ -249,36 +323,43 @@ function ensureVariety(palettes, projectIds) {
       continue;
     }
 
-    // Need to shift — find the largest gap in placed hues
-    const sorted = placed.map(p => p.hue).sort((a, b) => a - b);
-    let bestGapCenter = 0, bestGapSize = 0;
-    for (let j = 0; j < sorted.length; j++) {
-      const next = j === sorted.length - 1 ? sorted[0] + 360 : sorted[j + 1];
-      const gap = next - sorted[j];
-      if (gap > bestGapSize) {
-        bestGapSize = gap;
-        bestGapCenter = (sorted[j] + gap / 2) % 360;
+    // Need to shift — find the best placement that maximises minimum distance
+    // Score a candidate hue: minimum distance to any placed hue
+    const scoreHue = (h) => Math.min(...placed.map(p => hueDist(h, p.hue)));
+
+    // Try every 5° around the wheel, pick the one with the best minimum distance
+    let bestH = 0, bestScore = -1;
+    for (let candidate = 0; candidate < 360; candidate += 5) {
+      const score = scoreHue(candidate);
+      if (score > bestScore) {
+        bestScore = score;
+        bestH = candidate;
       }
     }
 
-    const newH = bestGapCenter;
+    const newH = bestH;
     placed.push({ id: entry.id, hue: newH });
 
-    // Update the palette with the new hue
+    // Update the palette with the new hue, applying hue-aware adjustments
     const p = palettes[entry.id];
-    const newBgRgb = hslToRgb(newH, p._bgHsl.s, p._bgHsl.l);
-    const newAccentHsl = generateAccent({ h: newH, s: p._bgHsl.s, l: p._bgHsl.l });
-    const newAccentRgb = hslToRgb(newAccentHsl.h, newAccentHsl.s, newAccentHsl.l);
+    const adj = hueAdjustBg(newH, p._bgHsl.s, p._bgHsl.l);
+    const newBgHsl = { h: newH, s: adj.s, l: adj.l };
+    const newAccentHsl = generateAccent(newBgHsl);
 
-    p.background = rgbToHex(...newBgRgb);
-    p.accent = rgbToHex(...newAccentRgb);
-    p.wash = `rgba(${newBgRgb[0]}, ${newBgRgb[1]}, ${newBgRgb[2]}, 0.7)`;
-    p._bgRgb = newBgRgb;
-    p._bgHsl = { h: newH, s: p._bgHsl.s, l: p._bgHsl.l };
-    p._accentHsl = newAccentHsl;
+    // Re-run contrast enforcement (critical — shifted hues have different luminance)
+    const result = enforceContrast(newBgHsl, newAccentHsl);
+
+    p.background = rgbToHex(...result.bgRgb);
+    p.accent = rgbToHex(...result.accentRgb);
+    p.text = result.mode === 'light' ? '#f0f0f0' : '#1a1a1a';
+    p.textMode = result.mode;
+    p.wash = `rgba(${result.bgRgb[0]}, ${result.bgRgb[1]}, ${result.bgRgb[2]}, 0.7)`;
+    p._bgRgb = result.bgRgb;
+    p._bgHsl = result.bgHsl;
+    p._accentHsl = result.accentHsl;
     p._shifted = true;
 
-    console.log(`    → ${entry.id}: hue ${myHue.toFixed(0)}° too close, shifted to ${newH.toFixed(0)}° (largest gap: ${bestGapSize.toFixed(0)}°)`);
+    console.log(`    → ${entry.id}: hue ${myHue.toFixed(0)}° too close, shifted to ${newH.toFixed(0)}° (min distance: ${bestScore.toFixed(0)}°)`);
   }
 }
 
