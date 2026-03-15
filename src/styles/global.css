@@ -236,7 +236,8 @@ a.ui-text:hover {
   padding: 0 8px 8px;
   border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
-              0 0 0 1px color-mix(in srgb, var(--card-color) 10%, transparent);
+              0 0 0 1px color-mix(in srgb, var(--card-color) 10%, transparent),
+              0 0 60px -10px color-mix(in srgb, var(--card-color) 30%, transparent);
   transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
               border-color 0.4s ease,
               transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
@@ -424,7 +425,8 @@ a.ui-text:hover {
   border-radius: 0.75rem;
   padding: 0 6px 6px;
   border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3),
+              0 0 60px -10px color-mix(in srgb, var(--card-color) 30%, transparent);
   opacity: 0.6;
   transition: opacity 0.3s ease,
               box-shadow 0.4s ease,
@@ -547,7 +549,8 @@ a.ui-text:hover {
   border-radius: 0.75rem;
   padding: 0 6px 6px;
   border: 1px solid color-mix(in srgb, var(--card-color) 30%, transparent);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3),
+              0 0 60px -10px color-mix(in srgb, var(--card-color) 30%, transparent);
   flex-shrink: 0;
 }
 
@@ -1026,7 +1029,8 @@ a.ui-text:hover {
   padding: 0 8px 8px;
   border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
-              0 0 0 1px color-mix(in srgb, var(--card-color) 10%, transparent);
+              0 0 0 1px color-mix(in srgb, var(--card-color) 10%, transparent),
+              0 0 60px -10px color-mix(in srgb, var(--card-color) 30%, transparent);
 }
 
 .contact-form-body {
