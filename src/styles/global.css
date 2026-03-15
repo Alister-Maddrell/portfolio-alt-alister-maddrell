@@ -778,40 +778,40 @@ a.ui-text:hover {
     padding: 2rem 0;
   }
 
-  /* Spotlight cone — beam from upper-left, antagonistic to card's rightward tilt */
+  /* Spotlight cone — wide beam from upper-left across full card */
   .hero-right::before {
     content: '';
     position: absolute;
-    top: -40%;
-    left: -5%;
-    width: 80%;
-    height: 150%;
+    top: -50%;
+    left: -15%;
+    width: 120%;
+    height: 160%;
     background: linear-gradient(
       165deg,
       color-mix(in srgb, var(--slide-accent) 22%, transparent) 0%,
-      color-mix(in srgb, var(--slide-accent) 10%, transparent) 40%,
-      transparent 75%
+      color-mix(in srgb, var(--slide-accent) 10%, transparent) 35%,
+      transparent 65%
     );
-    clip-path: polygon(20% 0%, 50% 0%, 95% 100%, 5% 100%);
+    clip-path: polygon(15% 0%, 40% 0%, 100% 100%, 0% 100%);
     pointer-events: none;
     z-index: 0;
     filter: blur(30px);
   }
 
-  /* Spotlight pool — wash across full card area, offset left to match beam origin */
+  /* Spotlight pool — centered wash across full card area */
   .hero-right::after {
     content: '';
     position: absolute;
-    top: 42%;
-    left: 42%;
+    top: 45%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
+    width: 110%;
     height: 90%;
     background: radial-gradient(
-      ellipse 60% 55% at 40% 42%,
-      color-mix(in srgb, var(--slide-accent) 18%, transparent) 0%,
-      color-mix(in srgb, var(--slide-accent) 8%, transparent) 40%,
-      transparent 70%
+      ellipse 70% 60% at 50% 45%,
+      color-mix(in srgb, var(--slide-accent) 16%, transparent) 0%,
+      color-mix(in srgb, var(--slide-accent) 7%, transparent) 45%,
+      transparent 75%
     );
     pointer-events: none;
     z-index: 0;
