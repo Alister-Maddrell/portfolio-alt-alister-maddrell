@@ -327,8 +327,9 @@ function ensureVariety(palettes, projectIds) {
     }
 
     // Need to shift — find the best placement that maximises minimum distance
-    // Score a candidate hue: minimum distance to any placed hue
-    const scoreHue = (h) => Math.min(...placed.map(p => hueDist(h, p.hue)));
+    // Avoid 45-75° yellow zone (dark yellow = olive, bright yellow needs dark text mode)
+    const isYellowZone = (h) => h >= 45 && h < 75;
+    const scoreHue = (h) => isYellowZone(h) ? -1 : Math.min(...placed.map(p => hueDist(h, p.hue)));
 
     // Try every 5° around the wheel, pick the one with the best minimum distance
     let bestH = 0, bestScore = -1;

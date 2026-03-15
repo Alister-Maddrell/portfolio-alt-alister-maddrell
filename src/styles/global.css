@@ -71,21 +71,21 @@ a {
   visibility: visible;
   overflow: visible;
   z-index: 2;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
 .slide.slide-exit-up {
   transform: translateY(-100%);
   visibility: visible;
   z-index: 1;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
 .slide.slide-exit-down {
   transform: translateY(100%);
   visibility: visible;
   z-index: 1;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
 .slide.slide-enter-from-below {

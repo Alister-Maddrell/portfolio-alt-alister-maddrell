@@ -444,7 +444,6 @@ const navItems = [
       const totalSlides = 9;
       let isTransitioning = false;
       const TRANSITION_LOCK_MS = 500;
-      let queuedSlide = null;
 
       // ─── DOM refs ───
       const bgLayer = document.getElementById('bg-layer');
@@ -455,8 +454,7 @@ const navItems = [
 
       // ─── Go to slide ───
       function goToSlide(index) {
-        if (index === currentSlide || index < 0 || index >= totalSlides) return;
-        if (isTransitioning) { queuedSlide = index; return; }
+        if (isTransitioning || index === currentSlide || index < 0 || index >= totalSlides) return;
         isTransitioning = true;
         hoverEnabled = false;
 
@@ -510,12 +508,6 @@ const navItems = [
         setTimeout(() => {
           isTransitioning = false;
           hoverEnabled = true;
-          // Process queued slide if user scrolled during transition
-          if (queuedSlide !== null) {
-            const next = queuedSlide;
-            queuedSlide = null;
-            goToSlide(next);
-          }
         }, TRANSITION_LOCK_MS);
       }
 
