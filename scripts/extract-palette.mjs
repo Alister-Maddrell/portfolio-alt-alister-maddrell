@@ -1,10 +1,13 @@
 /**
  * extract-palette.mjs
- * Robin-Noguier-style palette generation.
+ * Vibrant complementary palette generation.
  *
- * Principle: TWO chromatic voices per slide. Matched energy.
- * Near-complement hue rotation (140-170°). Matched saturation.
- * Accent always lighter (warm-on-cool depth). Chromatic restraint.
+ * Principle: TWO chromatic voices per slide — both VIVID.
+ * Near-complement hue rotation (140-170°). High saturation.
+ * Accent lighter but never pastel. Global hue diversity enforced.
+ *
+ * The "Flowline standard": bg ≈ S:65%+ L:35-45%, accent ≈ S:55%+ L:70-80%.
+ * Both colors must pop. No muddy browns, no washed-out pastels.
  */
 
 import { createRequire } from 'module';
@@ -136,10 +139,11 @@ function selectBase(dominants) {
     // Pick highest saturation among candidates
     candidates.sort((a, b) => b.hsl.s - a.hsl.s);
     const pick = candidates[0];
-    // Ensure minimum vibrancy and usable lightness
+    // Ensure minimum vibrancy (65% sat — the "Flowline standard")
+    // and usable lightness (35-45% for rich, deep backgrounds)
     const hsl = {
       h: pick.hsl.h,
-      s: Math.max(pick.hsl.s, 55),
+      s: Math.max(pick.hsl.s, 65),
       l: Math.max(Math.min(pick.hsl.l, 45), 35),
     };
     return { hsl, rgb: pick.rgb, nudged: false };
@@ -154,7 +158,7 @@ function selectBase(dominants) {
   }
   const h = best ? best.hsl.h : 0;
   return {
-    hsl: { h, s: 55, l: 40 },
+    hsl: { h, s: 65, l: 40 },
     rgb: best ? best.rgb : [128, 128, 128],
     nudged: true,
   };
@@ -166,13 +170,14 @@ function generateAccent(bgHsl) {
   // Rotate hue 140-170° (near-complement zone, NOT exactly 180°)
   const accentHue = (bgHsl.h + 155) % 360;
 
-  // MATCH saturation: accent stays in same tonal register as bg
-  // but slightly boosted so it reads clearly as a chromatic voice
-  const accentSat = Math.min(100, Math.max(45, Math.min(bgHsl.s + 10, bgHsl.s * 1.15)));
+  // Accent saturation: at LEAST as saturated as bg, boosted 15-20%
+  // Floor of 55% ensures accent is never washed out
+  const accentSat = Math.min(100, Math.max(55, bgHsl.s * 1.2));
 
-  // Accent lightness = bg lightness + 25-35, clamped to 75-92%
+  // Accent lightness: 70-80% — vivid but readable, never pastel
+  // Flowline's accent sits at ~75% which is the sweet spot
   const rawL = bgHsl.l + 30;
-  const accentL = Math.max(75, Math.min(88, rawL));
+  const accentL = Math.max(70, Math.min(80, rawL));
 
   return { h: accentHue, s: accentSat, l: accentL };
 }
@@ -208,31 +213,72 @@ function enforceContrast(bgHsl, accentHsl) {
   return { bgHsl, accentHsl, bgRgb, accentRgb, textRgb, textCR, accentCR, mode, warnings };
 }
 
-// ─── Ensure adjacent slides don't share hues ───
+// ─── Ensure ALL slides have distinct hues (global distribution) ───
 
 function hueDist(a, b) { const d = Math.abs(a - b); return Math.min(d, 360 - d); }
 
-function ensureVariety(palettes, projectIds) {
-  // Check consecutive slides — if bg hues are within 40°, shift the second
-  for (let i = 0; i < projectIds.length - 1; i++) {
-    const a = palettes[projectIds[i]];
-    const b = palettes[projectIds[i + 1]];
-    if (!a || !b) continue;
+const MIN_HUE_DIST = 45; // Minimum degrees between any two slides
 
-    const bgA = rgbToHsl(...a._bgRgb);
-    const bgB = rgbToHsl(...b._bgRgb);
-    if (hueDist(bgA.h, bgB.h) < 40 && b._nudged) {
-      // Shift the nudged one to complement (180°) for maximum separation
-      const newH = (bgB.h + 180) % 360;
-      const newBgRgb = hslToRgb(newH, 55, b._bgHsl.l);
-      const newAccentHsl = { h: (newH + 155) % 360, s: b._accentHsl.s, l: b._accentHsl.l };
-      const newAccentRgb = hslToRgb(newAccentHsl.h, newAccentHsl.s, newAccentHsl.l);
-      b.background = rgbToHex(...newBgRgb);
-      b.accent = rgbToHex(...newAccentRgb);
-      b.wash = `rgba(${newBgRgb[0]}, ${newBgRgb[1]}, ${newBgRgb[2]}, 0.7)`;
-      b._bgRgb = newBgRgb;
-      b._shifted = true;
+function ensureVariety(palettes, projectIds) {
+  // Process order: place slides with the most unique extracted hues first,
+  // so they anchor the distribution and others adjust around them.
+  // This naturally preserves Flowline-quality palettes.
+  const entries = projectIds.filter(id => palettes[id]).map(id => ({
+    id,
+    origHue: palettes[id]._bgHsl.h,
+  }));
+
+  // Score uniqueness: how far is each hue from its nearest neighbour?
+  for (const e of entries) {
+    e.uniqueness = Math.min(
+      ...entries.filter(o => o.id !== e.id).map(o => hueDist(e.origHue, o.origHue))
+    );
+  }
+  // Sort: most unique first (they anchor), most common last (they shift)
+  const order = [...entries].sort((a, b) => b.uniqueness - a.uniqueness);
+
+  const placed = []; // { id, hue }
+
+  for (const entry of order) {
+    const myHue = entry.origHue;
+    const tooClose = placed.some(p => hueDist(myHue, p.hue) < MIN_HUE_DIST);
+
+    if (!tooClose) {
+      // This hue is fine — place it as-is
+      placed.push({ id: entry.id, hue: myHue });
+      continue;
     }
+
+    // Need to shift — find the largest gap in placed hues
+    const sorted = placed.map(p => p.hue).sort((a, b) => a - b);
+    let bestGapCenter = 0, bestGapSize = 0;
+    for (let j = 0; j < sorted.length; j++) {
+      const next = j === sorted.length - 1 ? sorted[0] + 360 : sorted[j + 1];
+      const gap = next - sorted[j];
+      if (gap > bestGapSize) {
+        bestGapSize = gap;
+        bestGapCenter = (sorted[j] + gap / 2) % 360;
+      }
+    }
+
+    const newH = bestGapCenter;
+    placed.push({ id: entry.id, hue: newH });
+
+    // Update the palette with the new hue
+    const p = palettes[entry.id];
+    const newBgRgb = hslToRgb(newH, p._bgHsl.s, p._bgHsl.l);
+    const newAccentHsl = generateAccent({ h: newH, s: p._bgHsl.s, l: p._bgHsl.l });
+    const newAccentRgb = hslToRgb(newAccentHsl.h, newAccentHsl.s, newAccentHsl.l);
+
+    p.background = rgbToHex(...newBgRgb);
+    p.accent = rgbToHex(...newAccentRgb);
+    p.wash = `rgba(${newBgRgb[0]}, ${newBgRgb[1]}, ${newBgRgb[2]}, 0.7)`;
+    p._bgRgb = newBgRgb;
+    p._bgHsl = { h: newH, s: p._bgHsl.s, l: p._bgHsl.l };
+    p._accentHsl = newAccentHsl;
+    p._shifted = true;
+
+    console.log(`    → ${entry.id}: hue ${myHue.toFixed(0)}° too close, shifted to ${newH.toFixed(0)}° (largest gap: ${bestGapSize.toFixed(0)}°)`);
   }
 }
 
