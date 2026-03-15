@@ -443,7 +443,8 @@ const navItems = [
       let currentSlide = 0;
       const totalSlides = 9;
       let isTransitioning = false;
-      const TRANSITION_LOCK_MS = 1200;
+      const TRANSITION_LOCK_MS = 500;
+      let queuedSlide = null;
 
       // ─── DOM refs ───
       const bgLayer = document.getElementById('bg-layer');
@@ -454,9 +455,10 @@ const navItems = [
 
       // ─── Go to slide ───
       function goToSlide(index) {
-        if (isTransitioning || index === currentSlide || index < 0 || index >= totalSlides) return;
+        if (index === currentSlide || index < 0 || index >= totalSlides) return;
+        if (isTransitioning) { queuedSlide = index; return; }
         isTransitioning = true;
-        hoverEnabled = false; // Disable hover during transition
+        hoverEnabled = false;
 
         const prevSlide = document.getElementById(`slide-${currentSlide}`);
         const nextSlide = document.getElementById(`slide-${index}`);
@@ -474,7 +476,7 @@ const navItems = [
           prevSlide.classList.add(goingDown ? 'slide-exit-up' : 'slide-exit-down');
           setTimeout(() => {
             prevSlide.classList.remove('slide-exit-up', 'slide-exit-down');
-          }, 700);
+          }, 500);
         }
 
         // Position new slide at entry point (transition: none snaps instantly)
@@ -507,7 +509,13 @@ const navItems = [
         currentSlide = index;
         setTimeout(() => {
           isTransitioning = false;
-          hoverEnabled = true; // Re-enable hover after transition completes
+          hoverEnabled = true;
+          // Process queued slide if user scrolled during transition
+          if (queuedSlide !== null) {
+            const next = queuedSlide;
+            queuedSlide = null;
+            goToSlide(next);
+          }
         }, TRANSITION_LOCK_MS);
       }
 
