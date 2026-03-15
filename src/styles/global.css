@@ -338,9 +338,9 @@ a.ui-text:hover {
 }
 
 .card-work:hover .card-work-capsule {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--card-color);
   color: #0d0d0d;
-  border-color: rgba(255, 255, 255, 0.9);
+  border-color: var(--card-color);
 }
 
 .card-work:hover .card-work-capsule svg {
@@ -435,9 +435,9 @@ a.ui-text:hover {
 }
 
 .showcase-frame:hover .card-work-capsule {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--card-color);
   color: #0d0d0d;
-  border-color: rgba(255, 255, 255, 0.9);
+  border-color: var(--card-color);
 }
 
 .showcase-frame:hover .card-work-capsule svg {
@@ -546,9 +546,9 @@ a.ui-text:hover {
 }
 
 .live-preview:hover .card-work-capsule {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--card-color);
   color: #0d0d0d;
-  border-color: rgba(255, 255, 255, 0.9);
+  border-color: var(--card-color);
 }
 
 .live-preview:hover .card-work-capsule svg {
