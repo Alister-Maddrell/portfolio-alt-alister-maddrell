@@ -768,6 +768,7 @@ a.ui-text:hover {
   justify-content: center;
   order: 1;
   padding: 1rem 0;
+  position: relative;
 }
 
 @media (min-width: 1024px) {
@@ -775,6 +776,46 @@ a.ui-text:hover {
     width: 64%;
     order: 2;
     padding: 2rem 0;
+  }
+
+  /* Spotlight cone — beam from above */
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: 8%;
+    width: 60%;
+    height: 140%;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--slide-accent) 20%, transparent) 0%,
+      color-mix(in srgb, var(--slide-accent) 8%, transparent) 50%,
+      transparent 85%
+    );
+    clip-path: polygon(30% 0%, 70% 0%, 90% 100%, 10% 100%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(30px);
+  }
+
+  /* Spotlight pool — bright wash behind the card */
+  .hero-right::after {
+    content: '';
+    position: absolute;
+    top: 45%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 80%;
+    background: radial-gradient(
+      ellipse 55% 50% at 50% 45%,
+      color-mix(in srgb, var(--slide-accent) 18%, transparent) 0%,
+      color-mix(in srgb, var(--slide-accent) 8%, transparent) 40%,
+      transparent 75%
+    );
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(25px);
   }
 }
 
@@ -789,6 +830,8 @@ a.ui-text:hover {
 
 /* Featured project card */
 .hero-featured {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
