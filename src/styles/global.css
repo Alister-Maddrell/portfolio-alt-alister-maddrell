@@ -203,17 +203,20 @@ a.ui-text:hover {
   align-items: center;
   gap: 0.75em;
   cursor: pointer;
-  padding: 10px 20px;
-  border: 1px solid currentColor;
-  border-radius: 6px;
-  background: color-mix(in srgb, currentColor 8%, transparent);
-  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  padding: 10px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.06);
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   align-self: flex-start;
 }
 
 .cta-link:hover {
-  background: color-mix(in srgb, currentColor 18%, transparent);
+  background: var(--slide-accent, currentColor);
+  color: #0d0d0d;
+  border-color: var(--slide-accent, currentColor);
   transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 .cta-link .cta-arrow {
@@ -949,19 +952,24 @@ a.ui-text:hover {
   }
 }
 
-/* Primary CTA — filled button */
+/* Primary CTA — pill capsule, accent-filled on hover */
 .hero-cta-primary {
   display: inline-flex;
   align-items: center;
   gap: 0.75em;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 10px 24px;
+  border-radius: 100px;
+  border: 1px solid currentColor;
   cursor: pointer;
-  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  background: transparent;
+  color: inherit;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .hero-cta-primary:hover {
-  filter: brightness(0.9);
+  background: var(--slide-accent);
+  color: #0d0d0d;
+  border-color: var(--slide-accent);
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
@@ -1097,13 +1105,13 @@ a.ui-text:hover {
   gap: 0.75em;
   padding: 12px 24px;
   border: none;
-  border-radius: 6px;
+  border-radius: 100px;
   cursor: pointer;
   transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .contact-submit:hover {
-  filter: brightness(0.9);
+  filter: brightness(1.1);
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
