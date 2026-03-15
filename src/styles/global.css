@@ -534,6 +534,7 @@ a.ui-text:hover {
     width: 50%;
     order: 2;
     padding: 2rem 0;
+    margin-right: -3%;
   }
 }
 
