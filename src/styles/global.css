@@ -1015,6 +1015,11 @@ a.ui-text:hover {
 /* CONTACT FORM CARD                      */
 /* ═══════════════════════════════════════ */
 
+#slide-8 .showcase-left {
+  justify-content: center;
+  gap: 2rem;
+}
+
 .contact-right {
   width: 100%;
   display: flex;
@@ -1029,9 +1034,8 @@ a.ui-text:hover {
     width: 50%;
     order: 2;
     padding: 2rem 0;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-    padding-top: clamp(120px, 18vh, 200px);
     padding-left: 8%;
   }
 }
