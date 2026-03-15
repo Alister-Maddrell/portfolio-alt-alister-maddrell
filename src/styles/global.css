@@ -510,11 +510,6 @@ a.ui-text:hover {
     width: 35%;
     order: 1;
     padding: 2rem 0;
-    container-type: inline-size;
-  }
-
-  .title-project {
-    font-size: clamp(56px, 28cqw, 140px);
   }
 }
 

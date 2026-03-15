@@ -850,11 +850,29 @@ const navItems = [
         });
       }
 
+      // ─── Fit project titles to column width ───
+      function fitProjectTitles() {
+        if (window.innerWidth < 1024) return;
+        document.querySelectorAll('.showcase-left .title-project').forEach(title => {
+          const container = title.closest('.showcase-content') || title.parentElement;
+          const maxW = container.clientWidth;
+          // Reset to base size then scale down if needed
+          title.style.fontSize = '';
+          let size = parseFloat(getComputedStyle(title).fontSize);
+          while (title.scrollWidth > maxW && size > 40) {
+            size -= 2;
+            title.style.fontSize = size + 'px';
+          }
+        });
+      }
+
       // ─── Init ───
       document.addEventListener('DOMContentLoaded', () => {
         initHeroAnimation();
         initHeroStrip();
         initShowcaseCarousel();
+        fitProjectTitles();
+        window.addEventListener('resize', fitProjectTitles);
       });
     </script>
   </body>
