@@ -422,10 +422,14 @@ a.ui-text:hover {
   padding: 0 32px;
   border-radius: 2px;
   position: relative;
-  min-height: 100vh;
+  min-height: 250vh;
   justify-content: center;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  /* Only left/right borders — top/bottom extend beyond viewport */
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: none;
+  border-bottom: none;
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.7),
     inset 0 0 60px rgba(0, 0, 0, 0.4);
