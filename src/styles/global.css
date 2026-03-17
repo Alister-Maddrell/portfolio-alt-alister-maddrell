@@ -628,7 +628,7 @@ a.ui-text:hover {
 @media (min-width: 1024px) {
   .slide-nav-inner {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-end;
     gap: 10px;
   }
 }
@@ -647,8 +647,8 @@ a.ui-text:hover {
   color: inherit;
   overflow: hidden;
   border-radius: 100px;
-  /* Desktop: dot then label (expands right) */
-  flex-direction: row-reverse;
+  /* Desktop: label then dot (right-aligned) */
+  flex-direction: row;
 }
 
 .slide-nav-dot {
@@ -680,13 +680,18 @@ a.ui-text:hover {
   transition: max-width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
               opacity 0.3s ease,
               margin 0.3s ease;
-  margin-left: 0;
+  margin-right: 0;
 }
 
 .slide-nav-inner:hover .slide-nav-label {
   max-width: 160px;
   opacity: 0.8;
-  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.slide-nav-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
 .slide-nav-item.active .slide-nav-label {
