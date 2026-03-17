@@ -407,7 +407,7 @@ a.ui-text:hover {
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  max-width: calc(70vh - 3.125vw);
+  max-width: calc(60vh - 3.125vw);
   transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg);
   transition: transform 0.5s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
@@ -535,7 +535,7 @@ a.ui-text:hover {
     order: 2;
     padding: 2rem 0;
     margin-left: auto;
-    margin-right: 56px;
+    margin-right: 90px;
   }
 }
 
@@ -687,11 +687,6 @@ a.ui-text:hover {
   max-width: 160px;
   opacity: 0.8;
   margin-right: 10px;
-}
-
-.slide-nav-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
 .slide-nav-item.active .slide-nav-label {
