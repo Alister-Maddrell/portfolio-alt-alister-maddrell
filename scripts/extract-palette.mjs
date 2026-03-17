@@ -39,24 +39,24 @@ const PINNED = {
     textMode: 'light', wash: 'rgba(6, 82, 221, 0.7)',
   },
   kin: {
-    background: '#E55039', accent: '#4BCFFA', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(229, 80, 57, 0.7)',
+    background: '#E84118', accent: '#00D2D3', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(232, 65, 24, 0.7)',
   },
   apex: {
     background: '#781bbb', accent: '#e2f877', text: '#f0f0f0',
     textMode: 'light', wash: 'rgba(120, 27, 187, 0.7)',
   },
   whitfield: {
-    background: '#1B1464', accent: '#FFA502', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(27, 20, 100, 0.7)',
+    background: '#10A956', accent: '#FF6348', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(16, 169, 86, 0.7)',
   },
   luma: {
     background: '#b12562', accent: '#80ef91', text: '#f0f0f0',
     textMode: 'light', wash: 'rgba(177, 37, 98, 0.7)',
   },
   flowline: {
-    background: '#6C3483', accent: '#F4D03F', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(108, 52, 131, 0.7)',
+    background: '#8E24AA', accent: '#FFEB3B', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(142, 36, 170, 0.7)',
   },
   evergreen: {
     background: '#006266', accent: '#f78fb3', text: '#f0f0f0',
