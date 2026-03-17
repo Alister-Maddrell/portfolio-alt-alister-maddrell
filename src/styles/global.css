@@ -406,111 +406,40 @@ a.ui-text:hover {
 }
 
 /* ═══════════════════════════════════════ */
-/* SHOWCASE STACK — film strip            */
+/* SHOWCASE STACK — diagonal perspective  */
 /* ═══════════════════════════════════════ */
 
 .showcase-stack {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
   max-width: calc(60vh - 3.125vw);
   transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg);
   transition: transform 0.5s cubic-bezier(0.22, 1.4, 0.36, 1);
-  /* Film strip body — spans full viewport, semi-transparent so slide color bleeds through */
-  background: rgba(15, 15, 15, 0.88);
-  padding: 0 32px;
-  border-radius: 2px;
-  position: relative;
-  min-height: 250vh;
-  justify-content: center;
-  overflow: hidden;
-  /* Only left/right borders — top/bottom extend beyond viewport */
-  border-left: 1px solid rgba(255, 255, 255, 0.18);
-  border-right: 1px solid rgba(255, 255, 255, 0.18);
-  border-top: none;
-  border-bottom: none;
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.7),
-    inset 0 0 60px rgba(0, 0, 0, 0.4);
-}
-
-/* Sprocket hole tracks — clearly visible punched holes */
-.showcase-stack::before,
-.showcase-stack::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 20px;
-  z-index: 5;
-  pointer-events: none;
-  /* Sprocket holes: bold cutouts — bright rim + dark inset + lit center */
-  background-color: transparent;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='32'%3E%3Crect x='2' y='5' width='16' height='20' rx='3' fill='%23333'/%3E%3Crect x='3' y='6' width='14' height='18' rx='2.5' fill='%23080808'/%3E%3Crect x='4' y='7' width='12' height='16' rx='2' fill='%23444'/%3E%3C/svg%3E");
-  background-repeat: repeat-y;
-  background-size: 20px 32px;
-  background-position: center top;
-}
-
-.showcase-stack::before { left: 4px; }
-.showcase-stack::after { right: 4px; }
-
-/* Rebate lines — thin vertical guides between sprocket tracks and frame area */
-.showcase-stack > .film-grain-overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 28px;
-  right: 28px;
-  z-index: 3;
-  pointer-events: none;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Frame counter */
-.showcase-frame {
-  counter-increment: film-frame;
-  position: relative;
-}
-
-/* Frame number + edge text */
-.showcase-frame::after {
-  content: counter(film-frame, decimal-leading-zero) 'A';
-  position: absolute;
-  bottom: 8px;
-  right: 10px;
-  font-family: 'Courier New', monospace;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: rgba(255, 255, 255, 0.18);
-  z-index: 6;
-  pointer-events: none;
 }
 
 /* Carousel positions — JS adds these classes */
 .showcase-stack.stack-pos-0 {
-  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg) translateY(calc(100% / 3 + 8px));
+  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg) translateY(calc(100% / 3 + 10px));
 }
 
 .showcase-stack.stack-pos-2 {
-  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg) translateY(calc(-100% / 3 - 8px));
+  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg) translateY(calc(-100% / 3 - 10px));
 }
 
 .showcase-frame {
   display: flex;
   flex-direction: column;
-  background-color: #0d0d0d;
-  border-radius: 2px;
-  padding: 0 4px 4px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
-  opacity: 0.65;
-  transition: opacity 0.35s ease,
-              border-color 0.35s ease,
-              box-shadow 0.35s ease,
+  background-color: color-mix(in srgb, var(--card-color) 12%, rgba(255, 255, 255, 0.04));
+  border-radius: 0.75rem;
+  padding: 0 6px 6px;
+  border: 1px solid color-mix(in srgb, var(--card-color) 20%, transparent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  opacity: 0.6;
+  transition: opacity 0.3s ease,
+              box-shadow 0.4s ease,
+              border-color 0.4s ease,
               transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
 }
@@ -525,58 +454,33 @@ a.ui-text:hover {
   transform: translateX(2px);
 }
 
-/* Active frame — brighter, lifted off the strip */
+/* Active card styling — JS toggles .frame-active */
 .showcase-frame.frame-active {
   opacity: 1;
-  border-color: rgba(255, 255, 255, 0.25);
-  box-shadow:
-    inset 0 0 4px rgba(0, 0, 0, 0.2),
-    0 0 24px rgba(255, 255, 255, 0.08),
-    0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+              0 0 30px color-mix(in srgb, var(--card-color) 25%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 50%, transparent);
   z-index: 2;
 }
 
 .showcase-frame.frame-active:hover {
-  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6),
+              0 0 50px color-mix(in srgb, var(--card-color) 40%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 65%, transparent);
   transform: scale(1.02);
 }
 
-/* ─── Mobile: horizontal film strip ─── */
+/* ─── Mobile: horizontal row ─── */
 @media (max-width: 1023px) {
   .showcase-stack {
     flex-direction: row;
-    gap: 4px;
+    gap: 6px;
     max-width: 100%;
-    min-height: auto;
-    padding: 32px 8px;
   }
-
-  .showcase-stack::before,
-  .showcase-stack::after {
-    left: 0;
-    right: 0;
-    width: auto;
-    height: 18px;
-    top: auto;
-    bottom: auto;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='18'%3E%3Crect x='6' y='3' width='16' height='12' rx='2.5' fill='%23111'/%3E%3Crect x='7' y='4' width='14' height='10' rx='2' fill='%23090909'/%3E%3Crect x='7.5' y='4.5' width='13' height='9' rx='1.5' fill='%23222'/%3E%3C/svg%3E");
-    background-repeat: repeat-x;
-    background-size: 30px 18px;
-    background-position: left center;
-  }
-
-  .showcase-stack::before { top: 6px; }
-  .showcase-stack::after { bottom: 6px; }
 
   .showcase-frame {
     flex: 1;
     min-width: 0;
-  }
-
-  .showcase-frame::after {
-    font-size: 7px;
-    bottom: 4px;
-    right: 5px;
   }
 }
 
@@ -636,10 +540,9 @@ a.ui-text:hover {
   .showcase-cards {
     width: 50%;
     order: 2;
-    padding: 0;
+    padding: 2rem 0;
     margin-left: auto;
     margin-right: 72px;
-    align-self: stretch;
   }
 }
 
