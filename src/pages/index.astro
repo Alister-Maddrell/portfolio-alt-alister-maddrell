@@ -513,26 +513,57 @@ const navItems = [
       }
 
       // ─── Wheel navigation ───
+      // Inertia detection: trackpad inertia has decreasing |deltaY|.
+      // A new intentional swipe has increasing |deltaY|. We use this
+      // to distinguish "still coasting from last swipe" from "new swipe".
       let wheelAccum = 0;
       const WHEEL_THRESHOLD = 80;
       let wheelTimeout;
+      let prevAbsDelta = 0;
+      let deltaHistory = []; // recent |deltaY| values to detect acceleration
 
       window.addEventListener('wheel', (e) => {
         const tag = e.target.tagName;
         if (tag === 'TEXTAREA' || tag === 'SELECT') return;
         e.preventDefault();
 
+        const absDelta = Math.abs(e.deltaY);
+
         if (isTransitioning) {
           wheelAccum = 0;
-          // Inertia still arriving — push unlock back by 200ms each time
-          clearTimeout(wheelUnlockTimer);
-          wheelUnlockTimer = setTimeout(() => {
+
+          // Track recent deltas to detect new swipe (acceleration)
+          deltaHistory.push(absDelta);
+          if (deltaHistory.length > 4) deltaHistory.shift();
+
+          // New swipe detected: current delta is significantly larger
+          // than the recent trend (inertia was decelerating, now accelerating)
+          const recentAvg = deltaHistory.length > 1
+            ? deltaHistory.slice(0, -1).reduce((a, b) => a + b, 0) / (deltaHistory.length - 1)
+            : absDelta;
+          const isNewSwipe = deltaHistory.length >= 3 && absDelta > recentAvg * 1.5 && absDelta > 20;
+
+          if (isNewSwipe) {
+            // Allow interrupt — new intentional swipe
             isTransitioning = false;
             hoverEnabled = true;
-          }, 200);
-          return;
+            clearTimeout(wheelUnlockTimer);
+            deltaHistory = [];
+            // Fall through to accumulator below
+          } else {
+            // Inertia — keep blocking, extend unlock timer
+            clearTimeout(wheelUnlockTimer);
+            wheelUnlockTimer = setTimeout(() => {
+              isTransitioning = false;
+              hoverEnabled = true;
+              deltaHistory = [];
+            }, 200);
+            prevAbsDelta = absDelta;
+            return;
+          }
         }
 
+        prevAbsDelta = absDelta;
         wheelAccum += e.deltaY;
 
         clearTimeout(wheelTimeout);
@@ -542,6 +573,7 @@ const navItems = [
           if (wheelAccum > 0) goToSlide(currentSlide + 1);
           else goToSlide(currentSlide - 1);
           wheelAccum = 0;
+          deltaHistory = [];
         }
       }, { passive: false });
 
