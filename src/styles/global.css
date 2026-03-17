@@ -355,7 +355,7 @@ a.ui-text:hover {
   border: 1px solid color-mix(in srgb, var(--card-color) 40%, transparent);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
               0 0 30px -5px color-mix(in srgb, var(--card-color) 20%, transparent),
-              0 0 100px 30px color-mix(in srgb, var(--card-color) 18%, transparent);
+              0 0 120px 20px color-mix(in srgb, var(--card-color) 12%, transparent);
   transition: box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
               border-color 0.5s ease,
               transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -364,7 +364,7 @@ a.ui-text:hover {
 .card-work:hover {
   box-shadow: 0 35px 70px -10px rgba(0, 0, 0, 0.6),
               0 0 60px -5px color-mix(in srgb, var(--card-color) 35%, transparent),
-              0 0 120px 40px color-mix(in srgb, var(--card-color) 24%, transparent);
+              0 0 140px 30px color-mix(in srgb, var(--card-color) 16%, transparent);
   border-color: color-mix(in srgb, var(--card-color) 60%, transparent);
   transform: translateY(-4px) scale(1.015);
 }
@@ -527,8 +527,6 @@ a.ui-text:hover {
   max-width: calc(60vh - 3.125vw);
   transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg);
   transition: transform 0.5s cubic-bezier(0.22, 1.4, 0.36, 1);
-  filter: drop-shadow(0 0 60px color-mix(in srgb, var(--card-color) 30%, transparent))
-          drop-shadow(0 0 120px color-mix(in srgb, var(--card-color) 18%, transparent));
 }
 
 /* Carousel positions — JS adds these classes */
@@ -697,7 +695,7 @@ a.ui-text:hover {
   border: 1px solid color-mix(in srgb, var(--card-color) 40%, transparent);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
               0 0 30px color-mix(in srgb, var(--card-color) 20%, transparent),
-              0 0 80px 20px color-mix(in srgb, var(--card-color) 18%, transparent);
+              0 0 80px 10px color-mix(in srgb, var(--card-color) 10%, transparent);
   flex-shrink: 0;
   transition: box-shadow 0.5s ease,
               border-color 0.5s ease,
@@ -940,8 +938,6 @@ a.ui-text:hover {
   max-width: calc(75vh - 3.125vw);
   transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg);
   margin-right: 56px;
-  filter: drop-shadow(0 0 60px color-mix(in srgb, var(--card-color) 28%, transparent))
-          drop-shadow(0 0 120px color-mix(in srgb, var(--card-color) 15%, transparent));
 }
 
 .hero-featured-card {
@@ -1202,7 +1198,7 @@ a.ui-text:hover {
   border: 1px solid color-mix(in srgb, var(--card-color) 50%, transparent);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
               0 0 30px -5px color-mix(in srgb, var(--card-color) 25%, transparent),
-              0 0 100px 30px color-mix(in srgb, var(--card-color) 18%, transparent);
+              0 0 120px 20px color-mix(in srgb, var(--card-color) 12%, transparent);
   transition: box-shadow 0.4s ease,
               border-color 0.4s ease,
               transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1211,7 +1207,7 @@ a.ui-text:hover {
 .contact-form-card:hover {
   box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.6),
               0 0 50px -5px color-mix(in srgb, var(--card-color) 40%, transparent),
-              0 0 120px 40px color-mix(in srgb, var(--card-color) 24%, transparent);
+              0 0 140px 30px color-mix(in srgb, var(--card-color) 16%, transparent);
   border-color: color-mix(in srgb, var(--card-color) 65%, transparent);
   transform: scale(1.02);
 }
