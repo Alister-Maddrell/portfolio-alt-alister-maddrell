@@ -34,37 +34,42 @@ const PROJECTS = [
 // Pop art: deeply saturated backgrounds + bright complementary accents.
 // Each slide is a distinct hue with maximum chroma clash.
 const PINNED = {
+  // Each bg matches the shade/energy of the demo site's brand colour.
+  // Accents stay in the gentle gold-to-mint glow family (H:45-129°).
   hartley: {
+    // Brand: Working Blue #2F6BFB (222°) → deepened to L:44%
     background: '#0652DD', accent: '#FFC312', text: '#f0f0f0',
     textMode: 'light', wash: 'rgba(6, 82, 221, 0.7)',
   },
   kin: {
-    // H:355° crimson + chartreuse glow (H:68°) — warm lime, no clash
-    background: '#BD1F2C', accent: '#D8EB5C', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(189, 31, 44, 0.7)',
+    // Brand: Terracotta #B8654A (15°) → deep earthy red, S:70%, L:42%
+    background: '#B8451E', accent: '#D8EB5C', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(184, 69, 30, 0.7)',
   },
   apex: {
-    // H:200° ocean blue + lemon glow (H:58°) — warm blue, not neon cyan
-    background: '#0F83BD', accent: '#EDE95C', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(15, 131, 189, 0.7)',
+    // Brand: Surgical Orange #FF5A1F (16°) → deep vivid orange, S:88%, L:43%
+    background: '#CE540D', accent: '#74E67E', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(206, 84, 13, 0.7)',
   },
   whitfield: {
-    // H:252° indigo (S:65%, softer) + spring green glow (H:92°) — Mardi Gras pop
-    background: '#4125B1', accent: '#A4E76A', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(65, 37, 177, 0.7)',
+    // Brand: Emerald #166534 (143°) → rich emerald, S:72%, L:38%
+    background: '#1BA751', accent: '#F4D44C', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(27, 167, 81, 0.7)',
   },
   luma: {
+    // Brand: Hot Pink #E84393 (331°) → deep pink, S:72%, L:42%
     background: '#b12562', accent: '#80ef91', text: '#f0f0f0',
     textMode: 'light', wash: 'rgba(177, 37, 98, 0.7)',
   },
   flowline: {
-    background: '#8E24AA', accent: '#FFEB3B', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(142, 36, 170, 0.7)',
+    // Brand: Cyan #00D4FF (190°) → deep cyan, S:90%, L:40%
+    background: '#0AA3C2', accent: '#FFEB3B', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(10, 163, 194, 0.7)',
   },
   evergreen: {
-    // H:310° deep magenta + lime glow (H:80°) — fills purple-pink gap
-    background: '#A82492', accent: '#BCE963', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(168, 36, 146, 0.7)',
+    // Brand: Gold #B8963E (43°) → rich deep gold, S:88%, L:40%
+    background: '#C0920C', accent: '#9BE76A', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(192, 146, 12, 0.7)',
   },
 };
 

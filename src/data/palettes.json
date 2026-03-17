@@ -7,25 +7,25 @@
     "wash": "rgba(6, 82, 221, 0.7)"
   },
   "kin": {
-    "background": "#BD1F2C",
+    "background": "#B8451E",
     "accent": "#D8EB5C",
     "text": "#f0f0f0",
     "textMode": "light",
-    "wash": "rgba(189, 31, 44, 0.7)"
+    "wash": "rgba(184, 69, 30, 0.7)"
   },
   "apex": {
-    "background": "#0F83BD",
-    "accent": "#EDE95C",
+    "background": "#CE540D",
+    "accent": "#74E67E",
     "text": "#f0f0f0",
     "textMode": "light",
-    "wash": "rgba(15, 131, 189, 0.7)"
+    "wash": "rgba(206, 84, 13, 0.7)"
   },
   "whitfield": {
-    "background": "#4125B1",
-    "accent": "#A4E76A",
+    "background": "#1BA751",
+    "accent": "#F4D44C",
     "text": "#f0f0f0",
     "textMode": "light",
-    "wash": "rgba(65, 37, 177, 0.7)"
+    "wash": "rgba(27, 167, 81, 0.7)"
   },
   "luma": {
     "background": "#b12562",
@@ -35,17 +35,17 @@
     "wash": "rgba(177, 37, 98, 0.7)"
   },
   "flowline": {
-    "background": "#8E24AA",
+    "background": "#0AA3C2",
     "accent": "#FFEB3B",
     "text": "#f0f0f0",
     "textMode": "light",
-    "wash": "rgba(142, 36, 170, 0.7)"
+    "wash": "rgba(10, 163, 194, 0.7)"
   },
   "evergreen": {
-    "background": "#A82492",
-    "accent": "#BCE963",
+    "background": "#C0920C",
+    "accent": "#9BE76A",
     "text": "#f0f0f0",
     "textMode": "light",
-    "wash": "rgba(168, 36, 146, 0.7)"
+    "wash": "rgba(192, 146, 12, 0.7)"
   }
 }
