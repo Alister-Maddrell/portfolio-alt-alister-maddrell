@@ -14,11 +14,11 @@
     "wash": "rgba(189, 31, 44, 0.7)"
   },
   "apex": {
-    "background": "#00BCD4",
+    "background": "#0F83BD",
     "accent": "#EDE95C",
     "text": "#f0f0f0",
     "textMode": "light",
-    "wash": "rgba(0, 188, 212, 0.7)"
+    "wash": "rgba(15, 131, 189, 0.7)"
   },
   "whitfield": {
     "background": "#4125B1",
@@ -42,10 +42,10 @@
     "wash": "rgba(142, 36, 170, 0.7)"
   },
   "evergreen": {
-    "background": "#0F9B72",
-    "accent": "#F2C44E",
+    "background": "#A82492",
+    "accent": "#BCE963",
     "text": "#f0f0f0",
     "textMode": "light",
-    "wash": "rgba(15, 155, 114, 0.7)"
+    "wash": "rgba(168, 36, 146, 0.7)"
   }
 }

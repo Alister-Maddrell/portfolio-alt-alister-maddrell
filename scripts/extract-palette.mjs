@@ -44,9 +44,9 @@ const PINNED = {
     textMode: 'light', wash: 'rgba(189, 31, 44, 0.7)',
   },
   apex: {
-    // H:187° cyan + lemon-yellow glow (H:58°) — brighter, distinct from Hartley gold
-    background: '#00BCD4', accent: '#EDE95C', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(0, 188, 212, 0.7)',
+    // H:200° ocean blue + lemon glow (H:58°) — warm blue, not neon cyan
+    background: '#0F83BD', accent: '#EDE95C', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(15, 131, 189, 0.7)',
   },
   whitfield: {
     // H:252° indigo (S:65%, softer) + spring green glow (H:92°) — Mardi Gras pop
@@ -62,9 +62,9 @@ const PINNED = {
     textMode: 'light', wash: 'rgba(142, 36, 170, 0.7)',
   },
   evergreen: {
-    // H:162° jade teal + warm gold glow (H:42°) — cooler green, richer accent
-    background: '#0F9B72', accent: '#F2C44E', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(15, 155, 114, 0.7)',
+    // H:310° deep magenta + lime glow (H:80°) — fills purple-pink gap
+    background: '#A82492', accent: '#BCE963', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(168, 36, 146, 0.7)',
   },
 };
 
