@@ -443,7 +443,7 @@ const navItems = [
       let currentSlide = 0;
       const totalSlides = 9;
       let isTransitioning = false;
-      const TRANSITION_LOCK_MS = 600;
+      let wheelUnlockTimer = null;
 
       // ─── DOM refs ───
       const bgLayer = document.getElementById('bg-layer');
@@ -502,10 +502,14 @@ const navItems = [
         });
 
         currentSlide = index;
-        setTimeout(() => {
+
+        // Unlock after 600ms (for arrow keys / nav clicks).
+        // Wheel handler will extend this lock while inertia events arrive.
+        clearTimeout(wheelUnlockTimer);
+        wheelUnlockTimer = setTimeout(() => {
           isTransitioning = false;
           hoverEnabled = true;
-        }, TRANSITION_LOCK_MS);
+        }, 600);
       }
 
       // ─── Wheel navigation ───
@@ -518,7 +522,16 @@ const navItems = [
         if (tag === 'TEXTAREA' || tag === 'SELECT') return;
         e.preventDefault();
 
-        if (isTransitioning) { wheelAccum = 0; return; }
+        if (isTransitioning) {
+          wheelAccum = 0;
+          // Inertia still arriving — push unlock back by 200ms each time
+          clearTimeout(wheelUnlockTimer);
+          wheelUnlockTimer = setTimeout(() => {
+            isTransitioning = false;
+            hoverEnabled = true;
+          }, 200);
+          return;
+        }
 
         wheelAccum += e.deltaY;
 
