@@ -47,9 +47,9 @@ const PINNED = {
     textMode: 'light', wash: 'rgba(185, 45, 30, 0.7)',
   },
   apex: {
-    // Brand: Surgical Orange #FF5A1F → S:100% vivid orange, max saturation
-    background: '#E66B00', accent: '#74E67E', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(230, 107, 0, 0.7)',
+    // Surgical Orange energy → deep electric indigo (intense, powerful)
+    background: '#4A18BF', accent: '#FFC312', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(74, 24, 191, 0.7)',
   },
   whitfield: {
     // Brand: Emerald #166534 (143°) → rich emerald, S:72%, L:38%
@@ -67,9 +67,9 @@ const PINNED = {
     textMode: 'light', wash: 'rgba(10, 163, 194, 0.7)',
   },
   evergreen: {
-    // Brand: Gold #B8963E (43°) → S:100% vivid gold + soft lavender
-    background: '#E0A100', accent: '#B4A0E8', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(224, 161, 0, 0.7)',
+    // Gold brand energy → deep magenta (luxurious, rich) + lime accent
+    background: '#AD1F91', accent: '#BCE963', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(173, 31, 145, 0.7)',
   },
 };
 
