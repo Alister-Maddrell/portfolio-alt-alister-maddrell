@@ -442,8 +442,8 @@ const navItems = [
       // ─── State ───
       let currentSlide = 0;
       const totalSlides = 9;
-      let transitionCleanupTimer = null;
-      let transitionGen = 0; // generation counter — invalidates stale rAF callbacks
+      let transitionGen = 0;
+      let wheelLocked = false;
 
       // ─── DOM refs ───
       const bgLayer = document.getElementById('bg-layer');
@@ -453,15 +453,13 @@ const navItems = [
       const scrollIndicator = document.getElementById('scroll-indicator');
       const allSlides = document.querySelectorAll('.slide');
 
-      // ─── Go to slide (interruptible — cancels any in-flight transition) ───
+      // ─── Go to slide ───
       function goToSlide(index) {
         if (index === currentSlide || index < 0 || index >= totalSlides) return;
 
         hoverEnabled = false;
         transitionGen++;
         const myGen = transitionGen;
-
-        if (transitionCleanupTimer) clearTimeout(transitionCleanupTimer);
 
         // Nuke all mid-flight state on every slide
         allSlides.forEach(s => {
@@ -487,7 +485,6 @@ const navItems = [
           nextSlide.classList.add(goingDown ? 'slide-enter-from-below' : 'slide-enter-from-above');
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-              // If a newer goToSlide call happened, this callback is stale — bail
               if (myGen !== transitionGen) return;
               nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
               nextSlide.classList.add('active');
@@ -511,52 +508,37 @@ const navItems = [
 
         currentSlide = index;
 
-        // Re-enable hover after transition settles
-        transitionCleanupTimer = setTimeout(() => {
-          hoverEnabled = true;
-        }, 700);
+        setTimeout(() => { hoverEnabled = true; }, 700);
       }
 
       // ─── Wheel navigation ───
-      // One-slide-per-gesture, but new gestures can interrupt immediately.
-      // A "gesture" = continuous wheel events. Once it fires a slide change,
-      // further events in the same gesture are ignored. A new gesture starts
-      // after 120ms of silence.
+      // Simple time-lock: after a wheel-triggered slide change, ignore
+      // all wheel input for LOCK_MS. Short enough to feel responsive,
+      // long enough to eat trackpad inertia from a single swipe.
+      const WHEEL_LOCK_MS = 350;
       let wheelAccum = 0;
       const WHEEL_THRESHOLD = 50;
-      let wheelGestureFired = false;
-      let wheelIdleTimer;
+      let wheelResetTimer;
 
       window.addEventListener('wheel', (e) => {
         const tag = e.target.tagName;
         if (tag === 'TEXTAREA' || tag === 'SELECT') return;
-
         e.preventDefault();
 
-        // If this gesture already fired, wait for it to end
-        if (wheelGestureFired) {
-          clearTimeout(wheelIdleTimer);
-          wheelIdleTimer = setTimeout(() => {
-            wheelGestureFired = false;
-            wheelAccum = 0;
-          }, 120);
-          return;
-        }
+        if (wheelLocked) return;
 
         wheelAccum += e.deltaY;
 
-        // Reset gesture after 120ms idle
-        clearTimeout(wheelIdleTimer);
-        wheelIdleTimer = setTimeout(() => {
-          wheelAccum = 0;
-          wheelGestureFired = false;
-        }, 120);
+        // Reset accumulator if wheel stops for 150ms (new gesture)
+        clearTimeout(wheelResetTimer);
+        wheelResetTimer = setTimeout(() => { wheelAccum = 0; }, 150);
 
         if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
-          if (wheelAccum > 0) goToSlide(currentSlide + 1);
-          else goToSlide(currentSlide - 1);
+          const dir = wheelAccum > 0 ? 1 : -1;
           wheelAccum = 0;
-          wheelGestureFired = true;
+          wheelLocked = true;
+          setTimeout(() => { wheelLocked = false; }, WHEEL_LOCK_MS);
+          goToSlide(currentSlide + dir);
         }
       }, { passive: false });
 
