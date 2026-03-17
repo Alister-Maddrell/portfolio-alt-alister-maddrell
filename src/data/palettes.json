@@ -15,7 +15,7 @@
   },
   "apex": {
     "background": "#00BCD4",
-    "accent": "#F9D16C",
+    "accent": "#EDE95C",
     "text": "#f0f0f0",
     "textMode": "light",
     "wash": "rgba(0, 188, 212, 0.7)"
@@ -42,10 +42,10 @@
     "wash": "rgba(142, 36, 170, 0.7)"
   },
   "evergreen": {
-    "background": "#12A55C",
-    "accent": "#F5A962",
+    "background": "#0F9B72",
+    "accent": "#F2C44E",
     "text": "#f0f0f0",
     "textMode": "light",
-    "wash": "rgba(18, 165, 92, 0.7)"
+    "wash": "rgba(15, 155, 114, 0.7)"
   }
 }
