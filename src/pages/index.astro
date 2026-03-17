@@ -526,11 +526,9 @@ const navItems = [
         wheelTimeout = setTimeout(() => { wheelAccum = 0; }, 150);
 
         if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
-          const dir = wheelAccum > 0 ? 1 : -1;
-          // Lock immediately so no further wheel events sneak through
-          isTransitioning = true;
+          if (wheelAccum > 0) goToSlide(currentSlide + 1);
+          else goToSlide(currentSlide - 1);
           wheelAccum = 0;
-          goToSlide(currentSlide + dir);
         }
       }, { passive: false });
 
