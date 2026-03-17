@@ -194,6 +194,13 @@ a.ui-text:hover {
   max-width: 580px;
 }
 
+.showcase-left .desc-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* ═══════════════════════════════════════ */
 /* COMPONENTS                             */
 /* ═══════════════════════════════════════ */
@@ -507,7 +514,7 @@ a.ui-text:hover {
 
 @media (min-width: 1024px) {
   .showcase-left {
-    width: 35%;
+    width: 45%;
     order: 1;
     padding: 2rem 0;
   }
