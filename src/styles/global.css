@@ -686,8 +686,14 @@ a.ui-text:hover {
   color: inherit;
   overflow: hidden;
   border-radius: 100px;
-  /* Desktop: label then dot (right-aligned) */
   flex-direction: row;
+  transition: background 0.3s ease;
+}
+
+.slide-nav-inner:hover .slide-nav-item {
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .slide-nav-dot {
