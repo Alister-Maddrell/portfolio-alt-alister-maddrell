@@ -409,61 +409,111 @@ a.ui-text:hover {
 /* SHOWCASE STACK — film strip            */
 /* ═══════════════════════════════════════ */
 
+/* Film grain overlay — shared by strip */
+@keyframes film-grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -1%); }
+  30% { transform: translate(1%, 2%); }
+  50% { transform: translate(-2%, 1%); }
+  70% { transform: translate(2%, -1%); }
+  90% { transform: translate(-1%, 2%); }
+}
+
 .showcase-stack {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   width: 100%;
   max-width: calc(60vh - 3.125vw);
   transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg);
   transition: transform 0.5s cubic-bezier(0.22, 1.4, 0.36, 1);
-  /* Film strip body */
-  background: #111;
-  padding: 8px 26px;
-  border-radius: 3px;
+  /* Film strip body — full viewport height */
+  background: #0e0e0e;
+  padding: 0 30px;
+  border-radius: 2px;
   position: relative;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 120px rgba(0, 0, 0, 0.3);
+  /* Stretch to full viewport height */
+  min-height: 100vh;
+  justify-content: center;
+  overflow: hidden;
 }
 
-/* Sprocket hole tracks */
+/* Film grain texture overlay */
+.showcase-stack > .film-grain-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  animation: film-grain 0.8s steps(4) infinite;
+}
+
+/* Sprocket hole tracks — richer, more defined */
 .showcase-stack::before,
 .showcase-stack::after {
   content: '';
   position: absolute;
-  top: 4px;
-  bottom: 4px;
-  width: 14px;
+  top: 0;
+  bottom: 0;
+  width: 18px;
   z-index: 5;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='24'%3E%3Crect x='2' y='4' width='10' height='14' rx='2' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='28'%3E%3Crect x='3' y='5' width='12' height='16' rx='2.5' fill='%23181818'/%3E%3Crect x='3.5' y='5.5' width='11' height='15' rx='2' fill='%23050505'/%3E%3Crect x='4' y='6' width='10' height='14' rx='1.5' fill='rgba(255,255,255,0.06)' /%3E%3C/svg%3E");
   background-repeat: repeat-y;
-  background-size: 14px 24px;
+  background-size: 18px 28px;
   background-position: center top;
 }
 
 .showcase-stack::before { left: 5px; }
 .showcase-stack::after { right: 5px; }
 
+/* Edge markings — frame numbers via counter */
+.showcase-frame {
+  counter-increment: film-frame;
+  position: relative;
+}
+
+.showcase-frame::after {
+  content: counter(film-frame, decimal-leading-zero);
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.12);
+  z-index: 6;
+  pointer-events: none;
+}
+
 /* Carousel positions — JS adds these classes */
 .showcase-stack.stack-pos-0 {
-  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg) translateY(calc(100% / 3 + 4px));
+  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg) translateY(calc(100% / 3 + 6px));
 }
 
 .showcase-stack.stack-pos-2 {
-  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg) translateY(calc(-100% / 3 - 4px));
+  transform: rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg) translateY(calc(-100% / 3 - 6px));
 }
 
 .showcase-frame {
   display: flex;
   flex-direction: column;
-  background-color: #0a0a0a;
+  background-color: #080808;
   border-radius: 2px;
   padding: 0 4px 4px;
-  border: 1px solid #1a1a1a;
-  box-shadow: none;
-  opacity: 0.5;
-  transition: opacity 0.3s ease,
-              border-color 0.3s ease,
+  border: 1px solid #1c1c1c;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+  opacity: 0.45;
+  transition: opacity 0.35s ease,
+              border-color 0.35s ease,
+              box-shadow 0.35s ease,
               transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
 }
@@ -478,17 +528,24 @@ a.ui-text:hover {
   transform: translateX(2px);
 }
 
-/* Active frame — subtle glow */
+/* Active frame — held up to light glow */
 .showcase-frame.frame-active {
   opacity: 1;
-  border-color: #333;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.04);
+  border-color: #2a2a2a;
+  box-shadow:
+    inset 0 0 8px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(255, 255, 255, 0.03),
+    0 0 40px rgba(255, 255, 255, 0.02);
   z-index: 2;
 }
 
 .showcase-frame.frame-active:hover {
-  border-color: #444;
+  border-color: #3a3a3a;
   transform: scale(1.02);
+  box-shadow:
+    inset 0 0 8px rgba(0, 0, 0, 0.2),
+    0 0 25px rgba(255, 255, 255, 0.05),
+    0 0 50px rgba(255, 255, 255, 0.03);
 }
 
 /* ─── Mobile: horizontal film strip ─── */
@@ -497,20 +554,21 @@ a.ui-text:hover {
     flex-direction: row;
     gap: 4px;
     max-width: 100%;
-    padding: 26px 8px;
+    min-height: auto;
+    padding: 30px 8px;
   }
 
   .showcase-stack::before,
   .showcase-stack::after {
-    left: 4px;
-    right: 4px;
+    left: 0;
+    right: 0;
     width: auto;
-    height: 14px;
+    height: 18px;
     top: auto;
     bottom: auto;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='14'%3E%3Crect x='4' y='2' width='14' height='10' rx='2' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='18'%3E%3Crect x='5' y='3' width='16' height='12' rx='2.5' fill='%23181818'/%3E%3Crect x='5.5' y='3.5' width='15' height='11' rx='2' fill='%23050505'/%3E%3Crect x='6' y='4' width='14' height='10' rx='1.5' fill='rgba(255,255,255,0.06)'/%3E%3C/svg%3E");
     background-repeat: repeat-x;
-    background-size: 24px 14px;
+    background-size: 28px 18px;
     background-position: left center;
   }
 
@@ -520,6 +578,12 @@ a.ui-text:hover {
   .showcase-frame {
     flex: 1;
     min-width: 0;
+  }
+
+  .showcase-frame::after {
+    font-size: 6px;
+    bottom: 4px;
+    right: 5px;
   }
 }
 
@@ -579,9 +643,10 @@ a.ui-text:hover {
   .showcase-cards {
     width: 50%;
     order: 2;
-    padding: 2rem 0;
+    padding: 0;
     margin-left: auto;
     margin-right: 72px;
+    align-self: stretch;
   }
 }
 
