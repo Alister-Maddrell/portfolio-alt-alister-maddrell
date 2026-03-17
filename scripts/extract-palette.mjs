@@ -42,14 +42,14 @@ const PINNED = {
     textMode: 'light', wash: 'rgba(6, 82, 221, 0.7)',
   },
   kin: {
-    // Brand: Terracotta #B8654A (15°) → deep earthy red, S:70%, L:42%
-    background: '#B8451E', accent: '#D8EB5C', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(184, 69, 30, 0.7)',
+    // Brand: Terracotta #B8654A → pushed to 6° (clearly RED, not orange)
+    background: '#B92D1E', accent: '#D8EB5C', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(185, 45, 30, 0.7)',
   },
   apex: {
-    // Brand: Surgical Orange #FF5A1F (16°) → deep vivid orange, S:88%, L:43%
-    background: '#CE540D', accent: '#74E67E', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(206, 84, 13, 0.7)',
+    // Brand: Surgical Orange #FF5A1F → pushed to 30° (clearly ORANGE, not red)
+    background: '#C96B0D', accent: '#74E67E', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(201, 107, 13, 0.7)',
   },
   whitfield: {
     // Brand: Emerald #166534 (143°) → rich emerald, S:72%, L:38%
@@ -67,8 +67,8 @@ const PINNED = {
     textMode: 'light', wash: 'rgba(10, 163, 194, 0.7)',
   },
   evergreen: {
-    // Brand: Gold #B8963E (43°) → rich deep gold, S:88%, L:40%
-    background: '#C0920C', accent: '#9BE76A', text: '#f0f0f0',
+    // Brand: Gold #B8963E (43°) → rich gold + soft lavender for real contrast
+    background: '#C0920C', accent: '#B4A0E8', text: '#f0f0f0',
     textMode: 'light', wash: 'rgba(192, 146, 12, 0.7)',
   },
 };
