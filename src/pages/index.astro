@@ -442,9 +442,8 @@ const navItems = [
       // ─── State ───
       let currentSlide = 0;
       const totalSlides = 9;
-      let isTransitioning = false;
-      const TRANSITION_LOCK_MS = 900;
-      let wheelCooldown = false;
+      let transitionCleanupTimer = null;
+      let transitionGen = 0; // generation counter — invalidates stale rAF callbacks
 
       // ─── DOM refs ───
       const bgLayer = document.getElementById('bg-layer');
@@ -452,39 +451,44 @@ const navItems = [
       const slideNav = document.getElementById('slide-nav');
       const slideNavItems = document.querySelectorAll('#slide-nav .slide-nav-item');
       const scrollIndicator = document.getElementById('scroll-indicator');
+      const allSlides = document.querySelectorAll('.slide');
 
-      // ─── Go to slide ───
+      // ─── Go to slide (interruptible — cancels any in-flight transition) ───
       function goToSlide(index) {
-        if (isTransitioning || index === currentSlide || index < 0 || index >= totalSlides) return;
-        isTransitioning = true;
+        if (index === currentSlide || index < 0 || index >= totalSlides) return;
+
         hoverEnabled = false;
+        transitionGen++;
+        const myGen = transitionGen;
+
+        if (transitionCleanupTimer) clearTimeout(transitionCleanupTimer);
+
+        // Nuke all mid-flight state on every slide
+        allSlides.forEach(s => {
+          s.classList.remove('active', 'slide-exit-up', 'slide-exit-down',
+                             'slide-enter-from-below', 'slide-enter-from-above');
+        });
 
         const prevSlide = document.getElementById(`slide-${currentSlide}`);
         const nextSlide = document.getElementById(`slide-${index}`);
-        const prevIndex = currentSlide;
+        const goingDown = index > currentSlide;
 
-        const goingDown = index > prevIndex;
-
-        // Stop scroll on outgoing slide, reset and start on incoming slide
+        // Carousel housekeeping
         if (prevSlide && prevSlide._leaveCarousel) prevSlide._leaveCarousel();
         if (nextSlide && nextSlide._resetCarousel) nextSlide._resetCarousel();
 
-        // Animate out current slide immediately
+        // Exit previous — instant hide
         if (prevSlide) {
-          prevSlide.classList.remove('active');
           prevSlide.classList.add(goingDown ? 'slide-exit-up' : 'slide-exit-down');
-          setTimeout(() => {
-            prevSlide.classList.remove('slide-exit-up', 'slide-exit-down');
-          }, 750);
         }
 
-        // Position new slide at entry point (transition: none snaps instantly)
+        // Enter new slide — double-rAF for paint-then-animate
         if (nextSlide) {
-          nextSlide.classList.remove('slide-exit-up', 'slide-exit-down', 'active');
           nextSlide.classList.add(goingDown ? 'slide-enter-from-below' : 'slide-enter-from-above');
-          // Double-rAF ensures the browser paints the start position before animating
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
+              // If a newer goToSlide call happened, this callback is stale — bail
+              if (myGen !== transitionGen) return;
               nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
               nextSlide.classList.add('active');
             });
@@ -506,21 +510,20 @@ const navItems = [
         });
 
         currentSlide = index;
-        setTimeout(() => {
-          isTransitioning = false;
+
+        // Re-enable hover after transition settles
+        transitionCleanupTimer = setTimeout(() => {
           hoverEnabled = true;
-          // Post-transition cooldown: ignore wheel for extra 300ms after lock lifts
-          wheelCooldown = true;
-          setTimeout(() => { wheelCooldown = false; }, 300);
-        }, TRANSITION_LOCK_MS);
+        }, 700);
       }
 
       // ─── Wheel navigation ───
-      // Strict one-slide-per-gesture: accumulate delta, fire once, then
-      // kill ALL further wheel input until the gesture ends (no new wheel
-      // events for 200ms) AND the transition lock + cooldown have cleared.
+      // One-slide-per-gesture, but new gestures can interrupt immediately.
+      // A "gesture" = continuous wheel events. Once it fires a slide change,
+      // further events in the same gesture are ignored. A new gesture starts
+      // after 120ms of silence.
       let wheelAccum = 0;
-      const WHEEL_THRESHOLD = 60;
+      const WHEEL_THRESHOLD = 50;
       let wheelGestureFired = false;
       let wheelIdleTimer;
 
@@ -530,31 +533,24 @@ const navItems = [
 
         e.preventDefault();
 
-        // During transition or cooldown, swallow everything and reset
-        if (isTransitioning || wheelCooldown) {
-          wheelAccum = 0;
-          wheelGestureFired = false;
-          return;
-        }
-
-        // If this gesture already fired a slide change, ignore until gesture ends
+        // If this gesture already fired, wait for it to end
         if (wheelGestureFired) {
           clearTimeout(wheelIdleTimer);
           wheelIdleTimer = setTimeout(() => {
             wheelGestureFired = false;
             wheelAccum = 0;
-          }, 200);
+          }, 120);
           return;
         }
 
         wheelAccum += e.deltaY;
 
-        // Reset gesture after 200ms of no wheel events
+        // Reset gesture after 120ms idle
         clearTimeout(wheelIdleTimer);
         wheelIdleTimer = setTimeout(() => {
           wheelAccum = 0;
           wheelGestureFired = false;
-        }, 200);
+        }, 120);
 
         if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
           if (wheelAccum > 0) goToSlide(currentSlide + 1);
