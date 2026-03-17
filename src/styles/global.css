@@ -51,6 +51,88 @@ a {
 }
 
 /* ═══════════════════════════════════════ */
+/* ATMOSPHERIC DEPTH — all on fixed layers */
+/* so edges are never visible on transition */
+/* ═══════════════════════════════════════ */
+
+/* Film grain — analog texture over entire viewport */
+#app::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.028;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 512px 512px;
+}
+
+/* Gradient mesh — on bg-layer so it stays fixed during slide transitions */
+#bg-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    /* Key light — highlight from top-left */
+    radial-gradient(
+      ellipse 65% 50% at 8% 10%,
+      rgba(255, 255, 255, 0.14) 0%,
+      transparent 58%
+    ),
+    /* Diagonal sweep — tonal movement */
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 38%,
+      transparent 62%,
+      rgba(0, 0, 0, 0.1) 100%
+    ),
+    /* Fill — secondary light bottom-right */
+    radial-gradient(
+      ellipse 50% 40% at 85% 80%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 55%
+    ),
+    /* Deep pool — bottom-left shadow */
+    radial-gradient(
+      ellipse 50% 45% at 3% 92%,
+      rgba(0, 0, 0, 0.25) 0%,
+      transparent 65%
+    ),
+    /* Shadow recession — top-right */
+    radial-gradient(
+      ellipse 45% 40% at 95% 8%,
+      rgba(0, 0, 0, 0.18) 0%,
+      transparent 55%
+    ),
+    /* Content stage light */
+    radial-gradient(
+      ellipse 40% 35% at 30% 48%,
+      rgba(255, 255, 255, 0.035) 0%,
+      transparent 60%
+    );
+}
+
+/* Vignette — on bg-layer, stays fixed */
+#bg-layer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 62% at 42% 45%,
+    transparent 28%,
+    rgba(0, 0, 0, 0.2) 72%,
+    rgba(0, 0, 0, 0.42) 100%
+  );
+}
+
+/* ═══════════════════════════════════════ */
 /* SLIDE SYSTEM                           */
 /* ═══════════════════════════════════════ */
 
@@ -757,14 +839,16 @@ a.ui-text:hover {
   position: absolute;
   left: 0;
   top: 0;
-  width: 4px;
+  width: 3px;
   height: 100%;
   z-index: 5;
   opacity: 0;
   transform: scaleY(0);
   transform-origin: bottom;
   transition: opacity 0.3s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 0 20px currentColor;
+  box-shadow: 0 0 12px currentColor,
+              0 0 40px currentColor,
+              4px 0 80px currentColor;
 }
 
 .slide.active .accent-bar {
