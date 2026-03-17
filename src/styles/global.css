@@ -71,21 +71,25 @@ a {
   visibility: visible;
   overflow: visible;
   z-index: 2;
-  transition: transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .slide.slide-exit-up {
-  transform: translateY(-100%);
+  transform: translateY(-50%) scale(0.93);
   visibility: visible;
   z-index: 1;
-  transition: transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1);
+  opacity: 0;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .slide.slide-exit-down {
-  transform: translateY(100%);
+  transform: translateY(50%) scale(0.93);
   visibility: visible;
   z-index: 1;
-  transition: transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1);
+  opacity: 0;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .slide.slide-enter-from-below {
@@ -102,29 +106,50 @@ a {
   transition: none;
 }
 
-/* Slide content entrance animations — cinematic stagger */
-.slide .slide-title,
-.slide .slide-desc,
-.slide .slide-cta,
-.slide .slide-meta,
-.slide .slide-image {
+/* Slide content entrance animations — parallax stagger
+   Heavier elements (images) travel further and arrive slightly later,
+   lighter elements (text) are snappier — creates depth perception. */
+.slide .slide-title {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(35px);
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.slide.active .slide-title  { opacity: 1; transform: none; transition-delay: 0.08s; }
-.slide.active .slide-desc   { opacity: 1; transform: none; transition-delay: 0.16s; }
-.slide.active .slide-image  { opacity: 1; transform: none; transition-delay: 0.12s; }
-.slide.active .slide-cta    { opacity: 1; transform: none; transition-delay: 0.24s; }
-.slide.active .slide-meta   { opacity: 1; transform: none; transition-delay: 0.28s; }
+.slide .slide-desc {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide .slide-cta,
+.slide .slide-meta {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide .slide-image {
+  opacity: 0;
+  transform: translateY(45px) scale(0.97);
+  transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide.active .slide-title  { opacity: 1; transform: none; transition-delay: 0.12s; }
+.slide.active .slide-desc   { opacity: 1; transform: none; transition-delay: 0.22s; }
+.slide.active .slide-image  { opacity: 1; transform: none; scale: 1; transition-delay: 0.08s; }
+.slide.active .slide-cta    { opacity: 1; transform: none; transition-delay: 0.32s; }
+.slide.active .slide-meta   { opacity: 1; transform: none; transition-delay: 0.38s; }
 
 /* ═══════════════════════════════════════ */
 /* BACKGROUND LAYER                       */
 /* ═══════════════════════════════════════ */
 
 #bg-layer {
-  transition: background-color 0.4s ease;
+  transition: background-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* ═══════════════════════════════════════ */
@@ -619,7 +644,7 @@ a.ui-text:hover {
 
 .slide-nav {
   position: absolute;
-  transition: opacity 0.5s ease, color 0.6s ease;
+  transition: opacity 0.5s ease, color 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   /* Mobile: top center, horizontal */
   top: 92px;
   left: 50%;
@@ -733,14 +758,14 @@ a.ui-text:hover {
   opacity: 0;
   transform: scaleY(0);
   transform-origin: bottom;
-  transition: opacity 0.3s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.3s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 0 20px currentColor;
 }
 
 .slide.active .accent-bar {
   opacity: 1;
   transform: scaleY(1);
-  transition-delay: 0.05s;
+  transition-delay: 0.1s;
 }
 
 /* ═══════════════════════════════════════ */
@@ -1034,7 +1059,7 @@ a.ui-text:hover {
   transform: translateX(-50%);
   z-index: 30;
   opacity: 0.4;
-  transition: opacity 0.5s ease, color 0.6s ease;
+  transition: opacity 0.5s ease, color 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   animation: pulse-down 2.5s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 

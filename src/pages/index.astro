@@ -443,7 +443,8 @@ const navItems = [
       let currentSlide = 0;
       const totalSlides = 9;
       let isTransitioning = false;
-      const TRANSITION_LOCK_MS = 500;
+      const TRANSITION_LOCK_MS = 900;
+      let wheelCooldown = false;
 
       // ─── DOM refs ───
       const bgLayer = document.getElementById('bg-layer');
@@ -474,7 +475,7 @@ const navItems = [
           prevSlide.classList.add(goingDown ? 'slide-exit-up' : 'slide-exit-down');
           setTimeout(() => {
             prevSlide.classList.remove('slide-exit-up', 'slide-exit-down');
-          }, 500);
+          }, 750);
         }
 
         // Position new slide at entry point (transition: none snaps instantly)
@@ -508,31 +509,58 @@ const navItems = [
         setTimeout(() => {
           isTransitioning = false;
           hoverEnabled = true;
+          // Post-transition cooldown: ignore wheel for extra 300ms after lock lifts
+          wheelCooldown = true;
+          setTimeout(() => { wheelCooldown = false; }, 300);
         }, TRANSITION_LOCK_MS);
       }
 
       // ─── Wheel navigation ───
+      // Strict one-slide-per-gesture: accumulate delta, fire once, then
+      // kill ALL further wheel input until the gesture ends (no new wheel
+      // events for 200ms) AND the transition lock + cooldown have cleared.
       let wheelAccum = 0;
-      const WHEEL_THRESHOLD = 50;
-      let wheelTimeout;
+      const WHEEL_THRESHOLD = 60;
+      let wheelGestureFired = false;
+      let wheelIdleTimer;
 
       window.addEventListener('wheel', (e) => {
-        // Don't hijack scroll inside form fields
         const tag = e.target.tagName;
         if (tag === 'TEXTAREA' || tag === 'SELECT') return;
 
         e.preventDefault();
-        if (isTransitioning) { wheelAccum = 0; return; }
+
+        // During transition or cooldown, swallow everything and reset
+        if (isTransitioning || wheelCooldown) {
+          wheelAccum = 0;
+          wheelGestureFired = false;
+          return;
+        }
+
+        // If this gesture already fired a slide change, ignore until gesture ends
+        if (wheelGestureFired) {
+          clearTimeout(wheelIdleTimer);
+          wheelIdleTimer = setTimeout(() => {
+            wheelGestureFired = false;
+            wheelAccum = 0;
+          }, 200);
+          return;
+        }
 
         wheelAccum += e.deltaY;
 
-        clearTimeout(wheelTimeout);
-        wheelTimeout = setTimeout(() => { wheelAccum = 0; }, 150);
+        // Reset gesture after 200ms of no wheel events
+        clearTimeout(wheelIdleTimer);
+        wheelIdleTimer = setTimeout(() => {
+          wheelAccum = 0;
+          wheelGestureFired = false;
+        }, 200);
 
         if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
           if (wheelAccum > 0) goToSlide(currentSlide + 1);
           else goToSlide(currentSlide - 1);
           wheelAccum = 0;
+          wheelGestureFired = true;
         }
       }, { passive: false });
 
