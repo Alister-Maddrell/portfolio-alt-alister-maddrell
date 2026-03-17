@@ -443,7 +443,6 @@ const navItems = [
       let currentSlide = 0;
       const totalSlides = 9;
       let isTransitioning = false;
-      let wheelUnlockTimer = null;
 
       // ─── DOM refs ───
       const bgLayer = document.getElementById('bg-layer');
@@ -502,79 +501,35 @@ const navItems = [
         });
 
         currentSlide = index;
-
-        // Unlock after 600ms (for arrow keys / nav clicks).
-        // Wheel handler will extend this lock while inertia events arrive.
-        clearTimeout(wheelUnlockTimer);
-        wheelUnlockTimer = setTimeout(() => {
+        setTimeout(() => {
           isTransitioning = false;
           hoverEnabled = true;
         }, 600);
       }
 
       // ─── Wheel navigation ───
-      // Inertia detection: trackpad inertia has decreasing |deltaY|.
-      // A new intentional swipe has increasing |deltaY|. We use this
-      // to distinguish "still coasting from last swipe" from "new swipe".
-      let wheelAccum = 0;
-      const WHEEL_THRESHOLD = 80;
-      let wheelTimeout;
-      let prevAbsDelta = 0;
-      let deltaHistory = []; // recent |deltaY| values to detect acceleration
+      // First event after silence fires a slide. Then blocked until
+      // wheel events stop for 200ms (absorbs all trackpad inertia).
+      let wheelBlocked = false;
+      let wheelSilenceTimer;
 
       window.addEventListener('wheel', (e) => {
         const tag = e.target.tagName;
         if (tag === 'TEXTAREA' || tag === 'SELECT') return;
         e.preventDefault();
 
-        const absDelta = Math.abs(e.deltaY);
+        // Every wheel event resets the silence timer
+        clearTimeout(wheelSilenceTimer);
+        wheelSilenceTimer = setTimeout(() => {
+          wheelBlocked = false;
+        }, 200);
 
-        if (isTransitioning) {
-          wheelAccum = 0;
+        if (wheelBlocked) return;
 
-          // Track recent deltas to detect new swipe (acceleration)
-          deltaHistory.push(absDelta);
-          if (deltaHistory.length > 4) deltaHistory.shift();
-
-          // New swipe detected: current delta is significantly larger
-          // than the recent trend (inertia was decelerating, now accelerating)
-          const recentAvg = deltaHistory.length > 1
-            ? deltaHistory.slice(0, -1).reduce((a, b) => a + b, 0) / (deltaHistory.length - 1)
-            : absDelta;
-          const isNewSwipe = deltaHistory.length >= 3 && absDelta > recentAvg * 1.5 && absDelta > 20;
-
-          if (isNewSwipe) {
-            // Allow interrupt — new intentional swipe
-            isTransitioning = false;
-            hoverEnabled = true;
-            clearTimeout(wheelUnlockTimer);
-            deltaHistory = [];
-            // Fall through to accumulator below
-          } else {
-            // Inertia — keep blocking, extend unlock timer
-            clearTimeout(wheelUnlockTimer);
-            wheelUnlockTimer = setTimeout(() => {
-              isTransitioning = false;
-              hoverEnabled = true;
-              deltaHistory = [];
-            }, 200);
-            prevAbsDelta = absDelta;
-            return;
-          }
-        }
-
-        prevAbsDelta = absDelta;
-        wheelAccum += e.deltaY;
-
-        clearTimeout(wheelTimeout);
-        wheelTimeout = setTimeout(() => { wheelAccum = 0; }, 150);
-
-        if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
-          if (wheelAccum > 0) goToSlide(currentSlide + 1);
-          else goToSlide(currentSlide - 1);
-          wheelAccum = 0;
-          deltaHistory = [];
-        }
+        // First event of a new gesture — fire and block
+        wheelBlocked = true;
+        if (e.deltaY > 0) goToSlide(currentSlide + 1);
+        else if (e.deltaY < 0) goToSlide(currentSlide - 1);
       }, { passive: false });
 
       // ─── Arrow key navigation ───
