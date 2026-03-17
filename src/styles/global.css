@@ -694,6 +694,8 @@ a.ui-text:hover {
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  padding-left: 14px;
+  padding-right: 10px;
 }
 
 .slide-nav-dot {
@@ -733,6 +735,7 @@ a.ui-text:hover {
   max-width: 160px;
   opacity: 0.8;
   margin-right: 10px;
+  margin-left: 10px;
 }
 
 .slide-nav-item.active .slide-nav-label {
