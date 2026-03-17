@@ -39,19 +39,19 @@ const PINNED = {
     textMode: 'light', wash: 'rgba(6, 82, 221, 0.7)',
   },
   kin: {
-    // H:355° crimson, S:72%, L:43% — COOL bg + WARM accent
-    background: '#BD1F2C', accent: '#39EFE0', text: '#f0f0f0',
+    // H:355° crimson + chartreuse glow (H:68°) — warm lime, no clash
+    background: '#BD1F2C', accent: '#D8EB5C', text: '#f0f0f0',
     textMode: 'light', wash: 'rgba(189, 31, 44, 0.7)',
   },
   apex: {
-    // H:187° pure cyan, S:100%, L:42% — COOL bg + WARM scarlet accent
-    background: '#00BCD4', accent: '#FF1744', text: '#f0f0f0',
+    // H:187° cyan + honey gold glow (H:43°) — tropical, harmonious
+    background: '#00BCD4', accent: '#F9D16C', text: '#f0f0f0',
     textMode: 'light', wash: 'rgba(0, 188, 212, 0.7)',
   },
   whitfield: {
-    // H:252° electric indigo, S:80%, L:42% — COOL bg + WARM orange accent
-    background: '#3815C1', accent: '#FF6D00', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(56, 21, 193, 0.7)',
+    // H:252° indigo (S:65%, softer) + spring green glow (H:92°) — Mardi Gras pop
+    background: '#4125B1', accent: '#A4E76A', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(65, 37, 177, 0.7)',
   },
   luma: {
     background: '#b12562', accent: '#80ef91', text: '#f0f0f0',
@@ -62,9 +62,9 @@ const PINNED = {
     textMode: 'light', wash: 'rgba(142, 36, 170, 0.7)',
   },
   evergreen: {
-    // H:145° vivid emerald, S:100%, L:39% — COOL bg + WARM hot pink accent
-    background: '#00C853', accent: '#FF4081', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(0, 200, 83, 0.7)',
+    // H:150° emerald + warm apricot glow (H:30°) — tropical, gentle
+    background: '#12A55C', accent: '#F5A962', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(18, 165, 92, 0.7)',
   },
 };
 
