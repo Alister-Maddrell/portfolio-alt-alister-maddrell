@@ -39,19 +39,19 @@ const PINNED = {
     textMode: 'light', wash: 'rgba(6, 82, 221, 0.7)',
   },
   kin: {
-    // H:355° crimson, S:72%, L:43% — deep pop-art red (not orange)
+    // H:355° crimson, S:72%, L:43% — COOL bg + WARM accent
     background: '#BD1F2C', accent: '#39EFE0', text: '#f0f0f0',
     textMode: 'light', wash: 'rgba(189, 31, 44, 0.7)',
   },
   apex: {
-    // H:185° vivid teal, S:85%, L:38% — distinct from Hartley blue
-    background: '#0FA6B3', accent: '#FA8F42', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(15, 166, 179, 0.7)',
+    // H:187° pure cyan, S:100%, L:42% — COOL bg + WARM scarlet accent
+    background: '#00BCD4', accent: '#FF1744', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(0, 188, 212, 0.7)',
   },
   whitfield: {
-    // H:145° kelly green, S:78%, L:40% — punchy emerald
-    background: '#16B659', accent: '#F25ABF', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(22, 182, 89, 0.7)',
+    // H:252° electric indigo, S:80%, L:42% — COOL bg + WARM orange accent
+    background: '#3815C1', accent: '#FF6D00', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(56, 21, 193, 0.7)',
   },
   luma: {
     background: '#b12562', accent: '#80ef91', text: '#f0f0f0',
@@ -62,9 +62,9 @@ const PINNED = {
     textMode: 'light', wash: 'rgba(142, 36, 170, 0.7)',
   },
   evergreen: {
-    // H:40° deep amber, S:85%, L:42% — warm gold, violet complement
-    background: '#C68910', accent: '#8655E7', text: '#f0f0f0',
-    textMode: 'light', wash: 'rgba(198, 137, 16, 0.7)',
+    // H:145° vivid emerald, S:100%, L:39% — COOL bg + WARM hot pink accent
+    background: '#00C853', accent: '#FF4081', text: '#f0f0f0',
+    textMode: 'light', wash: 'rgba(0, 200, 83, 0.7)',
   },
 };
 
