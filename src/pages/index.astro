@@ -442,8 +442,8 @@ const navItems = [
       // ─── State ───
       let currentSlide = 0;
       const totalSlides = 9;
-      let transitionGen = 0;
-      let wheelLocked = false;
+      let isTransitioning = false;
+      const TRANSITION_LOCK_MS = 600;
 
       // ─── DOM refs ───
       const bgLayer = document.getElementById('bg-layer');
@@ -451,21 +451,12 @@ const navItems = [
       const slideNav = document.getElementById('slide-nav');
       const slideNavItems = document.querySelectorAll('#slide-nav .slide-nav-item');
       const scrollIndicator = document.getElementById('scroll-indicator');
-      const allSlides = document.querySelectorAll('.slide');
 
       // ─── Go to slide ───
       function goToSlide(index) {
-        if (index === currentSlide || index < 0 || index >= totalSlides) return;
-
+        if (isTransitioning || index === currentSlide || index < 0 || index >= totalSlides) return;
+        isTransitioning = true;
         hoverEnabled = false;
-        transitionGen++;
-        const myGen = transitionGen;
-
-        // Nuke all mid-flight state on every slide
-        allSlides.forEach(s => {
-          s.classList.remove('active', 'slide-exit-up', 'slide-exit-down',
-                             'slide-enter-from-below', 'slide-enter-from-above');
-        });
 
         const prevSlide = document.getElementById(`slide-${currentSlide}`);
         const nextSlide = document.getElementById(`slide-${index}`);
@@ -477,15 +468,19 @@ const navItems = [
 
         // Exit previous — instant hide
         if (prevSlide) {
+          prevSlide.classList.remove('active');
           prevSlide.classList.add(goingDown ? 'slide-exit-up' : 'slide-exit-down');
+          setTimeout(() => {
+            prevSlide.classList.remove('slide-exit-up', 'slide-exit-down');
+          }, 750);
         }
 
         // Enter new slide — double-rAF for paint-then-animate
         if (nextSlide) {
+          nextSlide.classList.remove('slide-exit-up', 'slide-exit-down', 'active');
           nextSlide.classList.add(goingDown ? 'slide-enter-from-below' : 'slide-enter-from-above');
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-              if (myGen !== transitionGen) return;
               nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
               nextSlide.classList.add('active');
             });
@@ -507,38 +502,33 @@ const navItems = [
         });
 
         currentSlide = index;
-
-        setTimeout(() => { hoverEnabled = true; }, 700);
+        setTimeout(() => {
+          isTransitioning = false;
+          hoverEnabled = true;
+        }, TRANSITION_LOCK_MS);
       }
 
       // ─── Wheel navigation ───
-      // Simple time-lock: after a wheel-triggered slide change, ignore
-      // all wheel input for LOCK_MS. Short enough to feel responsive,
-      // long enough to eat trackpad inertia from a single swipe.
-      const WHEEL_LOCK_MS = 350;
       let wheelAccum = 0;
       const WHEEL_THRESHOLD = 50;
-      let wheelResetTimer;
+      let wheelTimeout;
 
       window.addEventListener('wheel', (e) => {
         const tag = e.target.tagName;
         if (tag === 'TEXTAREA' || tag === 'SELECT') return;
         e.preventDefault();
 
-        if (wheelLocked) return;
+        if (isTransitioning) { wheelAccum = 0; return; }
 
         wheelAccum += e.deltaY;
 
-        // Reset accumulator if wheel stops for 150ms (new gesture)
-        clearTimeout(wheelResetTimer);
-        wheelResetTimer = setTimeout(() => { wheelAccum = 0; }, 150);
+        clearTimeout(wheelTimeout);
+        wheelTimeout = setTimeout(() => { wheelAccum = 0; }, 150);
 
         if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
-          const dir = wheelAccum > 0 ? 1 : -1;
+          if (wheelAccum > 0) goToSlide(currentSlide + 1);
+          else goToSlide(currentSlide - 1);
           wheelAccum = 0;
-          wheelLocked = true;
-          setTimeout(() => { wheelLocked = false; }, WHEEL_LOCK_MS);
-          goToSlide(currentSlide + dir);
         }
       }, { passive: false });
 
