@@ -846,9 +846,9 @@ a.ui-text:hover {
   transform: scaleY(0);
   transform-origin: bottom;
   transition: opacity 0.3s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 0 12px currentColor,
-              0 0 40px currentColor,
-              4px 0 80px currentColor;
+  box-shadow: 0 0 8px currentColor,
+              0 0 25px currentColor,
+              3px 0 50px currentColor;
 }
 
 .slide.active .accent-bar {
