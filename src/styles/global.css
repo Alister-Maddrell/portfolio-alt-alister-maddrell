@@ -1272,6 +1272,257 @@ a.ui-text:hover {
 /* REDUCED MOTION                         */
 /* ═══════════════════════════════════════ */
 
+/* ═══════════════════════════════════════ */
+/* MOBILE LAYOUT OPTIMISATIONS           */
+/* ═══════════════════════════════════════ */
+
+@media (max-width: 767px) {
+  /* Hero: tighter padding so content fits in viewport */
+  .hero-layout {
+    padding-top: 70px !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Hero card: smaller so title is visible */
+  .hero-right {
+    padding: 0.25rem 0 !important;
+    max-height: 36vh;
+    overflow: hidden;
+  }
+
+  .hero-featured {
+    gap: 0.5rem !important;
+    transform: none !important;
+    margin-right: 0 !important;
+  }
+
+  .hero-featured-card {
+    border-radius: 0.75rem;
+  }
+
+  .hero-featured-card .card-work-topbar {
+    padding: 8px 4px;
+    gap: 6px;
+  }
+
+  /* Project strip: smaller and tighter */
+  .hero-project-strip {
+    gap: 0.25rem !important;
+    padding: 0 !important;
+  }
+
+  .hero-strip-item {
+    padding: 3px 6px !important;
+    gap: 4px !important;
+  }
+
+  .hero-strip-dot {
+    width: 6px !important;
+    height: 6px !important;
+  }
+
+  .hero-strip-label {
+    font-size: 9px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  /* Hero left: tighter spacing */
+  .hero-left {
+    padding: 0.75rem 0 0.5rem !important;
+  }
+
+  .hero-name {
+    font-size: clamp(48px, 14vw, 72px) !important;
+  }
+
+  .hero-content .desc-text {
+    font-size: 14px !important;
+    margin-top: 0.5rem !important;
+    line-height: 1.5 !important;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-content .ui-text-sm {
+    font-size: 10px !important;
+    margin-top: 0.25rem !important;
+  }
+
+  .hero-content .flex.gap-4 {
+    margin-top: 1rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .hero-cta-primary,
+  .hero-content .cta-link {
+    padding: 8px 16px !important;
+    font-size: 11px !important;
+  }
+
+  /* Hide live preview on mobile — custom CSS overrides Tailwind hidden */
+  .live-preview {
+    display: none !important;
+  }
+
+  /* Showcase slides: tighter on mobile */
+  .showcase-layout {
+    padding-top: 70px !important;
+    gap: 0 !important;
+  }
+
+  .showcase-left {
+    padding: 0.5rem 0 0.5rem !important;
+  }
+
+  .showcase-content .title-project {
+    font-size: clamp(36px, 10vw, 56px) !important;
+    line-height: 0.95em !important;
+  }
+
+  .showcase-content .desc-text {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    margin-top: 0.5rem !important;
+  }
+
+  .showcase-content .cta-link {
+    margin-top: 1rem !important;
+    padding: 8px 16px !important;
+    font-size: 11px !important;
+  }
+
+  .showcase-cards {
+    padding: 0.25rem 0 0.5rem !important;
+  }
+
+  /* Showcase stack: flatten perspective on mobile */
+  .showcase-stack {
+    transform: none !important;
+    gap: 4px !important;
+  }
+
+  /* Stack positions: horizontal offset instead of vertical */
+  .showcase-stack.stack-pos-0 {
+    transform: translateX(calc(100% / 3 + 4px)) !important;
+  }
+  .showcase-stack.stack-pos-2 {
+    transform: translateX(calc(-100% / 3 - 4px)) !important;
+  }
+
+  .showcase-frame {
+    border-radius: 0.5rem;
+    padding: 0 4px 4px;
+  }
+
+  /* Active frame gets full opacity on mobile */
+  .showcase-frame.frame-active {
+    opacity: 1 !important;
+    transform: scale(1.02) !important;
+  }
+
+  /* Slide nav: smaller on mobile */
+  .slide-nav {
+    top: 74px !important;
+  }
+
+  .slide-nav-dot {
+    width: 3px !important;
+    height: 8px !important;
+  }
+
+  .slide-nav-item.active .slide-nav-dot {
+    height: 20px !important;
+  }
+
+  .slide-nav-item {
+    min-width: 28px !important;
+    min-height: 28px !important;
+    padding: 2px !important;
+  }
+
+  /* Contact slide */
+  .contact-right {
+    padding: 0 0 0.25rem !important;
+    max-height: 48vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .contact-form-card {
+    max-width: 100% !important;
+  }
+
+  .contact-form-body {
+    padding: 20px 16px !important;
+  }
+
+  .contact-input {
+    padding: 10px 14px !important;
+    font-size: 14px !important;
+  }
+
+  .contact-form-body .space-y-6 > * + * {
+    margin-top: 1rem !important;
+  }
+
+  .contact-submit {
+    padding: 10px 20px !important;
+    font-size: 12px !important;
+  }
+
+  #slide-8 .showcase-content .title-project {
+    font-size: clamp(32px, 9vw, 48px) !important;
+  }
+
+  #slide-8 .showcase-content .desc-text {
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Header tighter */
+  #app-header {
+    height: 70px !important;
+  }
+
+  #app-header .ui-text-sm {
+    font-size: 11px !important;
+    letter-spacing: 1.5px !important;
+  }
+
+  /* Scroll indicator smaller */
+  .scroll-indicator-wrap {
+    bottom: 12px !important;
+  }
+
+  .scroll-indicator-wrap svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* Accent bar thinner */
+  .accent-bar {
+    width: 2px !important;
+  }
+}
+
+@media (max-width: 479px) {
+  .hero-name {
+    font-size: clamp(40px, 13vw, 56px) !important;
+  }
+
+  .showcase-content .title-project {
+    font-size: clamp(32px, 10vw, 44px) !important;
+  }
+
+  .hero-strip-label {
+    font-size: 8px !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .char-animate { opacity: 1; transform: none; }
   .slide .slide-title,
