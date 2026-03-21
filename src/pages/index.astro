@@ -1,0 +1,1128 @@
+---
+import '../styles/global.css';
+import palettes from '../data/palettes.json';
+
+const projects = [
+  {
+    id: 'hartley',
+    title: 'Hartley',
+    description: 'Emergency-focused trade website with 24/7 lead capture, click-to-call, and service area mapping that converts urgent searches into booked jobs.',
+    url: 'https://demo-hartley-plumbing.vercel.app',
+    pages: ['/#services', '/', '/#contact'],
+    image: '/thumbnails/hartley.webp',
+    image2: '/thumbnails/hartley-2.webp',
+    image3: '/thumbnails/hartley-3.webp',
+  },
+  {
+    id: 'kin',
+    title: 'Kin',
+    description: 'Warm editorial hospitality site with interactive digital menu, event listings, email capture, and catering enquiries — a community hub that drives repeat visits.',
+    url: 'https://demo-kin-grain-cafe.vercel.app',
+    pages: ['/#menu', '/', '/#contact'],
+    image: '/thumbnails/cafe.webp',
+    image2: '/thumbnails/cafe-2.webp',
+    image3: '/thumbnails/cafe-3.webp',
+  },
+  {
+    id: 'apex',
+    title: 'Apex',
+    description: 'Conversion-optimised fitness site built as a sales funnel — multi-step lead capture, membership pricing, and urgency-driven CTAs that turn visitors into trial members.',
+    url: 'https://demo-apex-fitness.vercel.app',
+    pages: ['/#classes', '/', '/#contact'],
+    image: '/thumbnails/fitness.webp',
+    image2: '/thumbnails/fitness-2.webp',
+    image3: '/thumbnails/fitness-3.webp',
+  },
+  {
+    id: 'whitfield',
+    title: 'W & A',
+    description: 'Authority-driven professional services site with insights blog, consultation booking, animated credibility metrics, and content marketing architecture.',
+    url: 'https://demo-whitfield-accounting.vercel.app',
+    pages: ['/#insights', '/', '/#contact'],
+    image: '/thumbnails/accounting.webp',
+    image2: '/thumbnails/accounting-2.webp',
+    image3: '/thumbnails/accounting-3.webp',
+  },
+  {
+    id: 'luma',
+    title: 'LUMA',
+    description: 'Premium skincare e-commerce site with product filtering, detailed product pages, size selectors, and a polished add-to-bag flow — warm luxury that drives conversions.',
+    url: 'https://demo-luma-beauty.vercel.app',
+    pages: ['/shop', '/', '/about'],
+    image: '/thumbnails/beauty.webp',
+    image2: '/thumbnails/beauty-2.webp',
+    image3: '/thumbnails/beauty-3.webp',
+  },
+  {
+    id: 'flowline',
+    title: 'Flowline',
+    description: 'Dark-mode SaaS landing page with gradient mesh hero, tabbed product showcase, tiered pricing, and social proof — built for sign-ups.',
+    url: 'https://demo-flowline-saas.vercel.app',
+    pages: ['/#features', '/', '/#pricing'],
+    image: '/thumbnails/saas.webp',
+    image2: '/thumbnails/saas-2.webp',
+    image3: '/thumbnails/saas-3.webp',
+  },
+  {
+    id: 'evergreen',
+    title: 'Evergreen',
+    description: 'Romantic editorial wedding & event planning site with filterable portfolio, lightbox gallery, service packages, and an elegant multi-field enquiry form.',
+    url: 'https://demo-evergreen-events.vercel.app',
+    pages: ['/portfolio', '/', '/services'],
+    image: '/thumbnails/events.webp',
+    image2: '/thumbnails/events-2.webp',
+    image3: '/thumbnails/events-3.webp',
+  },
+].map(p => {
+  // Derive page labels from paths: "/#services" → "Services", "/" → "Home", "/about" → "About"
+  const pageLabels = p.pages.map(pg => {
+    if (pg === '/') return 'Home';
+    const name = pg.replace(/^\/#?/, '').replace(/^\//, '');
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  });
+  return {
+    ...p,
+    pageLabels,
+    bg: palettes[p.id].background,
+    accent: palettes[p.id].accent,
+    text: palettes[p.id].text,
+  };
+});
+
+// Hero and contact get their own palette
+const heroBg = '#491FAD';
+const heroAccent = '#FBBF24';
+const contactBg = '#1E1B4B';
+const contactAccent = '#A78BFA';
+
+const bgColors = [heroBg, ...projects.map(p => p.bg), contactBg];
+const accentColors = [heroAccent, ...projects.map(p => p.accent), contactAccent];
+
+// Helper: generate mobile path from thumbnail path
+const mobileSrc = (src: string) => src.replace('/thumbnails/', '/thumbnails/mobile/');
+
+const navItems = [
+  { label: 'Home', slideIndex: 0 },
+  ...projects.map((p, i) => ({ label: p.title, slideIndex: i + 1 })),
+  { label: 'Contact', slideIndex: projects.length + 1 },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Alister Maddrell — Web Designer & Developer based in Sydney. Custom-built, high-performance websites for local businesses." />
+    <meta property="og:title" content="Alister Maddrell — Web Designer & Developer" />
+    <meta property="og:description" content="Custom-built, high-performance websites for Sydney businesses." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://portfolio-alt-alister-maddrell.vercel.app/thumbnails/hartley.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://portfolio-alt-alister-maddrell.vercel.app/" />
+    <title>Alister Maddrell — Web Designer & Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  </head>
+
+  <body>
+    <a href="#slide-0" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded">Skip to content</a>
+    <div id="app" class="relative w-full h-screen overflow-hidden">
+      <!-- ═══════════════════════════════════════ -->
+      <!-- BACKGROUND LAYER                       -->
+      <!-- ═══════════════════════════════════════ -->
+      <div id="bg-layer" class="absolute inset-0" style={`background-color: ${heroBg};`}></div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- FIXED HEADER — always visible          -->
+      <!-- ═══════════════════════════════════════ -->
+      <header id="app-header" class="absolute top-0 left-0 w-full h-[8vh] min-h-[60px] pr-[6.25%] pl-[calc(6.25%+16px)] flex items-center justify-between z-30 transition-colors duration-600" style={`color: ${heroAccent};`}>
+        <a href="#" class="ui-text ui-text-sm flex items-center min-h-[44px]" data-slide="0">Alister Maddrell</a>
+        <a href="#" class="ui-text ui-text-sm hover:opacity-70 transition-opacity duration-200 flex items-center min-h-[44px]" data-slide="8">Contact</a>
+      </header>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- SLIDE 0: HERO                          -->
+      <!-- ═══════════════════════════════════════ -->
+      <section id="slide-0" class="slide active" style={`--slide-accent: ${heroAccent}; background-color: ${heroBg};`}>
+        <div class="accent-bar" style={`background-color: ${heroAccent};`}></div>
+        <div class="hero-layout">
+          <!-- Left: name + role + CTAs -->
+          <div class="hero-left">
+            <div class="hero-content">
+              <div class="relative slide-title">
+                <h1 id="hero-title-solid" class="hero-name title-solid" style={`color: ${heroAccent};`}></h1>
+                <div id="hero-title-outline" class="hero-name title-outline absolute inset-0" style={`-webkit-text-stroke-color: ${heroAccent};`} aria-hidden="true"></div>
+              </div>
+              <p class="ui-text ui-text-sm mt-4 slide-desc" style={`color: ${heroAccent}; letter-spacing: 3px; opacity: 0.8;`}>Web Designer &amp; Developer · Sydney</p>
+              <p class="desc-text mt-6 slide-desc" style="color: #ffffff; max-width: 400px;">I design and build conversion-focused websites for small businesses — clean, fast, and built to turn visitors into customers.</p>
+              <div class="flex gap-4 mt-8 slide-cta">
+                <a href="#" class="hero-cta-primary ui-text ui-text-md" data-slide="1" style={`color: ${heroAccent}; border-color: ${heroAccent};`}>
+                  <span>View My Work</span>
+                  <span class="cta-arrow">&rarr;</span>
+                </a>
+                <a href="#" class="cta-link ui-text ui-text-md" data-slide="8" style={`color: ${heroAccent};`}>
+                  <span>Get in Touch</span>
+                  <span class="cta-arrow">&rarr;</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: featured project card -->
+          <div class="hero-right slide-image" style="perspective: 800px;">
+            <div class="hero-featured">
+              <div id="hero-card" class="hero-featured-card card-work" style={`--card-color: ${heroAccent};`}>
+                <div class="card-work-topbar">
+                  <span class="card-work-dots" aria-hidden="true">
+                    <span></span><span></span><span></span>
+                  </span>
+                  <div class="card-work-urlbar">
+                    <svg class="card-work-globe" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M1 8h14M8 1c-2.5 3-2.5 9 0 14M8 1c2.5 3 2.5 9 0 14" stroke="currentColor" stroke-width="1.2"/></svg>
+                    <span id="hero-card-url" class="card-work-url"><span class="card-work-url-proto">https:// </span><span class="card-work-url-name">{projects[0].title}</span><span class="card-work-url-suffix">.com.au</span></span>
+                  </div>
+                  <span class="card-work-capsule" aria-hidden="true">
+                    <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </div>
+                <div class="card-work-img" style="position: relative;">
+                  {projects.map((project, i) => (
+                    <picture class={`hero-card-image ${i === 0 ? 'active' : ''}`} data-hero-img={i}>
+                      <source media="(max-width: 767px)" srcset={i === 0 ? mobileSrc(project.image) : undefined} data-srcset={mobileSrc(project.image)} />
+                      <img
+                        src={i === 0 ? project.image : undefined}
+                        data-src={project.image}
+                        alt={`${project.title} preview`}
+                        width="720"
+                        height="450"
+                        loading={i === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                      />
+                    </picture>
+                  ))}
+                </div>
+              </div>
+              <!-- Project count strip -->
+              <div class="hero-project-strip" id="hero-strip">
+                {projects.map((project, i) => (
+                  <button class={`hero-strip-item ${i === 0 ? 'active' : ''}`} data-hero-index={i} style={`--strip-color: ${project.accent};`}>
+                    <span class="hero-strip-dot"></span>
+                    <span class="hero-strip-label">{project.title}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- SLIDES 1-5: PROJECTS                   -->
+      <!-- ═══════════════════════════════════════ -->
+      {projects.map((project, i) => {
+        const slideIndex = i + 1;
+        return (
+          <section id={`slide-${slideIndex}`} class="slide" data-slide-index={slideIndex} style={`--slide-accent: ${project.accent}; background-color: ${project.bg};`}>
+            <!-- Accent bar -->
+            <div class="accent-bar" style={`background-color: ${project.accent};`}></div>
+
+            <div class="showcase-layout" style={`color: ${project.text};`}>
+              <!-- Left column: content + live preview, evenly spaced -->
+              <div class="showcase-left">
+                <div class="showcase-content">
+                  <h2 class="title-display title-project slide-title" style={`color: ${project.accent};`}>
+                    {project.title}
+                  </h2>
+                  <p class="desc-text mt-6 slide-desc">
+                    {project.description}
+                  </p>
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="cta-link ui-text ui-text-md mt-[34px] slide-cta"
+                    style={`color: ${project.accent};`}
+                  >
+                    <span>View Live Site</span>
+                    <span class="cta-arrow">&rarr;</span>
+                  </a>
+                </div>
+                <div class="live-preview hidden lg:block" style={`--card-color: ${project.accent}; border-color: ${project.accent};`}>
+                  <div class="card-work-topbar card-work-topbar--mini">
+                    <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
+                      <span></span><span></span><span></span>
+                    </span>
+                    <div class="card-work-urlbar card-work-urlbar--mini">
+                      <span class="card-work-url">{project.title}</span>
+                    </div>
+                    <a href={project.url} target="_blank" rel="noopener noreferrer" class="card-work-capsule card-work-capsule--mini" aria-label={`Visit ${project.title}`}>
+                      <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                  </div>
+                  <div class="live-preview-viewport">
+                    <video
+                      class="live-preview-video"
+                      data-src={`/previews/${project.id}.webm`}
+                      muted
+                      loop
+                      playsinline
+                      preload="none"
+                      aria-label={`${project.title} site preview`}
+                    ></video>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Center: Stacked screenshots -->
+              <div class="showcase-cards slide-image" style="perspective: 800px;">
+                <div class="showcase-stack" style={`--card-color: ${project.accent};`}>
+                  <!-- Page 2 (top slot) -->
+                  <div class="showcase-frame">
+                    <div class="card-work-topbar card-work-topbar--mini">
+                      <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                      </span>
+                      <div class="card-work-urlbar card-work-urlbar--mini">
+                        <span class="card-work-url">{project.title}</span>
+                      </div>
+                      <a href={`${project.url}${project.pages[0]}`} target="_blank" rel="noopener noreferrer" class="card-work-capsule card-work-capsule--mini" aria-label={`Visit ${project.title}`}>
+                        <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </a>
+                    </div>
+                    <div class="card-work-img">
+                      <picture>
+                        <source media="(max-width: 767px)" srcset={mobileSrc(project.image2)} />
+                        <img src={project.image2} alt={`${project.title} page 2`} width="720" height="450" loading="lazy" decoding="async" />
+                      </picture>
+                    </div>
+                  </div>
+                  <!-- Landing page (center slot, flush) -->
+                  <div class="showcase-frame">
+                    <div class="card-work-topbar card-work-topbar--mini">
+                      <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                      </span>
+                      <div class="card-work-urlbar card-work-urlbar--mini">
+                        <span class="card-work-url">{project.title}</span>
+                      </div>
+                      <a href={project.url} target="_blank" rel="noopener noreferrer" class="card-work-capsule card-work-capsule--mini" aria-label={`Visit ${project.title}`}>
+                        <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </a>
+                    </div>
+                    <div class="card-work-img">
+                      <picture>
+                        <source media="(max-width: 767px)" srcset={mobileSrc(project.image)} />
+                        <img src={project.image} alt={`${project.title} homepage`} width="720" height="450" loading="lazy" decoding="async" />
+                      </picture>
+                    </div>
+                  </div>
+                  <!-- Page 3 (bottom slot) -->
+                  <div class="showcase-frame">
+                    <div class="card-work-topbar card-work-topbar--mini">
+                      <span class="card-work-dots card-work-dots--mini" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                      </span>
+                      <div class="card-work-urlbar card-work-urlbar--mini">
+                        <span class="card-work-url">{project.title}</span>
+                      </div>
+                      <a href={`${project.url}${project.pages[2]}`} target="_blank" rel="noopener noreferrer" class="card-work-capsule card-work-capsule--mini" aria-label={`Visit ${project.title}`}>
+                        <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6.66667M12 4V9.33333" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </a>
+                    </div>
+                    <div class="card-work-img">
+                      <picture>
+                        <source media="(max-width: 767px)" srcset={mobileSrc(project.image3)} />
+                        <img src={project.image3} alt={`${project.title} page 3`} width="720" height="450" loading="lazy" decoding="async" />
+                      </picture>
+                    </div>
+                  </div>
+                </div>
+                <!-- Mobile page strip -->
+                <div class="page-strip" style={`--strip-accent: ${project.accent};`}>
+                  {['Home', project.pageLabels[0], project.pageLabels[2]].map((label, pi) => {
+                    const frameIndex = pi === 0 ? 1 : pi === 1 ? 0 : 2;
+                    return (
+                      <button class={`page-strip-item ${frameIndex === 1 ? 'active' : ''}`} data-page-index={frameIndex}>
+                        <span class="page-strip-dot" style={`background: ${project.accent};`}></span>
+                        <span class="page-strip-label">{label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+          </section>
+        );
+      })}
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- SLIDE 6: ABOUT / CONTACT               -->
+      <!-- ═══════════════════════════════════════ -->
+      <section id="slide-8" class="slide" data-slide-index="8" style={`--slide-accent: ${contactAccent}; background-color: ${contactBg};`}>
+        <div class="accent-bar" style={`background-color: ${contactAccent};`}></div>
+        <div class="showcase-layout" style={`color: #ffffff;`}>
+          <!-- Left column: title + info -->
+          <div class="showcase-left">
+            <div class="showcase-content">
+              <p class="ui-text ui-text-sm slide-desc" style={`color: ${contactAccent}; letter-spacing: 3px; opacity: 0.8;`}>Get in Touch</p>
+              <h2 class="title-display title-project mt-4 slide-title" style={`color: ${contactAccent};`}>
+                Let's Work<br/>Together
+              </h2>
+              <p class="desc-text mt-6 slide-desc" style="opacity: 0.7;">
+                I design and build fast, modern websites for local businesses across Sydney. Every site is custom-built, SEO-optimised, and designed to turn visitors into customers.
+              </p>
+              <div class="flex flex-col gap-3 mt-8 slide-cta">
+                <a href="mailto:alistermaddrell@gmail.com" class="cta-link ui-text ui-text-md" style={`color: ${contactAccent};`}>
+                  <span>alistermaddrell@gmail.com</span>
+                  <span class="cta-arrow">&rarr;</span>
+                </a>
+              </div>
+            </div>
+            <p class="ui-text ui-text-sm slide-meta" style={`color: ${contactAccent}; opacity: 0.5;`}>Sydney, Australia</p>
+          </div>
+
+          <!-- Right column: form in browser chrome card -->
+          <div class="contact-right slide-image">
+            <div class="contact-form-card" style={`--card-color: ${contactAccent};`}>
+              <div class="card-work-topbar">
+                <span class="card-work-dots" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                </span>
+                <div class="card-work-urlbar">
+                  <svg class="card-work-globe" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M1 8h14M8 1c-2.5 3-2.5 9 0 14M8 1c2.5 3 2.5 9 0 14" stroke="currentColor" stroke-width="1.2"/></svg>
+                  <span class="card-work-url"><span class="card-work-url-proto">mailto:</span> alistermaddrell@gmail.com</span>
+                </div>
+              </div>
+              <div class="contact-form-body">
+                <form action="https://formspree.io/f/mlgplaev" method="POST" class="space-y-6">
+                  <div>
+                    <label for="name" class="ui-text text-xs block mb-2" style={`letter-spacing: 1px; color: ${contactAccent};`}>Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      required
+                      placeholder="Your name"
+                      class="contact-input"
+                      style={`--accent: ${contactAccent};`}
+                    />
+                  </div>
+                  <div>
+                    <label for="email" class="ui-text text-xs block mb-2" style={`letter-spacing: 1px; color: ${contactAccent};`}>Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      placeholder="you@example.com"
+                      class="contact-input"
+                      style={`--accent: ${contactAccent};`}
+                    />
+                  </div>
+                  <div>
+                    <label for="message" class="ui-text text-xs block mb-2" style={`letter-spacing: 1px; color: ${contactAccent};`}>Message</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows="5"
+                      required
+                      placeholder="Tell me about your project..."
+                      class="contact-input resize-none"
+                      style={`--accent: ${contactAccent};`}
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    class="contact-submit ui-text ui-text-md"
+                    style={`background: ${contactAccent}; color: ${contactBg};`}
+                  >
+                    <span>Send Message</span>
+                    <span class="cta-arrow">&rarr;</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- UNIFIED SLIDE NAV                      -->
+      <!-- ═══════════════════════════════════════ -->
+      <nav id="slide-nav" class="slide-nav z-40 transition-opacity duration-500" style={`color: ${heroAccent};`}>
+        <div class="slide-nav-inner">
+          {navItems.map((item, i) => (
+            <button class={`slide-nav-item ${i === 0 ? 'active' : ''}`} data-slide={item.slideIndex} aria-label={`Go to ${item.label}`}>
+              <span class="slide-nav-label">{item.label}</span>
+              <span class="slide-nav-dot"></span>
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <!-- Scroll indicator -->
+      <div id="scroll-indicator" class="scroll-indicator-wrap" style={`color: ${heroAccent};`}>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 4L10 16M10 16L5 11M10 16L15 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- CLIENT-SIDE JS                         -->
+    <!-- ═══════════════════════════════════════ -->
+    <script define:vars={{ bgColors, accentColors }}>
+      // ─── State ───
+      let currentSlide = 0;
+      const totalSlides = 9;
+      let isTransitioning = false;
+
+      // ─── DOM refs ───
+      const bgLayer = document.getElementById('bg-layer');
+      const appHeader = document.getElementById('app-header');
+      const slideNav = document.getElementById('slide-nav');
+      const slideNavItems = document.querySelectorAll('#slide-nav .slide-nav-item');
+      const scrollIndicator = document.getElementById('scroll-indicator');
+
+      // ─── Go to slide (interruptible) ───
+      let transitionTimer = null;
+
+      function goToSlide(index, interrupt) {
+        if (index === currentSlide || index < 0 || index >= totalSlides) return;
+
+        // If already transitioning and not an interrupt, ignore
+        if (isTransitioning && !interrupt) return;
+
+        // If interrupting, clear the previous transition lock timer
+        if (transitionTimer) clearTimeout(transitionTimer);
+        isTransitioning = true;
+        hoverEnabled = false;
+
+        const prevSlide = document.getElementById(`slide-${currentSlide}`);
+        const nextSlide = document.getElementById(`slide-${index}`);
+        const goingDown = index > currentSlide;
+
+        // Carousel housekeeping
+        if (prevSlide && prevSlide._leaveCarousel) prevSlide._leaveCarousel();
+        if (nextSlide && nextSlide._resetCarousel) nextSlide._resetCarousel();
+
+        // Clean up any in-progress states on ALL slides
+        document.querySelectorAll('.slide').forEach(s => {
+          s.classList.remove('slide-exit-up', 'slide-exit-down',
+                             'slide-enter-from-below', 'slide-enter-from-above');
+          if (s !== nextSlide) s.classList.remove('active');
+        });
+
+        // Exit previous
+        if (prevSlide && prevSlide !== nextSlide) {
+          prevSlide.classList.add(goingDown ? 'slide-exit-up' : 'slide-exit-down');
+          setTimeout(() => {
+            prevSlide.classList.remove('slide-exit-up', 'slide-exit-down');
+          }, 750);
+        }
+
+        // Enter new slide — double-rAF for paint-then-animate
+        if (nextSlide) {
+          const stack = nextSlide.querySelector('.showcase-stack');
+          if (stack && window.innerWidth >= 768) stack.style.transform = 'none';
+
+          nextSlide.classList.add(goingDown ? 'slide-enter-from-below' : 'slide-enter-from-above');
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              nextSlide.classList.remove('slide-enter-from-below', 'slide-enter-from-above');
+              nextSlide.classList.add('active');
+
+              const isMobile = window.innerWidth < 768;
+              const ease = 'cubic-bezier(0.25, 0.1, 0.25, 1)';
+
+              if (!isMobile) {
+                // Desktop: stack glides into 3D perspective
+                if (stack) {
+                  setTimeout(() => { stack.style.transform = ''; }, 250);
+                }
+
+                // Desktop content entrance — horizontal drift
+                const anims = [
+                  { sel: '.slide-title',  delay: 200, dur: 800, from: { opacity: 0, transform: 'translateX(-18px)' } },
+                  { sel: '.slide-desc',   delay: 320, dur: 750, from: { opacity: 0, transform: 'translateX(-12px)' } },
+                  { sel: '.slide-cta',    delay: 430, dur: 700, from: { opacity: 0, transform: 'translateX(-8px)' } },
+                  { sel: '.slide-meta',   delay: 480, dur: 700, from: { opacity: 0, transform: 'translateX(-8px)' } },
+                  { sel: '.live-preview', delay: 540, dur: 750, from: { opacity: 0, transform: 'translateY(10px) scale(0.98)' } },
+                ];
+                anims.forEach(({ sel, delay, dur, from }) => {
+                  const el = nextSlide.querySelector(sel);
+                  if (!el) return;
+                  el.animate(
+                    [from, { opacity: 1, transform: 'none' }],
+                    { duration: dur, delay: delay, easing: ease, fill: 'backwards' }
+                  );
+                });
+              } else {
+                // Mobile: stack starts 3D and settles to flat (reversed)
+                if (stack) {
+                  stack.style.transform = 'rotateY(-10deg) rotateX(2.5deg) rotate(2.5deg)';
+                  setTimeout(() => {
+                    stack.style.transition = 'transform 1s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                    stack.style.transform = 'none';
+                    // Clean up inline transition after animation
+                    setTimeout(() => { stack.style.transition = ''; }, 1100);
+                  }, 200);
+                }
+
+                // Mobile content entrance — vertical drift up
+                const mobileAnims = [
+                  { sel: '.slide-title',  delay: 250, dur: 800, from: { opacity: 0, transform: 'translateY(14px)' } },
+                  { sel: '.slide-desc',   delay: 370, dur: 750, from: { opacity: 0, transform: 'translateY(10px)' } },
+                  { sel: '.slide-cta',    delay: 480, dur: 700, from: { opacity: 0, transform: 'translateY(8px)' } },
+                  { sel: '.slide-meta',   delay: 530, dur: 700, from: { opacity: 0, transform: 'translateY(8px)' } },
+                ];
+                mobileAnims.forEach(({ sel, delay, dur, from }) => {
+                  const el = nextSlide.querySelector(sel);
+                  if (!el) return;
+                  el.animate(
+                    [from, { opacity: 1, transform: 'none' }],
+                    { duration: dur, delay: delay, easing: ease, fill: 'backwards' }
+                  );
+                });
+
+                // Mobile phone frame entrance — scale up from slightly small
+                const frame = nextSlide.querySelector('.showcase-frame.mobile-active') || nextSlide.querySelector('.showcase-frame:first-child');
+                if (frame) {
+                  frame.animate(
+                    [{ opacity: 0, transform: 'scale(0.94)' }, { opacity: 1, transform: 'none' }],
+                    { duration: 900, delay: 150, easing: ease, fill: 'backwards' }
+                  );
+                }
+              }
+            });
+          });
+        }
+
+        // Crossfade background colour
+        if (bgLayer) bgLayer.style.backgroundColor = bgColors[index];
+
+        // Update accent colour on nav, header, scroll indicator
+        const accentColor = accentColors[index];
+        if (slideNav) slideNav.style.color = accentColor;
+        if (appHeader) appHeader.style.color = accentColor;
+        if (scrollIndicator) scrollIndicator.style.color = accentColor;
+
+        // Update active nav item
+        slideNavItems.forEach((item, i) => {
+          item.classList.toggle('active', i === index);
+        });
+
+        // Viscous nav animation on desktop — items stretch apart
+        // around the transition zone then slowly contract back
+        if (window.matchMedia('(min-width: 1024px)').matches && slideNav) {
+          const dir = goingDown ? 1 : -1;
+          const viscousEase = 'cubic-bezier(0.25, 0.1, 0.25, 1)';
+
+          slideNavItems.forEach((item, i) => {
+            // Items above active drift up, items below drift down
+            // creating a stretch/elongation centred on the active item
+            const offset = i - index;
+            const pull = offset * dir * 3;
+            // Gentle duration — heavier items (further away) move slower
+            const dist = Math.abs(offset);
+            const dur = 1100 + dist * 80;
+
+            item.animate([
+              { transform: 'translateY(0)' },
+              { transform: `translateY(${pull}px)`, offset: 0.3 },
+              { transform: 'translateY(0)' }
+            ], { duration: dur, easing: viscousEase });
+          });
+
+          // Active label gently materialises
+          slideNavItems.forEach((item, i) => {
+            const label = item.querySelector('.slide-nav-label');
+            if (!label) return;
+            if (i === index) {
+              label.animate([
+                { opacity: 0 },
+                { opacity: 1 }
+              ], { duration: 700, delay: 200, easing: viscousEase, fill: 'backwards' });
+            }
+          });
+        }
+
+        // Header: gentle opacity breathe on colour change
+        if (appHeader) {
+          appHeader.animate([
+            { opacity: 1 },
+            { opacity: 0.55, offset: 0.4 },
+            { opacity: 1 }
+          ], { duration: 800, easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)' });
+        }
+
+        // Lazy-load iframe for active slide, unload previous
+        managePreviews(index, currentSlide);
+
+        currentSlide = index;
+
+        // Keep scroll driver in sync
+        if (typeof syncDriver === 'function') syncDriver(index);
+
+        transitionTimer = setTimeout(() => {
+          isTransitioning = false;
+          hoverEnabled = true;
+          transitionTimer = null;
+        }, 700);
+      }
+
+      // ─── Wheel navigation ───
+      // One gesture = one slide. After firing, requires 3 consecutive
+      // increasing deltas to re-enable (filters inertia fluctuations).
+      // Direction reversal and silence also reset. No cooldown.
+      let canFireWheel = true;
+      let wheelDir = 0;
+      let prevWheelDelta = 0;
+      let wheelDeclining = false;
+      let wheelRiseCount = 0;
+      let wheelResetTimer = null;
+
+      document.addEventListener('wheel', (e) => {
+        if (e.defaultPrevented) return;
+        e.preventDefault();
+
+        const absDelta = Math.abs(e.deltaY);
+        const dir = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0;
+        if (!dir) return;
+
+        // Direction reversal = always a new intentional gesture
+        if (dir !== wheelDir) {
+          canFireWheel = true;
+          wheelDeclining = false;
+          wheelRiseCount = 0;
+          wheelDir = dir;
+        }
+
+        // After firing, detect new gesture by watching for sustained rise
+        if (!canFireWheel) {
+          if (absDelta < prevWheelDelta) {
+            wheelDeclining = true;
+            wheelRiseCount = 0;
+          } else if (wheelDeclining && absDelta > prevWheelDelta + 2) {
+            wheelRiseCount++;
+            if (wheelRiseCount >= 3) {
+              // 3 consecutive significant increases after decline = new gesture
+              canFireWheel = true;
+              wheelDeclining = false;
+              wheelRiseCount = 0;
+            }
+          }
+        }
+
+        if (canFireWheel && absDelta >= 4) {
+          if (dir > 0) goToSlide(currentSlide + 1, true);
+          else goToSlide(currentSlide - 1, true);
+          canFireWheel = false;
+          wheelDeclining = false;
+          wheelRiseCount = 0;
+        }
+
+        prevWheelDelta = absDelta;
+
+        // Silence = gesture over, reset
+        clearTimeout(wheelResetTimer);
+        wheelResetTimer = setTimeout(() => {
+          canFireWheel = true;
+          wheelDeclining = false;
+          wheelRiseCount = 0;
+          prevWheelDelta = 0;
+        }, 150);
+      }, { passive: false });
+
+      // No-op — scroll driver removed, kept for compatibility with goToSlide
+      function syncDriver() {}
+
+      // ─── Arrow key navigation ───
+      window.addEventListener('keydown', (e) => {
+        // Don't intercept arrows inside form fields
+        const tag = document.activeElement?.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          goToSlide(currentSlide + 1, true);
+        }
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          goToSlide(currentSlide - 1, true);
+        }
+      });
+
+      // ─── Click navigation (nav items, header links) ───
+      document.querySelectorAll('[data-slide]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          goToSlide(parseInt(el.dataset.slide), true);
+        });
+      });
+
+      // ─── Touch swipe (mobile) ───
+      let touchStartY = 0;
+      let touchStartX = 0;
+      const SWIPE_THRESHOLD = 50;
+
+      document.addEventListener('touchstart', (e) => {
+        touchStartY = e.changedTouches[0].screenY;
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      document.addEventListener('touchend', (e) => {
+        const deltaY = touchStartY - e.changedTouches[0].screenY;
+        const deltaX = touchStartX - e.changedTouches[0].screenX;
+
+        // Only trigger if vertical swipe is dominant
+        if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > SWIPE_THRESHOLD) {
+          if (deltaY > 0) goToSlide(currentSlide + 1);
+          else goToSlide(currentSlide - 1);
+        }
+      }, { passive: true });
+
+      // ─── Per-character hero animation ───
+      function initHeroAnimation() {
+        const name = 'My Work';
+        const solidEl = document.getElementById('hero-title-solid');
+        const outlineEl = document.getElementById('hero-title-outline');
+        if (!solidEl || !outlineEl) return;
+
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const isMobileHero = window.innerWidth < 768;
+        const buildChars = (text) => {
+          return text.split('').map((char, i) => {
+            if (char === ' ') {
+              if (isMobileHero) {
+                // On mobile: keep space inline so title stays on one line
+                const span = document.createElement('span');
+                span.innerHTML = '&nbsp;';
+                span.className = prefersReduced ? 'char-animate revealed' : 'char-animate';
+                span.style.transitionDelay = `${i * 50}ms`;
+                return span;
+              }
+              const br = document.createElement('br');
+              return br;
+            }
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.className = prefersReduced ? 'char-animate revealed' : 'char-animate';
+            span.style.transitionDelay = `${i * 50}ms`;
+            return span;
+          });
+        };
+
+        const solidChars = buildChars(name);
+        const outlineChars = buildChars(name);
+
+        solidChars.forEach(c => solidEl.appendChild(c));
+        outlineChars.forEach(c => outlineEl.appendChild(c));
+
+        if (!prefersReduced) {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              solidChars.forEach(c => c.classList && c.classList.add('revealed'));
+              outlineChars.forEach(c => c.classList && c.classList.add('revealed'));
+            }, 300);
+          });
+        }
+      }
+
+      // ─── Hero strip — hover to change featured card ───
+      function initHeroStrip() {
+        const strip = document.getElementById('hero-strip');
+        const card = document.getElementById('hero-card');
+        const urlEl = document.getElementById('hero-card-url');
+        if (!strip || !card) return;
+
+        const items = strip.querySelectorAll('.hero-strip-item');
+        const images = card.querySelectorAll('.hero-card-image');
+        const titles = [].map.call(items, el => el.querySelector('.hero-strip-label')?.textContent || '');
+        let currentHeroIndex = 0;
+        let urlAnimId = null;
+
+        function typeUrl(newDomain) {
+          if (urlAnimId) clearInterval(urlAnimId);
+          const prefix = '<span class="card-work-url-proto">https:// </span>';
+          const suffix = '<span class="card-work-url-suffix">.com.au</span>';
+          const fullNew = newDomain;
+          // Get current name text
+          const nameEl = urlEl.querySelector('.card-work-url-name');
+          const currentText = nameEl ? nameEl.textContent : '';
+          const cursor = '<span class="hero-url-cursor"></span>';
+
+          let phase = 'delete';
+          let deleteText = currentText;
+          let typeIndex = 0;
+
+          urlAnimId = setInterval(() => {
+            if (phase === 'delete') {
+              if (deleteText.length > 0) {
+                deleteText = deleteText.slice(0, -1);
+                urlEl.innerHTML = prefix + '<span class="card-work-url-name">' + deleteText + '</span>' + cursor + suffix;
+              } else {
+                phase = 'type';
+              }
+            } else {
+              if (typeIndex <= fullNew.length) {
+                urlEl.innerHTML = prefix + '<span class="card-work-url-name">' + fullNew.slice(0, typeIndex) + '</span>' + cursor + suffix;
+                typeIndex++;
+              } else {
+                urlEl.innerHTML = prefix + '<span class="card-work-url-name">' + fullNew + '</span>' + suffix;
+                clearInterval(urlAnimId);
+                urlAnimId = null;
+              }
+            }
+          }, 25);
+        }
+
+        // Lazy-load hero card images on first interaction
+        let heroImagesLoaded = false;
+        function loadHeroImages() {
+          if (heroImagesLoaded) return;
+          heroImagesLoaded = true;
+          images.forEach(pic => {
+            const img = pic.querySelector('img');
+            const source = pic.querySelector('source');
+            if (img && !img.src && img.dataset.src) img.src = img.dataset.src;
+            if (source && !source.srcset && source.dataset.srcset) source.srcset = source.dataset.srcset;
+          });
+        }
+
+        items.forEach((item, i) => {
+          item.addEventListener('mouseenter', () => {
+            loadHeroImages();
+            if (i === currentHeroIndex) return;
+            const prevIndex = currentHeroIndex;
+
+            // Update strip active state
+            items.forEach(it => it.classList.remove('active'));
+            item.classList.add('active');
+
+            // Slide image transition (directional)
+            const goingDown = i > prevIndex;
+            const prevImg = images[prevIndex];
+            const nextImg = images[i];
+            const exitClass = goingDown ? 'exit-up' : 'exit-down';
+            const enterClass = goingDown ? 'enter-from-below' : 'enter-from-above';
+
+            // Exit old image
+            if (prevImg) {
+              prevImg.classList.remove('active', 'enter-from-below', 'enter-from-above');
+              prevImg.classList.add(exitClass);
+              setTimeout(() => prevImg.classList.remove('exit-up', 'exit-down'), 600);
+            }
+
+            // Enter new image
+            if (nextImg) {
+              nextImg.classList.remove('active', 'exit-up', 'exit-down');
+              nextImg.classList.add(enterClass);
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  nextImg.classList.remove('enter-from-below', 'enter-from-above');
+                  nextImg.classList.add('active');
+                });
+              });
+            }
+
+            // Typing URL animation
+            typeUrl(titles[i]);
+
+            currentHeroIndex = i;
+          }, { passive: true });
+        });
+      }
+
+      // ─── Showcase carousel (scroll/click/hover/swipe to cycle cards) ───
+      let hoverEnabled = true;
+
+      function initShowcaseCarousel() {
+        document.querySelectorAll('.showcase-stack').forEach(stack => {
+          const frames = stack.querySelectorAll('.showcase-frame');
+          if (frames.length < 2) return;
+
+          const slide = stack.closest('.slide');
+
+          let activeIndex = 1; // Start on center card
+          let isLocked = false;
+          const LOCK_MS = 600;
+
+          function setActive(index) {
+            if (isLocked || index === activeIndex || index < 0 || index >= frames.length) return;
+            isLocked = true;
+
+            activeIndex = index;
+
+            // Update card styling
+            frames.forEach(f => f.classList.remove('frame-active'));
+            frames[activeIndex].classList.add('frame-active');
+
+            // Update stack position
+            stack.classList.remove('stack-pos-0', 'stack-pos-1', 'stack-pos-2');
+            stack.classList.add(`stack-pos-${activeIndex}`);
+
+            setTimeout(() => { isLocked = false; }, LOCK_MS);
+          }
+
+          // Reset to center card (called on slide enter)
+          function resetToCenter() {
+            activeIndex = 1;
+            isLocked = false;
+            frames.forEach(f => { f.classList.remove('frame-active', 'mobile-active'); });
+            frames[1].classList.add('frame-active', 'mobile-active');
+            stack.classList.remove('stack-pos-0', 'stack-pos-1', 'stack-pos-2');
+            stack.classList.add('stack-pos-1');
+            // Reset strip
+            const strip = slide ? slide.querySelector('.page-strip') : null;
+            if (strip) {
+              strip.querySelectorAll('.page-strip-item').forEach((s, i) => {
+                s.classList.toggle('active', s.dataset.pageIndex === '1');
+              });
+            }
+          }
+
+          function onSlideEnter() { resetToCenter(); }
+          function onSlideLeave() {}
+
+          // Store functions on the slide element
+          if (slide) {
+            slide._resetCarousel = onSlideEnter;
+            slide._leaveCarousel = onSlideLeave;
+          }
+
+          // Init: center card active
+          frames[1].classList.add('frame-active');
+          frames[1].classList.add('mobile-active');
+          stack.classList.add('stack-pos-1');
+
+          // Mobile page strip — switch visible card
+          const pageStrip = slide ? slide.querySelector('.page-strip') : null;
+          if (pageStrip) {
+            const stripItems = pageStrip.querySelectorAll('.page-strip-item');
+            stripItems.forEach((item, i) => {
+              item.addEventListener('click', () => {
+                // Update strip active state
+                stripItems.forEach(s => s.classList.remove('active'));
+                item.classList.add('active');
+                // Switch visible frame
+                frames.forEach(f => f.classList.remove('mobile-active'));
+                frames[i].classList.add('mobile-active');
+                // Sync desktop state too
+                activeIndex = i;
+                frames.forEach(f => f.classList.remove('frame-active'));
+                frames[i].classList.add('frame-active');
+                stack.classList.remove('stack-pos-0', 'stack-pos-1', 'stack-pos-2');
+                stack.classList.add(`stack-pos-${i}`);
+              });
+            });
+          }
+
+          // Click to select (desktop)
+          frames.forEach((frame, i) => {
+            frame.addEventListener('click', (e) => {
+              if (i !== activeIndex) {
+                e.preventDefault();
+                e.stopPropagation();
+                setActive(i);
+              }
+            });
+          });
+
+          // Wheel to cycle within stack (stops page scroll propagation)
+          let stackWheelAccum = 0;
+          const STACK_WHEEL_THRESHOLD = 50;
+
+          stack.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (isLocked) {
+              stackWheelAccum = 0;
+              return;
+            }
+
+            stackWheelAccum += e.deltaY;
+
+            if (Math.abs(stackWheelAccum) >= STACK_WHEEL_THRESHOLD) {
+              if (stackWheelAccum > 0) setActive(activeIndex + 1);
+              else setActive(activeIndex - 1);
+              stackWheelAccum = 0;
+            }
+          }, { passive: false });
+
+          // Touch swipe on stack (mobile)
+          let stackTouchStartY = 0;
+          stack.addEventListener('touchstart', (e) => {
+            stackTouchStartY = e.changedTouches[0].screenY;
+          }, { passive: true });
+
+          stack.addEventListener('touchend', (e) => {
+            const deltaY = stackTouchStartY - e.changedTouches[0].screenY;
+            if (Math.abs(deltaY) > 30) {
+              if (deltaY > 0) setActive(activeIndex + 1);
+              else setActive(activeIndex - 1);
+            }
+          }, { passive: true });
+        });
+      }
+
+      // ─── Fit project titles to column width ───
+      function fitProjectTitles() {
+        if (window.innerWidth < 1024) return;
+        const titles = document.querySelectorAll('.showcase-left .title-project');
+        // Batch read: reset all first, then measure, then write
+        titles.forEach(t => { t.style.fontSize = ''; });
+        const measurements = Array.from(titles).map(title => {
+          const container = title.closest('.showcase-content') || title.parentElement;
+          return { title, maxW: container.clientWidth, scrollW: title.scrollWidth, fontSize: parseFloat(getComputedStyle(title).fontSize) };
+        });
+        // Batch write: calculate final size without re-measuring
+        measurements.forEach(({ title, maxW, scrollW, fontSize }) => {
+          if (scrollW > maxW && fontSize > 40) {
+            const scale = maxW / scrollW;
+            title.style.fontSize = Math.max(40, Math.floor(fontSize * scale)) + 'px';
+          }
+        });
+      }
+
+      // ─── Lazy-load & play/pause preview videos ───
+      function managePreviews(nextIndex, prevIndex) {
+        // Pause previous slide's video
+        if (prevIndex !== undefined) {
+          const prevSlide = document.getElementById('slide-' + prevIndex);
+          if (prevSlide) {
+            const video = prevSlide.querySelector('.live-preview-video');
+            if (video) { video.pause(); video.currentTime = 0; }
+          }
+        }
+        // Load + play next slide's video
+        const nextSlide = document.getElementById('slide-' + nextIndex);
+        if (nextSlide) {
+          const video = nextSlide.querySelector('.live-preview-video');
+          if (video) {
+            if (!video.src && video.dataset.src) video.src = video.dataset.src;
+            video.play().catch(() => {}); // autoplay may be blocked, that's ok
+          }
+        }
+      }
+
+      // Phone tap is now handled via CSS hover on the <a> wrapping links
+      function initPhoneTap() {}
+
+      // ─── Init ───
+      document.addEventListener('DOMContentLoaded', () => {
+        initHeroAnimation();
+        initHeroStrip();
+        initShowcaseCarousel();
+        initPhoneTap();
+        fitProjectTitles();
+        window.addEventListener('resize', fitProjectTitles);
+      });
+    </script>
+  </body>
+</html>

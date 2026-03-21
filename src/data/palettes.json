@@ -1,0 +1,51 @@
+{
+  "hartley": {
+    "background": "#0652DD",
+    "accent": "#FFC312",
+    "text": "#f0f0f0",
+    "textMode": "light",
+    "wash": "rgba(6, 82, 221, 0.7)"
+  },
+  "kin": {
+    "background": "#B92D1E",
+    "accent": "#D8EB5C",
+    "text": "#f0f0f0",
+    "textMode": "light",
+    "wash": "rgba(185, 45, 30, 0.7)"
+  },
+  "apex": {
+    "background": "#4A18BF",
+    "accent": "#FFC312",
+    "text": "#f0f0f0",
+    "textMode": "light",
+    "wash": "rgba(74, 24, 191, 0.7)"
+  },
+  "whitfield": {
+    "background": "#1BA751",
+    "accent": "#F4D44C",
+    "text": "#f0f0f0",
+    "textMode": "light",
+    "wash": "rgba(27, 167, 81, 0.7)"
+  },
+  "luma": {
+    "background": "#b12562",
+    "accent": "#80ef91",
+    "text": "#f0f0f0",
+    "textMode": "light",
+    "wash": "rgba(177, 37, 98, 0.7)"
+  },
+  "flowline": {
+    "background": "#0AA3C2",
+    "accent": "#FFEB3B",
+    "text": "#f0f0f0",
+    "textMode": "light",
+    "wash": "rgba(10, 163, 194, 0.7)"
+  },
+  "evergreen": {
+    "background": "#AD1F91",
+    "accent": "#BCE963",
+    "text": "#f0f0f0",
+    "textMode": "light",
+    "wash": "rgba(173, 31, 145, 0.7)"
+  }
+}
